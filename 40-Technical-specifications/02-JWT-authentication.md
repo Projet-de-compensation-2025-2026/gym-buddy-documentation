@@ -1,0 +1,59 @@
+# JWT authentication
+
+| Field | Value |
+| --- | --- |
+| Status | Proposed |
+| Related | [../30-Functional-specifications/01-Accounts-and-administration.md](../30-Functional-specifications/01-Accounts-and-administration.md) |
+
+The brief requires **JWT authentication**. Implementation is ours (no outsourced IdP) so the defense can show claims, expiry, and refresh.
+
+## Tokens
+
+| Token | Where it lives | TTL | Contains |
+| --- | --- | --- | --- |
+| Access | `Authorization` header | 15 minutes | `sub`, `role`, `handle`, `typ=access` |
+| Refresh | `HttpOnly; Secure; SameSite=Lax` cookie, path `/api/v1/auth` | 14 days | `sub`, `jti`, `typ=refresh` |
+
+Both are signed with **HS256** at MVP (one secret). RS256 is an improvement if a second service must verify.
+
+## Claims (access)
+
+```json
+{
+  "sub": "user-uuid",
+  "handle": "alex",
+  "role": "member",
+  "typ": "access",
+  "iat": 0,
+  "exp": 0
+}
+```
+
+Do not put email in the access token (leakage via browser logs).
+
+## Flows
+
+1. `POST /auth/register` → user row + profile + (optional) verification mail
+2. `POST /auth/login` `{ email, password }` → access JSON + `Set-Cookie` refresh
+3. `POST /auth/refresh` (cookie) → new access, rotated refresh (`jti` replaced)
+4. `POST /auth/logout` → refresh `jti` denylisted in Redis until `exp`
+5. Locked user: login and refresh fail
+
+## Password
+
+Argon2id, memory ≥ 19 MiB, one-way. Timing-safe compare. Generic error on unknown email (“invalid credentials”).
+
+## Guards
+
+A Spring Security filter (or `OncePerRequestFilter`) verifies signature, `exp`, `typ=access`, and that `users.status = active`. A method-security expression (`@PreAuthorize("hasRole('ADMIN')")`) or a dedicated voter checks `role` for `/admin/*`.
+
+## Threat notes
+
+| Risk | Mitigation |
+| --- | --- |
+| Stolen access token | Short TTL |
+| Stolen refresh | Rotation + Redis denylist + Secure cookie |
+| XSS reading tokens | Prefer memory for access, HttpOnly for refresh |
+| Algorithm none | Library configured to refuse `alg=none` |
+
+Sequence: [../60-UML-diagrams/03-Sequence.md](../60-UML-diagrams/03-Sequence.md).

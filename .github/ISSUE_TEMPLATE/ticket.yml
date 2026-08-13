@@ -1,0 +1,56 @@
+name: Ticket
+description: Work item. Must link a page in this documentation repository.
+title: "[GB] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tickets live in **gym-buddy-documentation**. Every ticket must point at a wiki page
+        (functional spec, technical spec, algorithm, architecture, test plan, …).
+        See `70-Engineering-practices/05-Tickets-and-GitHub-projects.md`.
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      options:
+        - Feature
+        - Bug
+        - Chore
+        - Docs
+    validations:
+      required: true
+  - type: input
+    id: wiki
+    attributes:
+      label: Documentation page
+      description: Required. Relative path in this repo, for example 30-Functional-specifications/07-Events.md
+      placeholder: 30-Functional-specifications/07-Events.md
+    validations:
+      required: true
+  - type: input
+    id: spec-ids
+    attributes:
+      label: Spec IDs
+      description: FS-EVT-07, TS-JWT-02, … when the page defines them
+      placeholder: FS-EVT-07
+  - type: dropdown
+    id: target-repo
+    attributes:
+      label: Implementation repository
+      description: Where the code (or wiki edit) will land. Multi-select allowed.
+      multiple: true
+      options:
+        - gym-buddy-documentation
+        - gym-buddy-backend
+        - gym-buddy-frontend
+        - gym-buddy-openapi
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance
+      description: Checklist copied or cited from the linked spec
+    validations:
+      required: true
