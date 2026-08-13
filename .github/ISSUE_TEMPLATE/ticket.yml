@@ -42,8 +42,8 @@ body:
       multiple: true
       options:
         - gym-buddy-documentation
-        - gym-buddy-backend
-        - gym-buddy-frontend
+        - gym-buddy-service
+        - gym-buddy-ui
         - gym-buddy-openapi
     validations:
       required: true

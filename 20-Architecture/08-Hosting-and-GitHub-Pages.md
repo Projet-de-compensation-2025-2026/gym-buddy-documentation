@@ -56,7 +56,7 @@ If the first build fails on Mermaid or a plugin, use **GitHub Actions** (`action
 
 ## Frontend on Pages
 
-- Build with a production `baseHref` of `/gym-buddy-frontend/` (project site) or a custom domain
+- Build with a production `baseHref` of `/gym-buddy-ui/` (project site) or a custom domain
 - Environment: `apiBaseUrl` pointing at the **real** backend, not at Pages
 - CORS on the backend must allow the Pages origin
 - Cookies (`SameSite`, `Secure`) must match HTTPS Pages

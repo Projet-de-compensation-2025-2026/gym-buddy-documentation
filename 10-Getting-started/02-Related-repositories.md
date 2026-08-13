@@ -11,8 +11,8 @@ Gym Buddies is documented **once** here and implemented in **three** other repos
 | --- | --- | --- |
 | `gym-buddy-documentation` (this repo) | Product, architecture, specs, practices, academic packaging, **tickets** | GitHub Pages (Markdown → Jekyll) |
 | `gym-buddy-openapi` | Versioned OpenAPI 3 contract + static Swagger/Redoc | GitHub Pages (static) |
-| `gym-buddy-backend` | Java API, domain, jobs, WebSocket, fixtures | **Not** Pages — always-on host |
-| `gym-buddy-frontend` | Angular member app **and** Angular back-office | GitHub Pages (static `ng build`) |
+| `gym-buddy-service` | Java API, domain, jobs, WebSocket, fixtures | **Not** Pages — always-on host |
+| `gym-buddy-ui` | Angular member app **and** Angular back-office | GitHub Pages (static `ng build`) |
 
 The instructor account [maurras.togbe@isep.fr](mailto:maurras.togbe@isep.fr) must be a collaborator on every **private** repository.
 
@@ -39,8 +39,8 @@ Spring may still expose `/v3/api-docs` in development as a convenience. That end
 ```
 gym-buddy-documentation/     ← you are here (wiki + GitHub Project)
 gym-buddy-openapi/           ← HTTP contract
-gym-buddy-backend/           ← Java 26 + Spring Boot
-gym-buddy-frontend/          ← Angular 22 (member + back-office)
+gym-buddy-service/           ← Java 26 + Spring Boot
+gym-buddy-ui/                ← Angular 22 (member + back-office)
 ```
 
 A compose file in the backend repo starts PostgreSQL 18, MinIO, Redis, and the API. The Angular apps point at that API. OpenAPI files are consumed as a git submodule, a published npm/Maven package, or a raw tagged URL — pick one in the backend README and stick to it.

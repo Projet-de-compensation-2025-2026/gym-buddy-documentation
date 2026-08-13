@@ -103,8 +103,8 @@ A behaviour change usually touches more than one repository. Order:
 
 1. Wiki page updated (this repo) — unless the ticket is already pointing at a complete spec
 2. OpenAPI contract in `gym-buddy-openapi` if the HTTP surface changes
-3. `gym-buddy-backend` implements the contract
-4. `gym-buddy-frontend` consumes the generated client
+3. `gym-buddy-service` implements the contract
+4. `gym-buddy-ui` consumes the generated client
 5. Changelog under `Unreleased` in each repo that shipped a user-visible change
 
 All of those commits that belong to the same ticket use the **same** scope `(#42)` and the same `Refs:` line.

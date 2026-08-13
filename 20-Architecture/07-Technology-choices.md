@@ -35,8 +35,8 @@ The brief requires **justification** of languages, frameworks, and libraries. La
 | Repository | Stack |
 | --- | --- |
 | `gym-buddy-documentation` | Markdown wiki (this repo), GitHub Pages |
-| `gym-buddy-backend` | Java 26 + Spring Boot + PostgreSQL 18 |
-| `gym-buddy-frontend` | Angular 22 + TypeScript 7 |
+| `gym-buddy-service` | Java 26 + Spring Boot + PostgreSQL 18 |
+| `gym-buddy-ui` | Angular 22 + TypeScript 7 |
 | `gym-buddy-openapi` | OpenAPI 3 documents + static reference UI |
 
 There is no separate back-office repository and no “the spec is whatever the running server prints”.

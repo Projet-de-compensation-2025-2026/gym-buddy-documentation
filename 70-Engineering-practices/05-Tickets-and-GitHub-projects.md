@@ -29,7 +29,7 @@ A ticket is not ready for implementation unless it has **all** of the following:
 | Type | Feature, Bug, Chore, or Docs (label) |
 | **Wiki link** | Path or URL of at least one page in **this** repository (functional spec, technical spec, algorithm, architecture, test plan, …) |
 | Spec IDs | `FS-…` / `TS-…` when the page defines them |
-| Target repo | `gym-buddy-documentation`, `gym-buddy-backend`, `gym-buddy-frontend`, and/or `gym-buddy-openapi` |
+| Target repo | `gym-buddy-documentation`, `gym-buddy-service`, `gym-buddy-ui`, and/or `gym-buddy-openapi` |
 | Acceptance | Checklist copied or cited from the spec |
 
 The issue template under [`.github/ISSUE_TEMPLATE/ticket.yml`](../../.github/ISSUE_TEMPLATE/ticket.yml) makes the wiki link **required**.

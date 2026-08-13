@@ -5,7 +5,7 @@
 | Status | Proposed |
 | Related | [../30-Functional-specifications/11-Admin-and-moderation.md](../30-Functional-specifications/11-Admin-and-moderation.md), [../30-Functional-specifications/01-Accounts-and-administration.md](../30-Functional-specifications/01-Accounts-and-administration.md) |
 
-The back-office is a **separate Angular application** (or a clearly isolated `/admin` configuration with its own bundle) **inside `gym-buddy-frontend`**. It is not a fourth repository. Members must not receive staff UI in the member JavaScript bundle.
+The back-office is a **separate Angular application** (or a clearly isolated `/admin` configuration with its own bundle) **inside `gym-buddy-ui`**. It is not a fourth repository. Members must not receive staff UI in the member JavaScript bundle.
 
 ## Who uses it
 

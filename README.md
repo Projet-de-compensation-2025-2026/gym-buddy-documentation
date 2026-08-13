@@ -2,7 +2,7 @@
 
 This repository is the **source of truth** for Gym Buddies: a social application that connects athletes (for example fitness practitioners) so they can train together, motivate each other, and find their gym buddy.
 
-It is a Confluence-style wiki adapted for Markdown and GitHub. Other Gym Buddies repositories (`gym-buddy-backend`, `gym-buddy-frontend`, `gym-buddy-openapi`) should link here instead of duplicating product or process decisions. This wiki is intended to be published on [GitHub Pages](20-Architecture/08-Hosting-and-GitHub-Pages.md).
+It is a Confluence-style wiki adapted for Markdown and GitHub. Other Gym Buddies repositories (`gym-buddy-service`, `gym-buddy-ui`, `gym-buddy-openapi`) should link here instead of duplicating product or process decisions. This wiki is intended to be published on [GitHub Pages](20-Architecture/08-Hosting-and-GitHub-Pages.md).
 
 | | |
 | --- | --- |
