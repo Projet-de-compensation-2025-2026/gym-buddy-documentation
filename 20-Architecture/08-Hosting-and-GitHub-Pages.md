@@ -71,7 +71,9 @@ Host them next to GitHub, not on Pages. Reasonable student options:
 | PostgreSQL 18 | [Neon](https://neon.tech/), [Supabase](https://supabase.com/), Railway, Azure Database for PostgreSQL, or the same host as the API |
 | Object storage | Cloudflare R2, AWS S3, or MinIO on the same VM |
 
-GitHub Actions builds the JAR and deploys to that host; it also builds Angular and OpenAPI docs to Pages. Compose remains the **local** story.
+GitHub Actions is the only pipeline: CI on `develop`, a separate Release job onto `main`, then Deploy. Details: [../70-Engineering-practices/07-CI-CD.md](../70-Engineering-practices/07-CI-CD.md).
+
+A tagged squash commit on `main` **is** the deploy. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. `gym-buddy-service` builds a Docker image to GHCR and, when `DEPLOY_*` secrets exist, replaces the container on the VM. Compose remains the **local** story.
 
 ## Target topology
 

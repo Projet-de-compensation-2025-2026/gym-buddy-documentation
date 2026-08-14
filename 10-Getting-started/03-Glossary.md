@@ -25,6 +25,10 @@
 | Back-office | Staff UI for admins and moderators |
 | Controlled file | Any stored blob (image, audio) reachable only after authorization |
 | JWT | JSON Web Token used as the access credential |
+| CI | Continuous integration: format, tests, and a live smoke on every `develop` PR |
+| Release | Dedicated workflow that squash-merges `develop` onto `main` and tags SemVer |
+| Deploy | What happens after that tag: Pages and/or Docker on the VM |
+| GHCR | GitHub Container Registry (`ghcr.io`) for versioned service images |
 | Organizer | Member who created an event (role on that event, not a global role) |
 
 Identifiers in specs look like `FS-EVENTS-03` (functional) or `TS-JWT-02` (technical). Use them in tests and review comments.
