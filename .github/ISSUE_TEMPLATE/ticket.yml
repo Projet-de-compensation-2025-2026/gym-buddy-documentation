@@ -7,8 +7,12 @@ body:
     attributes:
       value: |
         Tickets live in **gym-buddy-documentation**. Every ticket must point at a wiki page
-        (functional spec, technical spec, algorithm, architecture, test plan, …).
-        See `70-Engineering-practices/05-Tickets-and-GitHub-projects.md`.
+        (functional spec, technical spec, algorithm, architecture, test plan, …)
+        and must be attached to the singular **Gym Buddy Project**.
+        Fill every field. New tickets default to **Not Ready**; only Joaquim Kéloglanian
+        moves them to **Todo** after an explicit review.
+        See `70-Engineering-practices/08-Feature-implementation.md`
+        and `70-Engineering-practices/05-Tickets-and-GitHub-projects.md`.
   - type: dropdown
     id: type
     attributes:

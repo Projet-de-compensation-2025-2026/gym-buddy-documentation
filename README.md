@@ -26,7 +26,7 @@ Top-level folders follow `XX-Section-name`, where `XX` is `00`–`99`. Numbers a
 | [40-Technical-specifications](40-Technical-specifications/README.md) | JWT, file access, image storage, messaging transport, search, fixtures, API conventions |
 | [50-Algorithms](50-Algorithms/README.md) | Friend suggestions, filtered search, user matching — with justification |
 | [60-UML-diagrams](60-UML-diagrams/README.md) | Use case, activity, sequence, and class diagrams |
-| [70-Engineering-practices](70-Engineering-practices/README.md) | Gitflow, SemVer, Conventional Commits, tickets, coding standards |
+| [70-Engineering-practices](70-Engineering-practices/README.md) | Gitflow, SemVer, Conventional Commits, tickets, feature workflow, CI/CD |
 | [80-Testing](80-Testing/README.md) | Test plan, unit / integration / functional tests, fixture strategy |
 | [90-Changelog](90-Changelog/README.md) | Version history for the product and for this wiki |
 | [91-Critical-analysis](91-Critical-analysis/README.md) | Critique of the solution and possible improvements |

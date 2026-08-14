@@ -25,6 +25,7 @@ Leave gaps (this tree already does: 00, 10, 20, …) so a new top-level section 
 | “Why this algorithm?” | [../50-Algorithms](../50-Algorithms/README.md) |
 | A diagram for the report | [../60-UML-diagrams](../60-UML-diagrams/README.md) |
 | How to open a PR | [../70-Engineering-practices](../70-Engineering-practices/README.md) |
+| How to take a feature from spec to `develop` | [../70-Engineering-practices/08-Feature-implementation.md](../70-Engineering-practices/08-Feature-implementation.md) |
 
 ## Page contract
 
