@@ -3,9 +3,11 @@
 | Field | Value |
 | --- | --- |
 | Status | Approved |
-| Related | [02-Git-workflow.md](02-Git-workflow.md) |
+| Related | [02-Git-workflow.md](02-Git-workflow.md), [08-Feature-implementation.md](08-Feature-implementation.md) |
 
-Work is tracked as **GitHub Issues**, organized on a **GitHub Project**. The Project is the board; the Issue is the ticket.
+Work is tracked as **GitHub Issues**, organized on the singular GitHub Project [**Gym Buddy Project**](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1). The Project is the board; the Issue is the ticket. Do not create a second project.
+
+When a feature is implemented from a specification, follow [08-Feature-implementation.md](08-Feature-implementation.md) first (consult Joaquim Kéloglanian, update the specs, then open the ticket).
 
 ## Where tickets live
 
@@ -17,7 +19,7 @@ Reasons:
 - One sequence of ids (`#1`, `#2`, …) is shared across all implementation repos
 - Commits in other repos can still link here with `Refs: <owner>/gym-buddy-documentation#42`
 
-The GitHub Project (board columns such as Backlog / Ready / In progress / In review / Done) is attached to this repository or to the GitHub organization, and it includes issues from this repo.
+**Gym Buddy Project** is the only board. Every ticket opened from the template is attached to it. New items default to `Not Ready`. The four statuses and who may change them are defined in [08-Feature-implementation.md](08-Feature-implementation.md).
 
 ## Mandatory ticket contents
 
@@ -56,14 +58,17 @@ A ticket may produce many commits (spec tweak, OpenAPI, backend, tests, frontend
 
 If there is no ticket, **do not** put a ticket number in the commit scope. Use a topical scope (`wiki`, `ci`, `deps`). Do not create dummy issues after the fact just to decorate a typo-fix unless you want the board to show it.
 
-## Suggested board columns
+## Board statuses
 
-| Column | Meaning |
+Exactly four. These replace any older Backlog / Ready / In review layout.
+
+| Status | Meaning |
 | --- | --- |
-| Backlog | Idea; wiki page may still be Draft |
-| Ready | Wiki link present, acceptance clear |
-| In progress | A `feature/<id>-…` branch exists |
-| In review | PR against `develop` |
-| Done | Merged to `develop` (or to `main` for a hotfix) |
+| `Not Ready` | Default at creation. Specs and template are filled; Joaquim has not green-lit implementation |
+| `Todo` | Joaquim Kéloglanian has read, reviewed, and explicitly approved the ticket |
+| `In Progress` | Implementation of this ticket has started |
+| `Done` | Implemented, tested, formatted, and merged into `develop` |
 
-The academic ship (`1.0.0`) is a **release**, not a ticket column. Tickets close when their change is on `develop`; the release branch packages them.
+Rules and the full feature sequence: [08-Feature-implementation.md](08-Feature-implementation.md).
+
+The academic ship (`1.0.0`) is a **release**, not a ticket status. Tickets become `Done` on `develop`; Release packages them.
