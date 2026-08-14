@@ -9,6 +9,12 @@ Until the first application release, versions refer to the **documentation contr
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+## [0.2.0] — 2026-08-14
+
 ### Changed
 
 - Engineering practices now follow [Gitflow (Atlassian)](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) and [SemVer 2.0.0](https://semver.org/); `1.0.0` is the compensation-project ship, earlier tags stay on `0.y.z`
@@ -37,4 +43,5 @@ Until the first application release, versions refer to the **documentation contr
 - English and French assignment text under `00-Project-brief`
 
 [Unreleased]: https://github.com/
+[0.2.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v0.2.0
 [0.1.0]: https://github.com/
