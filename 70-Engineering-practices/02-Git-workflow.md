@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Status | Approved |
-| Related | [05-Tickets-and-GitHub-projects.md](05-Tickets-and-GitHub-projects.md), [06-Versioning.md](06-Versioning.md), [07-CI-CD.md](07-CI-CD.md) |
+| Related | [05-Tickets-and-GitHub-projects.md](05-Tickets-and-GitHub-projects.md), [06-Versioning.md](06-Versioning.md), [07-CI-CD.md](07-CI-CD.md), [08-Feature-implementation.md](08-Feature-implementation.md) |
 
 Gym Buddies follows the **Gitflow** branching model as documented by Atlassian:
 
@@ -95,6 +95,7 @@ Product and specification work should still start from a ticket. Ticket-less com
 ## Pull requests
 
 - Open the PR against `develop`. Never against `main` (Release owns `main`; see [07-CI-CD.md](07-CI-CD.md))
+- The ticket on **Gym Buddy Project** is `In Progress` for the life of the PR and becomes `Done` only after the merge to `develop` ([08-Feature-implementation.md](08-Feature-implementation.md))
 - Title includes the ticket when there is one: `[#42] Reject accept when the event is full`
 - Description links the ticket and the wiki page the ticket already points at
 - Review checklist: [03-Review-process.md](03-Review-process.md)
