@@ -1,0 +1,11 @@
+_site
+.jekyll-cache
+.jekyll-metadata
+node_modules
+vendor
+*.pdf
+*.md
+LICENSE
+Gemfile
+Gemfile.lock
+.git

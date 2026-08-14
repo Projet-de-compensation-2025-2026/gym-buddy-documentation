@@ -19,6 +19,7 @@ Even on an individual project, every merge to `develop` (features) or `main` (re
 - [ ] JWT / ACL: fail closed, no existence leak
 - [ ] Fixtures still run (or not required)
 - [ ] Changelog note if user-visible
+- [ ] CI workflow **`ci`** is green on the PR (format, tests, smoke) — see [07-CI-CD.md](07-CI-CD.md)
 
 ## What “looks good” is not enough
 

@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Status | Approved |
-| Related | [05-Tickets-and-GitHub-projects.md](05-Tickets-and-GitHub-projects.md), [06-Versioning.md](06-Versioning.md) |
+| Related | [05-Tickets-and-GitHub-projects.md](05-Tickets-and-GitHub-projects.md), [06-Versioning.md](06-Versioning.md), [07-CI-CD.md](07-CI-CD.md) |
 
 Gym Buddies follows the **Gitflow** branching model as documented by Atlassian:
 
@@ -18,9 +18,11 @@ Gitflow fits a **release-based** academic project: `1.0.0` is the compensation-p
 1. A `develop` branch is created from `main`
 2. `feature/*` branches are created from `develop`
 3. When a feature is complete it is merged into `develop`
-4. A `release/*` branch is created from `develop` when a version is being prepared
-5. When the release is done it is merged into `develop` **and** `main`, and `main` is tagged
-6. If production is broken, a `hotfix/*` branch is created from `main` and merged back into both `main` and `develop`
+4. A version is cut by the **Release** workflow in [07-CI-CD.md](07-CI-CD.md) (the Jenkins-style job). It format-checks, tests, smokes, then **squash-merges `develop` onto `main`** and tags `vX.Y.Z`.
+5. `main` therefore contains **only** those tagged squash commits. Humans do not push to `main`. Feature PRs never target `main`.
+6. If production is broken, a `hotfix/*` branch is created from `main`, merged into `develop`, then Release is run again so `main` still only moves by a tagged squash.
+
+A long-lived `release/*` freeze branch remains allowed (Atlassian). Day-to-day we do not open one: the Release workflow *is* the release.
 
 `feature` branches **never** merge into `main`.
 
@@ -28,11 +30,11 @@ Gitflow fits a **release-based** academic project: `1.0.0` is the compensation-p
 
 | Branch | Role (Atlassian) | Our convention |
 | --- | --- | --- |
-| `main` | Official release history | Tagged with a [SemVer](https://semver.org/) version (`v0.2.0`, later `v1.0.0`) |
-| `develop` | Integration of finished features | Default integration branch |
+| `main` | Official release history | **Only** tagged squash commits from Release (`v0.2.0`, later `v1.0.0`) |
+| `develop` | Integration of finished features | Default branch. Every PR/push runs CI |
 | `feature/<ticket>-<slug>` | One feature, parent = `develop` | Ticket id when the work has a ticket: `feature/42-event-capacity` |
-| `release/<semver>` | Freeze for a version | `release/0.3.0`, then `release/1.0.0` for the academic ship |
-| `hotfix/<ticket>-<slug>` | Patch production, parent = `main` | `hotfix/88-jwt-refresh` |
+| `release/<semver>` | Optional freeze | Prefer the Release workflow; use a branch only for a long freeze |
+| `hotfix/<ticket>-<slug>` | Patch production, parent = `main` | Land on `develop`, then run Release |
 
 Documentation-only work in this wiki uses the same model (`feature/12-fix-search-spec` off `develop`).
 
@@ -92,7 +94,7 @@ Product and specification work should still start from a ticket. Ticket-less com
 
 ## Pull requests
 
-- Open the PR against `develop` (features) or `main` (hotfixes)
+- Open the PR against `develop`. Never against `main` (Release owns `main`; see [07-CI-CD.md](07-CI-CD.md))
 - Title includes the ticket when there is one: `[#42] Reject accept when the event is full`
 - Description links the ticket and the wiki page the ticket already points at
 - Review checklist: [03-Review-process.md](03-Review-process.md)

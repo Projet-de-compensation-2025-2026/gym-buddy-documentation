@@ -16,9 +16,11 @@ Until the first application release, versions refer to the **documentation contr
 - Tickets live on this repository (GitHub Projects), must link a wiki page, and are referenced from every other repo
 - Stack: Java 26 + Spring Boot backend, Angular 22 + TypeScript 7 frontend, PostgreSQL 18, dedicated `gym-buddy-openapi` repository (not a live `/v3/api-docs` as source of truth)
 - Hosting: GitHub Pages for this wiki, the Angular apps, and the OpenAPI UI; Java and PostgreSQL cannot run on Pages
+- Releases onto `main` are automated squash+tag commits; version numbers are computed from Conventional Commits and can be overridden by hand
 
 ### Added
 
+- CI/CD contract: GitHub Actions CI on every `develop` PR/push, a separate Release workflow that squash-merges and tags `main`, Deploy of that tag (Pages / Docker + VM)
 - Confluence-style wiki structure (`XX-Section-name`) covering the 2025/2026 compensation brief
 - Functional specifications for every overview feature
 - Technical specifications for JWT, file ACL, image storage, messaging, search, fixtures
