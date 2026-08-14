@@ -82,7 +82,7 @@ jobs:
       - name: Prepare changelog
         run: python3 .github/scripts/ci/prepare_changelog.py "${{ steps.version.outputs.version }}"
 
-      - name: Commit release prep on develop
+      - name: Commit release prep locally
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -91,7 +91,6 @@ jobs:
             echo "No prep changes"
           else
             git commit -m "chore(release): prepare v${{ steps.version.outputs.version }}"
-            git push origin HEAD:develop
           fi
 
       - name: Squash develop onto main and tag
@@ -101,7 +100,7 @@ jobs:
           set -euo pipefail
           git fetch origin
           git checkout -B main origin/main
-          git merge --squash origin/develop
+          git merge --squash develop
           git commit -m "release: v${VERSION}"
           git tag -a "v${VERSION}" -m "v${VERSION}"
           git push origin main
