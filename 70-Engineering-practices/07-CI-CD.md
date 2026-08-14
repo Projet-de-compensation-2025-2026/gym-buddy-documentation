@@ -50,6 +50,11 @@ Everything is Git + the GitHub API:
 
 You do not need Jenkins, a second CI product, or to click through GitHub’s UI for the pipelines themselves.
 
+**GitHub Free limits on private repos** (this org today):
+
+- Repository **rulesets** and classic **branch protection** require GitHub Pro (or a public repo). Workflows still run; they are not blocked. The public `gym-buddy-documentation` repo *does* have rulesets (`ci` required on `develop`, linear history on `main`).
+- **GitHub Pages** on a private repo also needs Pro (or the [Student Developer Pack](https://education.github.com/pack)). Public repos can publish Pages. Until then, service deploy is GHCR + SSH; UI/OpenAPI Pages jobs will fail closed on a private repo.
+
 ## Success criteria (this page’s contract)
 
 1. **Every pull request targeting `develop` starts the CI workflow.** A push directly to `develop` does too.

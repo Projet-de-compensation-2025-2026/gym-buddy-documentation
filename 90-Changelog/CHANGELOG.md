@@ -20,7 +20,7 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Added
 
-- CI/CD contract: GitHub Actions CI on every `develop` PR/push, a separate Release workflow that squash-merges and tags `main`, Deploy of that tag (Pages / Docker + VM)
+- CI/CD contract: GitHub Actions CI on every `develop` PR/push, a separate Release workflow that squash-merges and tags `main`, Deploy of that tag (Pages / Docker + VM). Private-repo Pages and branch-protection need GitHub Pro or a public repo.
 - Confluence-style wiki structure (`XX-Section-name`) covering the 2025/2026 compensation brief
 - Functional specifications for every overview feature
 - Technical specifications for JWT, file ACL, image storage, messaging, search, fixtures
