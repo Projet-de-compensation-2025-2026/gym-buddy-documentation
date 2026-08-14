@@ -144,7 +144,7 @@ Service deploy on the VM (when secrets are set):
 
 | Branch | Rule |
 | --- | --- |
-| `develop` | Default branch. PRs target this. Status check **`ci`** must be green to merge. No force-push, no delete. |
+| `develop` | Default branch. PRs target this. No force-push, no delete. The **CI** workflow still runs on every PR; do not merge a red one. A required-check ruleset is not used here: it would also block the Release job from syncing `main` back onto `develop`. |
 | `main` | Linear history only. No force-push, no delete. **Not** opened by feature PRs. Only Release writes it. |
 | `feature/*` | From `develop`, PR back to `develop`. |
 | `release/*` | Optional long freeze. Day-to-day releases do **not** use this branch; they use the Release workflow. |
