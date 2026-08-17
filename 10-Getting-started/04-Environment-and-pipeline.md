@@ -9,15 +9,15 @@ How to run Gym Buddies locally, how a change is proven and released, and how the
 
 ## Today versus target
 
-Be honest at the defense. The pipeline and the VPS exist. Spring Boot does **not**.
+Be honest at the defense. The pipeline, the VPS, and the **local data plane** exist. Spring Boot does **not**.
 
 | Piece | Today (August 2026) | Target (locked) |
 | --- | --- | --- |
-| `gym-buddy-service` | Python 3.12 probe (`python:3.12-alpine`). Serves `probe/index.html` on port 8080. No `pom.xml`, no `compose.yaml`, no `.env.example`. Latest released tag **v0.1.1**. | Java 26 / Spring Boot modular monolith |
+| `gym-buddy-service` | Python 3.12 probe (`python:3.12-alpine`). Serves `probe/index.html` on port 8080. `compose.yaml` and `.env.example` are in the repo. No `pom.xml`. Latest released tag **v0.1.1**. | Java 26 / Spring Boot modular monolith |
 | `gym-buddy-openapi` | OpenAPI 3.1.0 stub: `GET /health` under `/api/v1` | Full contract; health becomes `GET /api/v1/healthz` and `GET /api/v1/readyz` |
 | `gym-buddy-ui` | Static HTML probe | Angular 22 member app + back-office |
 | Health | Probe answers `GET /`. Smoke looks for the string `Gym Buddy`. | Unauthenticated `GET /api/v1/healthz` (liveness) and `GET /api/v1/readyz` (PostgreSQL + object storage reachable) |
-| Local data plane | Not in the service repo yet | `compose.yaml` in `gym-buddy-service` (Postgres 18, Redis, MinIO, API, optional MailHog) |
+| Local data plane | `compose.yaml` in `gym-buddy-service`: Postgres 18, Redis, MinIO, probe API, optional MailHog. All binds `127.0.0.1`. | Same file; API service becomes the Spring image |
 | VM | One API container, bound to `127.0.0.1:8080`. Caddy terminates TLS. No compose on the VM. | Same API replace, plus a **private** data-plane compose on the Docker network (5432 / 6379 / 9000 not published) |
 | Production object storage | Not applicable (probe has none) | API **refuses to start** in production if S3-compatible storage is missing |
 
@@ -30,31 +30,38 @@ When Spring work starts, a laptop is ready when all of these are true:
 1. **JDK 26** installed (Java 25 LTS is the fallback if a library does not run on 26 — see [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md)).
 2. **Docker** and Compose v2 available.
 3. Clone the four repositories (URLs in [02-Related-repositories.md](02-Related-repositories.md)). Default branch is `develop` everywhere.
-4. Add `compose.yaml` to `gym-buddy-service` (plan below — **not in the repo today**).
+4. `compose.yaml` and `.env.example` are in `gym-buddy-service` (ticket #7).
 5. Copy `.env.example` to `.env` locally. Fill secrets there. Never commit `.env`.
 6. `docker compose up -d` binds every published port to `127.0.0.1`.
 7. Flyway applies the schema from [../20-Architecture/06-Data-model.md](../20-Architecture/06-Data-model.md).
 8. The OpenAPI stub in `gym-buddy-openapi` is the HTTP source of truth. Expand it **before** implementing a new route.
 9. Point the UI at `http://localhost:8080/api/v1`.
 
-Until `pom.xml` exists, the only thing you can run from the service repo is the probe image.
+Until `pom.xml` exists, `docker compose up -d` starts the data plane plus the probe image. The probe does not use Postgres, Redis, or MinIO yet.
 
-## Local Compose (plan — implement in `gym-buddy-service`)
+## Local Compose
 
-Compose is the **local** story. It is not how the VPS runs today. Documented here so the first backend ticket can add the file without inventing ports or env names.
+Compose is the **local** story. It is not how the VPS runs. File: `compose.yaml` at the root of [gym-buddy-service](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service).
 
-File: `compose.yaml` at the root of [gym-buddy-service](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service).
+```bash
+cp .env.example .env
+docker compose up -d
+# optional SMTP catcher
+docker compose --profile mail up -d
+```
 
 | Service | Image role | Host bind | Port |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | API | Spring Boot (today: the probe image) | `127.0.0.1` | `8080` |
-| PostgreSQL | **18** (not 19) | `127.0.0.1` | `5432` |
-| Redis | Cache / refresh denylist | `127.0.0.1` | `6379` |
+| PostgreSQL | **18** (not 19), image `postgres:18.6` | `127.0.0.1` | `5432` |
+| Redis | Cache / refresh denylist, image `redis:8-alpine` | `127.0.0.1` | `6379` |
 | MinIO | S3 API | `127.0.0.1` | `9000` |
 | MinIO console | Local admin UI | `127.0.0.1` | `9001` |
-| MailHog (optional) | SMTP catcher | `127.0.0.1` | SMTP `1025`, UI `8025` |
+| MailHog (optional, profile `mail`) | SMTP catcher | `127.0.0.1` | SMTP `1025`, UI `8025` |
 
 Bind `127.0.0.1` on every published port. Do not publish the data plane to `0.0.0.0`.
+
+The API container is given Docker-network URLs (`postgres`, `redis`, `minio`). `.env.example` documents the **host** URLs (`127.0.0.1`) for `psql` / Redis Insight / the MinIO console.
 
 ### Environment catalog (keys only)
 
@@ -77,6 +84,8 @@ Values live in a local `.env` that is **not** committed. This table is names and
 | `DEPLOY_SSH_KEY` | GitHub Actions only | SSH private key (PEM) |
 | `DEPLOY_PORT` | GitHub Actions only, optional | SSH port, default `22` |
 | `DEPLOY_BIND` | VM replace script, optional | Container publish address, default `127.0.0.1` |
+
+`POSTGRES_PASSWORD` is a compose helper used to create the PostgreSQL role. It is not an application key; the API reads `DATABASE_URL`.
 
 Do not put JWT values, key material, or demo passwords in this wiki.
 
@@ -102,7 +111,7 @@ When `SPRING_PROFILES_ACTIVE=prod`, the API must exit on startup if `S3_ENDPOINT
 Read from the live workflows on `develop` (August 2026). The public documentation repo uses the same **three names** (CI / Release / Deploy) but Deploy publishes GitHub Pages, not a container. Both models are written in [../70-Engineering-practices/07-CI-CD.md](../70-Engineering-practices/07-CI-CD.md).
 
 | Workflow | File | Trigger | What it does |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | **CI** | `.github/workflows/ci.yml` | `pull_request` and `push` to `develop` only. **No** `workflow_dispatch`. | Format `--check`, tests, smoke. Never publishes. |
 | **Release** | `.github/workflows/release.yml` | **`workflow_dispatch` only**. Inputs: optional `version`, `bump` (`auto` / `patch` / `minor` / `major`). | Format `--write`, tests, smoke, compute SemVer, move changelog, commit prep on `develop`, **squash-merge `develop` onto `main`**, annotated tag `vX.Y.Z`, sync `main` back to `develop`, then **calls Deploy**. |
 | **Deploy** | `.github/workflows/deploy.yml` | `workflow_call` from Release, or a `v*` tag. | Build and push `ghcr.io/projet-de-compensation-2025-2026/gym-buddy-service:vX.Y.Z` (and `:latest`). SSH to the VPS and run `deploy/replace.sh`. |
@@ -200,12 +209,14 @@ Let’s Encrypt **HTTP-01** needs port **80** reachable from the world for a few
 
 | Work | Where |
 | --- | --- |
-| `compose.yaml`, `.env.example`, Flyway, Spring Boot | `gym-buddy-service` |
+| Flyway, Spring Boot | `gym-buddy-service` |
 | Expand OpenAPI past `GET /health`; rename health to `healthz` / `readyz` | `gym-buddy-openapi` |
 | Angular 22 apps | `gym-buddy-ui` |
 | Smoke script switch from `GET /` | `.github/scripts/ci/smoke.sh` in the service repo, when `pom.xml` appears |
 | Private data-plane compose on the VPS | Operator work after the API needs a database |
 | Instructor cadrage minutes | [../00-Project-brief/01-Scope-and-modules.md](../00-Project-brief/01-Scope-and-modules.md) — still **Not done** |
+
+`compose.yaml` and `.env.example` landed in `gym-buddy-service` with ticket #7.
 
 ## Feature workflow
 
