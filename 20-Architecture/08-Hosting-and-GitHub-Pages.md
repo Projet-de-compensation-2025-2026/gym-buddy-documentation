@@ -3,9 +3,9 @@
 | Field | Value |
 | --- | --- |
 | Status | Approved |
-| Related | [07-Technology-choices.md](07-Technology-choices.md), [../10-Getting-started/02-Related-repositories.md](../10-Getting-started/02-Related-repositories.md) |
+| Related | [07-Technology-choices.md](07-Technology-choices.md), [../10-Getting-started/02-Related-repositories.md](../10-Getting-started/02-Related-repositories.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
-Goal: put as much of Gym Buddies as possible on **GitHub Pages**, including this documentation.
+Goal: put as much of Gym Buddies as possible on **GitHub Pages**, including this documentation. The Java API and its data plane run on an OVH VPS.
 
 ## What GitHub Pages actually is
 
@@ -21,7 +21,7 @@ That constraint decides what can live on Pages and what cannot.
 | Member frontend (Angular) | **Yes** | `ng build` emits static files. Deploy the `dist/` folder to Pages (project site or `gh-pages` branch / Actions). |
 | Back-office (Angular, same frontend repo) | **Yes** | Second configuration / `baseHref`, same static model. |
 | OpenAPI contract + reference UI | **Yes** | Host the YAML/JSON plus a static [Swagger UI](https://swagger.io/tools/swagger-ui/) or Redoc build in `gym-buddy-openapi`. |
-| Java backend | **No** | Needs a process (Spring Boot). Pages cannot run it. |
+| Java backend | **No** | Needs a process (Spring Boot). Pages cannot run it. Lives on the OVH VPS. |
 | PostgreSQL | **No** | Needs a database engine. Pages cannot run it. |
 | MinIO / object storage | **No** | Same reason. |
 | WebSockets / JWT login against a real API | **No**, not on Pages itself | The Angular app on Pages **calls** an API hosted elsewhere. |
@@ -48,7 +48,7 @@ GitHub Pages + Jekyll already understands a Markdown wiki if we enable the offic
 2. GitHub → this repo → **Settings → Pages**.
 3. Source: **Deploy from a branch**, branch `main`, folder `/ (root)`.
 4. Wait for the Action / Pages build.
-5. Site URL will be `https://<owner>.github.io/gym-buddy-documentation/` for a project site.
+5. Project-site URL: `https://projet-de-compensation-2025-2026.github.io/gym-buddy-documentation/`
 
 **Private repositories:** Pages can be published, but visibility depends on the plan. GitHub Free makes Pages sites public even if the repo is private. A private site needs GitHub Team/Enterprise (the [Student Developer Pack](https://education.github.com/pack) often includes this). The instructor still needs GitHub access to the **repo**; Pages is for reading the wiki in a browser.
 
@@ -57,37 +57,43 @@ If the first build fails on Mermaid or a plugin, use **GitHub Actions** (`action
 ## Frontend on Pages
 
 - Build with a production `baseHref` of `/gym-buddy-ui/` (project site) or a custom domain
-- Environment: `apiBaseUrl` pointing at the **real** backend, not at Pages
+- Environment: `apiBaseUrl` pointing at the **real** backend (`https://vps-c39cdf03.vps.ovh.net/api/v1` once Spring exists), not at Pages
 - CORS on the backend must allow the Pages origin
 - Cookies (`SameSite`, `Secure`) must match HTTPS Pages
 
-## Backend and database (not Pages)
+## Backend and database (OVH VPS)
 
-Host them next to GitHub, not on Pages. Reasonable student options:
+Chosen host: **OVH VPS-2 2027** in Gravelines, Ubuntu 26.04, hostname `vps-c39cdf03.vps.ovh.net`.
 
-| Need | Options |
+Rejected for the API (fine as notes, not the plan): Render, Fly.io, Railway as the primary runtime. They hide the VM the pipeline already deploys to.
+
+| Need | Where |
 | --- | --- |
-| Java API | [Render](https://render.com/), [Fly.io](https://fly.io/), [Railway](https://railway.app/), Azure / a small VPS |
-| PostgreSQL 18 | [Neon](https://neon.tech/), [Supabase](https://supabase.com/), Railway, Azure Database for PostgreSQL, or the same host as the API |
-| Object storage | Cloudflare R2, AWS S3, or MinIO on the same VM |
+| Java API (probe today) | Docker on the VPS, bound to `127.0.0.1:8080` |
+| HTTPS | Caddy on the hostname → loopback `:8080`, Let’s Encrypt |
+| PostgreSQL 18 / Redis / MinIO | Local compose first. On the VPS later: private Docker network, ports not published |
+| Public `:8080` | Never. UFW denies it. |
 
-GitHub Actions is the only pipeline: CI on `develop`, a separate Release job onto `main`, then Deploy. Details: [../70-Engineering-practices/07-CI-CD.md](../70-Engineering-practices/07-CI-CD.md).
+UFW: 22 open; 80 denied except during certificate HTTP-01; 443 allowed only from the operator IPv6 prefix configured on the server (the prefix is not written in this public wiki); 8080 denied.
 
-A tagged squash commit on `main` **is** the deploy. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. `gym-buddy-service` builds a Docker image to GHCR and, when `DEPLOY_*` secrets exist, replaces the container on the VM. Compose remains the **local** story.
+GitHub Actions is the only pipeline: CI on `develop`, a separate Release job onto `main`, then Deploy. Details: [../70-Engineering-practices/07-CI-CD.md](../70-Engineering-practices/07-CI-CD.md) and [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
+
+A tagged squash commit on `main` **is** the deploy. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. `gym-buddy-service` builds a Docker image to GHCR and `replace.sh` replaces the container on the VM. Compose remains the **local** story.
 
 ## Target topology
 
 ```text
-GitHub Pages                         Elsewhere (always-on process)
+GitHub Pages                         OVH VPS (always-on process)
 ─────────────────                    ────────────────────────────
 documentation wiki  ─┐
-Angular member app  ─┼─ static ──►  Spring Boot API ──► PostgreSQL 18
+Angular member app  ─┼─ static ──►  Caddy :443 ──► 127.0.0.1:8080
 Angular back-office ─┤               │
-OpenAPI + Swagger   ─┘               └──► object storage
+OpenAPI + Swagger   ─┘               └── Spring API ──► PostgreSQL 18
+                                     └── object storage (MinIO / S3)
                           ▲
                           └── HTTPS + JWT, CORS allow Pages origins
 ```
 
 ## What to say at the defense
 
-We publish every **static** artifact on GitHub Pages (wiki, Angular, OpenAPI UI). We do **not** pretend Pages runs Java or PostgreSQL; those stay on a small hosted runtime. That is the honest reading of the platform, not a missing feature.
+We publish every **static** artifact on GitHub Pages (wiki, Angular, OpenAPI UI). We do **not** pretend Pages runs Java or PostgreSQL; those stay on a small OVH VPS behind Caddy. That is the honest reading of the platform, not a missing feature.
