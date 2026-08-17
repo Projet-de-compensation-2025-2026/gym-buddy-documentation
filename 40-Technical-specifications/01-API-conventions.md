@@ -2,8 +2,8 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
-| Related | [../20-Architecture/03-Backend.md](../20-Architecture/03-Backend.md), [08-OpenAPI-contract.md](08-OpenAPI-contract.md) |
+| Status | Approved |
+| Related | [../20-Architecture/03-Backend.md](../20-Architecture/03-Backend.md), [08-OpenAPI-contract.md](08-OpenAPI-contract.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
 The human-readable rules on this page must match the machine-readable document in `gym-buddy-openapi`. If they disagree, fix both in the same ticket.
 
@@ -52,4 +52,21 @@ Breaking changes increment `/api/v2`. Additive fields are allowed in v1.
 
 ## Health
 
-`GET /healthz` (liveness) and `GET /readyz` (DB + object store reachable) are unauthenticated.
+Locked public contract (unauthenticated):
+
+| Path | Meaning |
+| --- | --- |
+| `GET /api/v1/healthz` | Liveness — the process is up |
+| `GET /api/v1/readyz` | Readiness — PostgreSQL and object storage are reachable |
+
+Do not publish `/actuator/health` as the contract. Actuator may exist internally.
+
+### Drift until Spring exists
+
+| Surface | Path today | Action |
+| --- | --- | --- |
+| Probe image in `gym-buddy-service` | `GET /` (HTML) | Keep until `pom.xml` exists; then smoke `/api/v1/healthz` |
+| `gym-buddy-openapi` stub | `GET /api/v1/health` | Replace with `healthz` + `readyz` in the same ticket that introduces Spring |
+| This page | `healthz` / `readyz` | Source of truth for the target |
+
+CI smoke scripts change when the service stops being a probe.

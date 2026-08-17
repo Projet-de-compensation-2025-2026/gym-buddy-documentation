@@ -2,8 +2,8 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
-| Related | [../80-Testing/01-Test-plan.md](../80-Testing/01-Test-plan.md) |
+| Status | Approved |
+| Related | [../80-Testing/01-Test-plan.md](../80-Testing/01-Test-plan.md), [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md) |
 
 The brief requires **thousands of test fixtures**.
 
@@ -15,7 +15,7 @@ The brief requires **thousands of test fixtures**.
 
 ## How
 
-Factory functions (`userFactory`, `postFactory`, …) on top of `@faker-js/faker` with a **fixed seed** (`FIXTURE_SEED=20260813`).
+Factory classes (`UserFactory`, `PostFactory`, …) on top of **Datafaker** (Java) with a **fixed seed** (`FIXTURE_SEED=20260813`). This matches the Approved stack. Do not add `@faker-js/faker` to the backend.
 
 A CLI / back-office action:
 
@@ -46,12 +46,12 @@ Do **not** store 15 000 unique JPEGs. Upload ~10 stock images to MinIO and point
 - Clusters by `city` + `sports` (so search and matching are visibly right)
 - Named demo accounts that always exist:
 
-| Handle | Role | Password (dev only) |
+| Handle | Role | Password |
 | --- | --- | --- |
-| `demo.alex` | member | in `.env.example` |
-| `demo.blake` | member, friend of alex | |
-| `demo.mod` | moderator | |
-| `demo.admin` | admin | |
+| `demo.alex` | member | local `.env` only |
+| `demo.blake` | member, friend of alex | local `.env` only |
+| `demo.mod` | moderator | local `.env` only |
+| `demo.admin` | admin | local `.env` only |
 
 ## Safety
 

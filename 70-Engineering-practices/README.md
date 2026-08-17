@@ -12,8 +12,10 @@ How we write, review, and ship code and documentation across Gym Buddies reposit
 | [04-Documentation-conventions.md](04-Documentation-conventions.md) | Numbering, page template, linking, changelog entries |
 | [05-Tickets-and-GitHub-projects.md](05-Tickets-and-GitHub-projects.md) | Issues live here, must link a wiki page, commit scope = ticket id |
 | [06-Versioning.md](06-Versioning.md) | [Semantic Versioning 2.0.0](https://semver.org/) — `0.y.z` until the academic `1.0.0` |
-| [07-CI-CD.md](07-CI-CD.md) | GitHub Actions: CI on `develop`, Release squash+tag onto `main`, Deploy |
+| [07-CI-CD.md](07-CI-CD.md) | GitHub Actions: CI on `develop`, Release squash+tag onto `main`, Deploy (Pages or `replace.sh`) |
 | [08-Feature-implementation.md](08-Feature-implementation.md) | Consult Joaquim → update specs → ticket on **Gym Buddy Project** → `Not Ready` / `Todo` / `In Progress` / `Done` |
+
+Operator runbook (local compose, env keys, VPS): [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
 
 These practices exist so the software-engineering module is visible in the daily workflow, not only in UML.
 

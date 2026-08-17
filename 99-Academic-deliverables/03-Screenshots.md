@@ -2,9 +2,9 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft |
+| Status | Draft — checklist complete; images blocked on UI |
 
-Capture after the UI is stable. Prefer the `demo.alex` / `demo.blake` accounts. Store images next to this file (`screenshots/`) when they exist.
+Capture after the UI is stable. Prefer the `demo.alex` / `demo.blake` accounts. Store images next to this file (`screenshots/`) when they exist. Do not commit placeholder images.
 
 | # | Shot | Feature | FS |
 | --- | --- | --- | --- |
@@ -26,5 +26,8 @@ Capture after the UI is stable. Prefer the `demo.alex` / `demo.blake` accounts. 
 | 16 | Back-office: hidden post | Moderation | FS-ADM-03 |
 | 17 | Architecture diagram (export from wiki Mermaid) | Deliverable | — |
 | 18 | Data model diagram | Deliverable | — |
+| 19 | HTTPS probe / health on the VPS (operator network) | Hosting | — |
 
-Each figure in the report gets a one-sentence caption. Do not paste 18 shots without commentary.
+Each figure in the report gets a one-sentence caption. Do not paste 19 shots without commentary.
+
+Shots 1–16 wait for Angular. Shots 17–18 can be exported from this wiki now. Shot 19 can be taken from `https://vps-c39cdf03.vps.ovh.net` on the operator network.

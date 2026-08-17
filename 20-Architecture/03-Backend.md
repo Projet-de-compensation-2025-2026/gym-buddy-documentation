@@ -2,10 +2,20 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
-| Related | [01-Software-architecture.md](01-Software-architecture.md), [../40-Technical-specifications/01-API-conventions.md](../40-Technical-specifications/01-API-conventions.md) |
+| Status | Approved |
+| Related | [01-Software-architecture.md](01-Software-architecture.md), [../40-Technical-specifications/01-API-conventions.md](../40-Technical-specifications/01-API-conventions.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
-The backend is a single **Java 26** service (Spring Boot — see [07-Technology-choices.md](07-Technology-choices.md)) exposing HTTP and a WebSocket gateway. It **implements** the contract published in `gym-buddy-openapi`; it does not own that contract.
+The target backend is a single **Java 26** service (Spring Boot — see [07-Technology-choices.md](07-Technology-choices.md)) exposing HTTP and a WebSocket gateway. It **implements** the contract published in [`gym-buddy-openapi`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi); it does not own that contract.
+
+## Today versus target
+
+| | Today | Target |
+| --- | --- | --- |
+| Runtime | Python 3.12 probe image, `GET /` HTML | Java 26 / Spring Boot |
+| Contract | OpenAPI stub `GET /api/v1/health` | Full `/api/v1`, health `healthz` / `readyz` |
+| Data plane | None on the VPS | PostgreSQL 18, Redis, MinIO (local compose first) |
+
+Do not claim Spring is running until `pom.xml` exists in [`gym-buddy-service`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service).
 
 ## Modules
 
@@ -51,4 +61,4 @@ Use the same process and an in-process queue at first; extract a worker process 
 
 ## Configuration
 
-All secrets come from the environment (`JWT_ACCESS_SECRET`, `S3_*`, `DATABASE_URL`). The API must refuse to start in production if object storage is missing — falling back to local disk is forbidden in production (assignment: do not fill local storage).
+All secrets come from the environment (`JWT_ACCESS_SECRET`, `S3_*`, `DATABASE_URL`, `REDIS_URL`). The API must refuse to start in production if object storage is missing — falling back to local disk is forbidden in production (assignment: do not fill local storage). Env catalog: [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).

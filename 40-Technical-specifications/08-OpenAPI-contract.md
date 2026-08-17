@@ -5,7 +5,9 @@
 | Status | Approved |
 | Related | [01-API-conventions.md](01-API-conventions.md), [../10-Getting-started/02-Related-repositories.md](../10-Getting-started/02-Related-repositories.md), [../70-Engineering-practices/06-Versioning.md](../70-Engineering-practices/06-Versioning.md) |
 
-The HTTP API is specified in a **dedicated repository** (`gym-buddy-openapi`), not discovered from a running backend.
+The HTTP API is specified in a **dedicated repository**, not discovered from a running backend.
+
+**Repository:** https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi (private, default branch `develop`)
 
 ## Source of truth
 
@@ -16,6 +18,15 @@ The HTTP API is specified in a **dedicated repository** (`gym-buddy-openapi`), n
 | Backend | Implements the tagged spec; contract tests fail the build on drift |
 | Frontend | Generates a TypeScript client from the same tag |
 | Spring `springdoc` `/v3/api-docs` | Optional **dev** convenience only. Never the published contract. |
+
+## Today versus target
+
+| | Today | Target |
+| --- | --- | --- |
+| Document | OpenAPI 3.1.0 stub | Full `/api/v1` |
+| Health | `GET /api/v1/health` | `GET /api/v1/healthz` and `GET /api/v1/readyz` |
+
+Change the stub in the same ticket that introduces Spring. Locked paths: [01-API-conventions.md](01-API-conventions.md).
 
 ## Why not “just expose `/v3/api-docs`”
 
