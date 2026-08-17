@@ -3,9 +3,11 @@
 All notable changes to **Gym Buddies** (product) and to **this documentation repository** are recorded here.
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
-Versioning: [Semantic Versioning](https://semver.org/).
+Versioning: [Semantic Versioning 2.0.0](https://semver.org/).
 
 Until the first application release, versions refer to the **documentation contract**. Application repos will add their own `CHANGELOG.md` and must not contradict this one on user-visible behavior.
+
+**Documentation `0.2.0` (2026-08-14) is not the application slice.** The next **product** tag on `gym-buddy-service`, `gym-buddy-ui`, and `gym-buddy-openapi` is application `0.2.0`: PostgreSQL 18, Redis, MinIO, Java 26 / Spring Boot service layer, and basic sign-up / sign-in / log-out. See [../70-Engineering-practices/06-Versioning.md](../70-Engineering-practices/06-Versioning.md).
 
 ## [Unreleased]
 
@@ -15,6 +17,8 @@ Until the first application release, versions refer to the **documentation contr
 - How to record the instructor cadrage (no invented minutes)
 - Academic report chapter map, presentation speaker notes, screenshot checklist including VPS health
 - Ticket form auto-adds every new issue to [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1) (`projects: Projet-de-compensation-2025-2026/1`) and requires a confirmation checkbox
+- Ticket form requires [`70-Engineering-practices`](../70-Engineering-practices/README.md) on every issue (code style, git, PRs, CI/CD) so every repo and every agent follows the same workflow
+- Planned **application `0.2.0`**: PostgreSQL 18, Redis, MinIO, Java 26 / Spring Boot service layer, `healthz` / `readyz`, JWT register / login / logout, basic sign-up / sign-in / log-out pages. Out of scope: friends, feed, events, search, chat, admin UI, VPS data plane
 
 ### Changed
 
@@ -25,8 +29,12 @@ Until the first application release, versions refer to the **documentation contr
 - Technology-choices cadence row: Approved
 - Changelog compare links point at this repository
 - Tickets: attaching to Gym Buddy Project is required at creation, not later
+- Tickets: citing `70-Engineering-practices` is required at creation
+- Versioning: application `0.2.0` is defined as the first Java + data-plane + auth slice (distinct from documentation `0.2.0`)
 
 ## [0.2.0] — 2026-08-14
+
+Documentation contract only (process + specs). Not the Java application.
 
 ### Changed
 
