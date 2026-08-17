@@ -14,6 +14,7 @@ Until the first application release, versions refer to the **documentation contr
 - Environment and pipeline runbook: local compose plan (PostgreSQL 18, Redis, MinIO, API, optional MailHog), env key catalog, CI/Release/Deploy as built, OVH VPS + Caddy + UFW
 - How to record the instructor cadrage (no invented minutes)
 - Academic report chapter map, presentation speaker notes, screenshot checklist including VPS health
+- Local data plane is now in `gym-buddy-service` (`compose.yaml`, `.env.example`); MailHog stays behind the `mail` profile
 
 ### Changed
 
@@ -23,6 +24,7 @@ Until the first application release, versions refer to the **documentation contr
 - Fixtures: Datafaker (Java), not `@faker-js/faker`
 - Technology-choices cadence row: Approved
 - Changelog compare links point at this repository
+- Runbook today-vs-target: local compose is in the service repo; Spring / Flyway still absent
 
 ## [0.2.0] — 2026-08-14
 
