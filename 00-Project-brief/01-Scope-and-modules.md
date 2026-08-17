@@ -63,15 +63,27 @@ Record any change to this list after the instructor scoping discussion.
 
 | Step from the brief | Status | Notes |
 | --- | --- | --- |
-| Discuss and scope the project with the instructor | Not done | Book this before locking the stack |
-| Write functional and technical specifications | In progress | This wiki |
-| Provide UML diagrams | In progress | [../60-UML-diagrams](../60-UML-diagrams/README.md) |
-| Design and write algorithms | In progress | [../50-Algorithms](../50-Algorithms/README.md) |
-| Implement backend, frontend, back-office | Not started | Application repositories |
-| Test plan and unit tests | Drafted | [../80-Testing](../80-Testing/README.md) |
-| Critical analysis | Drafted | [../91-Critical-analysis](../91-Critical-analysis/README.md) |
-| Justify library choices | Proposed | [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md) |
+| Discuss and scope the project with the instructor | Not done | No minutes yet — see below |
+| Write functional and technical specifications | Written (Draft until cadrage) | This wiki |
+| Provide UML diagrams | Written (Draft) | [../60-UML-diagrams](../60-UML-diagrams/README.md) |
+| Design and write algorithms | Written (Draft) | [../50-Algorithms](../50-Algorithms/README.md) |
+| Implement backend, frontend, back-office | Probe only | Python probe + CI/CD + VPS. Spring / Angular not started |
+| Test plan and unit tests | Strategy written | [../80-Testing](../80-Testing/README.md) — no application test sources yet |
+| Critical analysis | Written (pre-implementation) | [../91-Critical-analysis](../91-Critical-analysis/README.md) |
+| Justify library choices | Approved | [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md) |
+
+## How to record the instructor cadrage
+
+When the meeting happens, do **not** invent content beforehand. Add a subsection here with:
+
+1. Date and attendees
+2. Decisions that change this page (in-scope / out-of-scope)
+3. Decisions that change [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md)
+4. Anything the instructor asked to see at the defense
+5. Link to the ticket or mail thread if one exists
+
+Until that subsection exists, product pages stay **Draft**. Technical choices stay **Approved** for implementation unless the meeting overturns them.
 
 ## Non-goals for this wiki
 
-This repository does not contain application source code. It contains the decisions those repositories must follow.
+This repository does not contain application source code. It contains the decisions those repositories must follow. How to run and ship: [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).

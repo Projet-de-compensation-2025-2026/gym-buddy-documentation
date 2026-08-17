@@ -22,9 +22,15 @@
 | Suggestion | System-proposed member the user does not already follow as a friend |
 | Matching | Pairing members with events or with other members for a session |
 | Fixture | Generated data used in development and tests (thousands of rows) |
+| Datafaker | Java library used to generate fixtures with seed `FIXTURE_SEED=20260813` |
 | Back-office | Staff UI for admins and moderators |
 | Controlled file | Any stored blob (image, audio) reachable only after authorization |
 | JWT | JSON Web Token used as the access credential |
+| healthz | `GET /api/v1/healthz` — process is up (unauthenticated) |
+| readyz | `GET /api/v1/readyz` — PostgreSQL and object storage are reachable |
+| Caddy | Reverse proxy on the VPS; terminates HTTPS and forwards to `127.0.0.1:8080` |
+| Compose (local) | Laptop `compose.yaml` in `gym-buddy-service`: Postgres 18, Redis, MinIO, API |
+| VM replace | `replace.sh` on the VPS: `docker run` of the API image on loopback, not compose |
 | CI | Continuous integration: format, tests, and a live smoke on every `develop` PR |
 | Release | Dedicated workflow that squash-merges `develop` onto `main` and tags SemVer |
 | Deploy | What happens after that tag: Pages and/or Docker on the VM |

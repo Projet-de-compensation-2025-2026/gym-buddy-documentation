@@ -3,16 +3,18 @@
 | Field | Value |
 | --- | --- |
 | Status | Approved |
-| Related | [../20-Architecture/01-Software-architecture.md](../20-Architecture/01-Software-architecture.md), [../20-Architecture/08-Hosting-and-GitHub-Pages.md](../20-Architecture/08-Hosting-and-GitHub-Pages.md) |
+| Related | [../20-Architecture/01-Software-architecture.md](../20-Architecture/01-Software-architecture.md), [../20-Architecture/08-Hosting-and-GitHub-Pages.md](../20-Architecture/08-Hosting-and-GitHub-Pages.md), [04-Environment-and-pipeline.md](04-Environment-and-pipeline.md) |
 
-Gym Buddies is documented **once** here and implemented in **three** other repositories. Names below are the intended layout; replace the GitHub URLs when each repo exists.
+Gym Buddies is documented **once** here and implemented in **three** other repositories.
 
-| Repository | Responsibility | Hosted on |
-| --- | --- | --- |
-| `gym-buddy-documentation` (this repo) | Product, architecture, specs, practices, academic packaging, **tickets** | GitHub Pages (Markdown → Jekyll) |
-| `gym-buddy-openapi` | Versioned OpenAPI 3 contract + static Swagger/Redoc | GitHub Pages (static) |
-| `gym-buddy-service` | Java API, domain, jobs, WebSocket, fixtures | **Not** Pages — always-on host |
-| `gym-buddy-ui` | Angular member app **and** Angular back-office | GitHub Pages (static `ng build`) |
+| Repository | URL | Visibility | Responsibility | Hosted on |
+| --- | --- | --- | --- | --- |
+| `gym-buddy-documentation` (this repo) | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation | Public | Product, architecture, specs, practices, academic packaging, **tickets** | GitHub Pages (Markdown → Jekyll) |
+| `gym-buddy-openapi` | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi | Private | Versioned OpenAPI 3 contract + static Swagger/Redoc | GitHub Pages when the plan allows (static) |
+| `gym-buddy-service` | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service | Private | Java API, domain, jobs, WebSocket, fixtures (Python probe until Spring exists) | OVH VPS — see [04-Environment-and-pipeline.md](04-Environment-and-pipeline.md) |
+| `gym-buddy-ui` | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-ui | Private | Angular member app **and** Angular back-office | GitHub Pages (static `ng build`) |
+
+Default branch on every repository: **`develop`**. Feature work never targets `main`.
 
 The instructor account [maurras.togbe@isep.fr](mailto:maurras.togbe@isep.fr) must be a collaborator on every **private** repository.
 
@@ -27,20 +29,24 @@ The contract is a **git artifact**, not a runtime accident:
 
 Spring may still expose `/v3/api-docs` in development as a convenience. That endpoint is **not** the source of truth. If it disagrees with `gym-buddy-openapi`, the repository wins.
 
+Today the OpenAPI repo is a stub (`GET /api/v1/health` only). Target health paths are `/api/v1/healthz` and `/api/v1/readyz` — [../40-Technical-specifications/01-API-conventions.md](../40-Technical-specifications/01-API-conventions.md).
+
 ## Rules for application repos
 
 1. Do not copy functional specs into application trees. Link to `30-Functional-specifications`.
 2. Do not hand-edit generated clients; change the OpenAPI repo and regenerate.
 3. Tickets live in **this** documentation repo and must link to a wiki page ([../70-Engineering-practices/05-Tickets-and-GitHub-projects.md](../70-Engineering-practices/05-Tickets-and-GitHub-projects.md)).
-4. The report cites all four repositories.
+4. The report cites all four repositories using the URLs in the table above.
 
 ## Local development picture
 
 ```
 gym-buddy-documentation/     ← you are here (wiki + GitHub Project)
 gym-buddy-openapi/           ← HTTP contract
-gym-buddy-service/           ← Java 26 + Spring Boot
+gym-buddy-service/           ← Java 26 + Spring Boot (probe image until then)
 gym-buddy-ui/                ← Angular 22 (member + back-office)
 ```
 
-A compose file in the backend repo starts PostgreSQL 18, MinIO, Redis, and the API. The Angular apps point at that API. OpenAPI files are consumed as a git submodule, a published npm/Maven package, or a raw tagged URL — pick one in the backend README and stick to it.
+A compose file in the backend repo will start PostgreSQL 18, MinIO, Redis, and the API. The Angular apps point at `http://localhost:8080/api/v1`. OpenAPI files are consumed as a git submodule, a published package, or a raw tagged URL — pick one in the backend README and stick to it.
+
+How to run it, which ports to bind, and how a release reaches the VPS: [04-Environment-and-pipeline.md](04-Environment-and-pipeline.md).
