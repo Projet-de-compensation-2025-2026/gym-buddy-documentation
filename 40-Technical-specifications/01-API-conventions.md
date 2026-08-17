@@ -66,7 +66,7 @@ Do not publish `/actuator/health` as the contract. Actuator may exist internally
 | Surface | Path today | Action |
 | --- | --- | --- |
 | Probe image in `gym-buddy-service` | `GET /` (HTML) | Keep until `pom.xml` exists; then smoke `/api/v1/healthz` |
-| `gym-buddy-openapi` stub | `GET /api/v1/health` | Replace with `healthz` + `readyz` in the same ticket that introduces Spring |
-| This page | `healthz` / `readyz` | Source of truth for the target |
+| `gym-buddy-openapi` stub | `GET /api/v1/healthz` and `GET /api/v1/readyz` | Already renamed (openapi #2 / ticket #11). The service does not implement them yet. |
+| This page | `healthz` / `readyz` | Source of truth for the health contract |
 
 CI smoke scripts change when the service stops being a probe.
