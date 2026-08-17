@@ -19,7 +19,16 @@ Reasons:
 - One sequence of ids (`#1`, `#2`, …) is shared across all implementation repos
 - Commits in other repos can still link here with `Refs: <owner>/gym-buddy-documentation#42`
 
-**Gym Buddy Project** is the only board. Every ticket opened from the template is attached to it. New items default to `Not Ready`. The four statuses and who may change them are defined in [08-Feature-implementation.md](08-Feature-implementation.md).
+**Gym Buddy Project** is the only board. Every ticket is attached to it **at creation**. There is no “open the issue, add it to the board later” step.
+
+How that is enforced:
+
+1. The issue form [`.github/ISSUE_TEMPLATE/ticket.yml`](../../.github/ISSUE_TEMPLATE/ticket.yml) sets `projects: ["Projet-de-compensation-2025-2026/1"]`. GitHub adds the issue to the project when the form is submitted. The opener needs write access on the project (org members do).
+2. The same form has a required checkbox: the ticket belongs on Gym Buddy Project and must not be removed.
+3. Blank issues are disabled (`config.yml`). Use the Ticket form.
+4. If an issue is created **outside** the form (API, `gh issue create`), attach it to the project in the same action. Status starts at `Not Ready`.
+
+New items default to `Not Ready`. The four statuses and who may change them are defined in [08-Feature-implementation.md](08-Feature-implementation.md).
 
 ## Mandatory ticket contents
 
@@ -33,8 +42,9 @@ A ticket is not ready for implementation unless it has **all** of the following:
 | Spec IDs | `FS-…` / `TS-…` when the page defines them |
 | Target repo | `gym-buddy-documentation`, `gym-buddy-service`, `gym-buddy-ui`, and/or `gym-buddy-openapi` |
 | Acceptance | Checklist copied or cited from the spec |
+| **Gym Buddy Project** | Attached at creation. Status visible on the board. |
 
-The issue template under [`.github/ISSUE_TEMPLATE/ticket.yml`](../../.github/ISSUE_TEMPLATE/ticket.yml) makes the wiki link **required**.
+The issue template under [`.github/ISSUE_TEMPLATE/ticket.yml`](../../.github/ISSUE_TEMPLATE/ticket.yml) makes the wiki link **required** and attaches the issue to the project.
 
 Valid wiki links (examples):
 
@@ -43,6 +53,8 @@ Valid wiki links (examples):
 - Several pages if the ticket genuinely spans them
 
 A ticket that only says “implement events” with no wiki link is incomplete. Create or update the spec first, then open the ticket.
+
+A ticket that exists only in the repo issues list, and not on [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1), is incomplete. Attach it before anyone treats it as `Not Ready`.
 
 ## Tickets must reference this repository
 

@@ -14,6 +14,7 @@ Until the first application release, versions refer to the **documentation contr
 - Environment and pipeline runbook: local compose plan (PostgreSQL 18, Redis, MinIO, API, optional MailHog), env key catalog, CI/Release/Deploy as built, OVH VPS + Caddy + UFW
 - How to record the instructor cadrage (no invented minutes)
 - Academic report chapter map, presentation speaker notes, screenshot checklist including VPS health
+- Ticket form auto-adds every new issue to [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1) (`projects: Projet-de-compensation-2025-2026/1`) and requires a confirmation checkbox
 
 ### Changed
 
@@ -23,6 +24,7 @@ Until the first application release, versions refer to the **documentation contr
 - Fixtures: Datafaker (Java), not `@faker-js/faker`
 - Technology-choices cadence row: Approved
 - Changelog compare links point at this repository
+- Tickets: attaching to Gym Buddy Project is required at creation, not later
 
 ## [0.2.0] — 2026-08-14
 

@@ -1,16 +1,20 @@
 name: Ticket
-description: Work item. Must link a page in this documentation repository.
+description: Work item. Must link a wiki page. Automatically added to Gym Buddy Project.
 title: "[GB] "
 labels: []
+projects: ["Projet-de-compensation-2025-2026/1"]
 body:
   - type: markdown
     attributes:
       value: |
         Tickets live in **gym-buddy-documentation**. Every ticket must point at a wiki page
-        (functional spec, technical spec, algorithm, architecture, test plan, …)
-        and must be attached to the singular **Gym Buddy Project**.
-        Fill every field. New tickets default to **Not Ready**; only Joaquim Kéloglanian
-        moves them to **Todo** after an explicit review.
+        (functional spec, technical spec, algorithm, architecture, test plan, …).
+
+        **This form adds the issue to [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1).**
+        That is the only board. Do not create a second project. Do not leave the issue
+        sitting only in the repo issues list. Status starts at **Not Ready**;
+        only Joaquim Kéloglanian moves it to **Todo** after an explicit review.
+
         See `70-Engineering-practices/08-Feature-implementation.md`
         and `70-Engineering-practices/05-Tickets-and-GitHub-projects.md`.
   - type: dropdown
@@ -58,3 +62,11 @@ body:
       description: Checklist copied or cited from the linked spec
     validations:
       required: true
+  - type: checkboxes
+    id: on-project
+    attributes:
+      label: Gym Buddy Project
+      description: Required. The form already attaches this issue to the project. Confirm you will not remove it.
+      options:
+        - label: This ticket belongs on [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1) (Status starts at Not Ready). I will not remove it from the board.
+          required: true
