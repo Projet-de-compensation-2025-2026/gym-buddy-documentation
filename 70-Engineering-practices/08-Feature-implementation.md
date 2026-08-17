@@ -9,6 +9,13 @@ How a feature goes from an idea in the assignment (or a later request) to a merg
 
 The product owner is **Joaquim Kéloglanian**. He owns consult and scope (step 1). He does not move tickets `Not Ready` → `Todo` or `In Progress` → `Done` by hand.
 
+**Who moves the board:**
+
+- **Atlas alone** sets `Not Ready` → `Todo`.
+- **Atlas** sets `In Progress` → `Done` only after **Sentinel** confirms the work was implemented and satisfies the functional requirements.
+
+No other transitions. `Todo` → `In Progress` is still whoever starts the work.
+
 ## Sequence
 
 ```mermaid
@@ -85,16 +92,18 @@ Newly created tickets default to **`Not Ready`**.
 
 There are exactly four. They are the Status field on **Gym Buddy Project**. Do not invent extra columns (`Backlog`, `Ready`, `In review`, …).
 
+Atlas alone sets `Not Ready` → `Todo`. Atlas sets `In Progress` → `Done` only after Sentinel confirms the work was implemented and satisfies the functional requirements. No other transitions.
+
 | Status | Meaning | Who may set it |
 | --- | --- | --- |
 | `Not Ready` | Ticket exists, every template field is filled, it is on **Gym Buddy Project**, and it points at wiki pages. It is **not** approved for implementation. | Default at creation |
-| `Todo` | The ticket and linked specs are complete enough to implement | **Atlas** only |
+| `Todo` | The ticket and linked specs are complete enough to implement | Atlas alone (`Not Ready` → `Todo`) |
 | `In Progress` | Implementation of this ticket has started (branch, first commit, or first draft PR) | Whoever starts the work, **as soon as** it starts |
-| `Done` | The change is implemented, tested, formatted, and **merged into `develop`** | **Atlas**, after Sentinel confirms implementation vs functional requirements in this wiki |
+| `Done` | The change is implemented, tested, formatted, and **merged into `develop`** | Atlas (`In Progress` → `Done`), only after Sentinel confirms |
 
 ### `Not Ready` → `Todo`
 
-**Atlas** (the non-coding ops agent) sets `Todo` when the ticket and linked specs are complete enough to implement. Joaquim does not move this by hand.
+Atlas alone sets `Not Ready` → `Todo`. Atlas (the non-coding ops agent) does this when the ticket and linked specs are complete enough to implement. Joaquim does not move this by hand.
 
 Sentinel does not gate this move: nothing is implemented yet. A verbal “looks fine, go” in the consult (step 1) is not this board change; that consult happens *before* the specs and the ticket exist.
 
@@ -113,7 +122,7 @@ A ticket becomes `Done` when **all** of these are true:
 3. Format checks pass (CI `format` / [07-CI-CD.md](07-CI-CD.md))
 4. The PR is merged into **`develop`**
 
-**Atlas** is who sets `Done`, and only after **Sentinel** (the tests/review agent) confirms the work was implemented and satisfies the linked functional requirements in this wiki.
+Atlas sets `In Progress` → `Done` only after Sentinel (the tests/review agent) confirms the work was implemented and satisfies the functional requirements. Joaquim does not move this by hand.
 
 A green CI run on an open PR is not `Done`. A squash onto `main` (a Release) is not what closes the ticket. Tickets close on `develop`; Release packages whatever is already there.
 

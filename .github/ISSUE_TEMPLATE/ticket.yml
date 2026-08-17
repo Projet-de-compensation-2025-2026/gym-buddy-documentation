@@ -16,9 +16,11 @@ body:
            repository and every agent. Do not invent a second workflow.
 
         **This form adds the issue to [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1).**
-        Status starts at **Not Ready**. **Atlas** (the non-coding ops agent) owns **Not Ready** → **Todo**.
-        **Atlas** owns **In Progress** → **Done** after **Sentinel** (the tests/review agent) confirms
-        the work was implemented and satisfies the functional requirements in this wiki.
+        Status starts at **Not Ready**.
+
+        Atlas alone sets **Not Ready** → **Todo**.
+        Atlas sets **In Progress** → **Done** only after Sentinel confirms the work was implemented
+        and satisfies the functional requirements. No other transitions.
 
         Start here: [`70-Engineering-practices`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/tree/develop/70-Engineering-practices).
   - type: dropdown
