@@ -2,10 +2,19 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
-| Related | [05-Back-office.md](05-Back-office.md), [../30-Functional-specifications](../30-Functional-specifications/README.md) |
+| Status | Approved |
+| Related | [05-Back-office.md](05-Back-office.md), [../30-Functional-specifications](../30-Functional-specifications/README.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
-The member frontend is the athlete-facing web app: **Angular 22** + **TypeScript 7.0** ([07-Technology-choices.md](07-Technology-choices.md)). It talks to the backend through a client **generated from** `gym-buddy-openapi`. The static build is eligible for GitHub Pages ([08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md)).
+The member frontend is the athlete-facing web app: **Angular 22** + **TypeScript 7.0** ([07-Technology-choices.md](07-Technology-choices.md)). It talks to the backend through a client **generated from** [`gym-buddy-openapi`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi). The static build is eligible for GitHub Pages ([08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md)).
+
+Today `gym-buddy-ui` is a static HTML probe. Angular work has not started.
+
+## API base URL
+
+| Environment | `apiBaseUrl` |
+| --- | --- |
+| Local | `http://localhost:8080/api/v1` |
+| Live (operator network) | `https://vps-c39cdf03.vps.ovh.net/api/v1` once Spring exists |
 
 ## Surfaces
 
