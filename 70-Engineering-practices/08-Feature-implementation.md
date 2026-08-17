@@ -59,17 +59,21 @@ Open a GitHub Issue on **`gym-buddy-documentation`** using the existing template
 
 The form **automatically adds the issue to [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1)** (`projects: Projet-de-compensation-2025-2026/1`). That is required, not optional. Confirm the checkbox. Do not remove the issue from the board afterwards.
 
-If you create an issue without the form, attach it to the project in the same step. An issue that exists only in the repo issues list is not a ticket yet.
+The form also requires **`70-Engineering-practices`**. That directory is the org-wide source of truth for code style, Gitflow / Conventional Commits, pull requests, tickets, versioning, and CI/CD. Every implementation in every repository follows it. Agents do not invent a parallel workflow.
+
+If you create an issue without the form, attach it to the project **and** cite `70-Engineering-practices` in the same step. An issue that exists only in the repo issues list is not a ticket yet.
 
 | Template field | What to put |
 | --- | --- |
 | Title | `[GB] ` plus one imperative outcome |
 | Type | Feature, Bug, Chore, or Docs |
-| Documentation page | Relative path(s) in **this** wiki. Required. Example: `30-Functional-specifications/07-Events.md`. Add the matching technical page when one exists. |
+| Documentation page | Relative path(s) of the **feature** spec in **this** wiki. Required. Example: `30-Functional-specifications/07-Events.md`. Add the matching technical page when one exists. |
+| Engineering practices | Always `70-Engineering-practices`. Required. |
 | Spec IDs | `FS-…` / `TS-…` from those pages |
 | Implementation repository | Every repo that will change (`gym-buddy-documentation`, `gym-buddy-service`, `gym-buddy-ui`, `gym-buddy-openapi`) |
 | Acceptance | Checklist copied or cited from the linked spec |
 | Gym Buddy Project | Required checkbox. The form already attaches the issue. |
+| Follow engineering practices | Required checkbox. |
 
 The ticket **must** point at the documentation it implements. A title such as “implement events” with no wiki path is incomplete — go back to step 3.
 

@@ -1,5 +1,5 @@
 name: Ticket
-description: Work item. Must link a wiki page. Automatically added to Gym Buddy Project.
+description: Work item. Must link a feature spec and 70-Engineering-practices. Lands on Gym Buddy Project.
 title: "[GB] "
 labels: []
 projects: ["Projet-de-compensation-2025-2026/1"]
@@ -7,16 +7,18 @@ body:
   - type: markdown
     attributes:
       value: |
-        Tickets live in **gym-buddy-documentation**. Every ticket must point at a wiki page
-        (functional spec, technical spec, algorithm, architecture, test plan, …).
+        Tickets live in **gym-buddy-documentation**.
+
+        Every ticket must point at:
+        1. The **feature** wiki page it implements (functional / technical spec, algorithm, architecture, …)
+        2. **`70-Engineering-practices`** — org-wide conventions for code style, Gitflow / Conventional Commits,
+           pull requests, tickets, versioning, and CI/CD. This directory is the source of truth for every
+           repository and every agent. Do not invent a second workflow.
 
         **This form adds the issue to [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1).**
-        That is the only board. Do not create a second project. Do not leave the issue
-        sitting only in the repo issues list. Status starts at **Not Ready**;
-        only Joaquim Kéloglanian moves it to **Todo** after an explicit review.
+        Status starts at **Not Ready**; only Joaquim Kéloglanian moves it to **Todo** after an explicit review.
 
-        See `70-Engineering-practices/08-Feature-implementation.md`
-        and `70-Engineering-practices/05-Tickets-and-GitHub-projects.md`.
+        Start here: [`70-Engineering-practices`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/tree/develop/70-Engineering-practices).
   - type: dropdown
     id: type
     attributes:
@@ -32,8 +34,16 @@ body:
     id: wiki
     attributes:
       label: Documentation page
-      description: Required. Relative path in this repo, for example 30-Functional-specifications/07-Events.md
-      placeholder: 30-Functional-specifications/07-Events.md
+      description: Required. Feature spec path(s) in this repo. Example 30-Functional-specifications/01-Accounts-and-administration.md
+      placeholder: 30-Functional-specifications/01-Accounts-and-administration.md
+    validations:
+      required: true
+  - type: input
+    id: practices
+    attributes:
+      label: Engineering practices
+      description: Required on every ticket. Always this directory. Code style, git, PRs, and workflows for all repos and agents.
+      placeholder: 70-Engineering-practices
     validations:
       required: true
   - type: input
@@ -41,7 +51,7 @@ body:
     attributes:
       label: Spec IDs
       description: FS-EVT-07, TS-JWT-02, … when the page defines them
-      placeholder: FS-EVT-07
+      placeholder: FS-ACCT-01
   - type: dropdown
     id: target-repo
     attributes:
@@ -69,4 +79,12 @@ body:
       description: Required. The form already attaches this issue to the project. Confirm you will not remove it.
       options:
         - label: This ticket belongs on [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1) (Status starts at Not Ready). I will not remove it from the board.
+          required: true
+  - type: checkboxes
+    id: follow-practices
+    attributes:
+      label: Follow engineering practices
+      description: Required. Keeps code style, commits, PRs, and pipelines the same across repositories and agents.
+      options:
+        - label: I will follow [70-Engineering-practices](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/tree/develop/70-Engineering-practices) (coding standards, Gitflow / Conventional Commits, review, tickets, versioning, CI/CD). I will not invent a parallel workflow.
           required: true
