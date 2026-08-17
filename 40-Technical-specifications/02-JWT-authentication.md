@@ -2,19 +2,21 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
-| Related | [../30-Functional-specifications/01-Accounts-and-administration.md](../30-Functional-specifications/01-Accounts-and-administration.md) |
+| Status | Approved |
+| Related | [../30-Functional-specifications/01-Accounts-and-administration.md](../30-Functional-specifications/01-Accounts-and-administration.md), [01-API-conventions.md](01-API-conventions.md) |
 
 The brief requires **JWT authentication**. Implementation is ours (no outsourced IdP) so the defense can show claims, expiry, and refresh.
+
+All auth HTTP paths are under `/api/v1`.
 
 ## Tokens
 
 | Token | Where it lives | TTL | Contains |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | Access | `Authorization` header | 15 minutes | `sub`, `role`, `handle`, `typ=access` |
 | Refresh | `HttpOnly; Secure; SameSite=Lax` cookie, path `/api/v1/auth` | 14 days | `sub`, `jti`, `typ=refresh` |
 
-Both are signed with **HS256** at MVP (one secret). RS256 is an improvement if a second service must verify.
+Both are signed with **HS256** at MVP (one secret, `JWT_ACCESS_SECRET`). RS256 is an improvement if a second service must verify.
 
 ## Claims (access)
 
@@ -33,10 +35,10 @@ Do not put email in the access token (leakage via browser logs).
 
 ## Flows
 
-1. `POST /auth/register` → user row + profile + (optional) verification mail
-2. `POST /auth/login` `{ email, password }` → access JSON + `Set-Cookie` refresh
-3. `POST /auth/refresh` (cookie) → new access, rotated refresh (`jti` replaced)
-4. `POST /auth/logout` → refresh `jti` denylisted in Redis until `exp`
+1. `POST /api/v1/auth/register` → user row + profile + (optional) verification mail
+2. `POST /api/v1/auth/login` `{ email, password }` → access JSON + `Set-Cookie` refresh
+3. `POST /api/v1/auth/refresh` (cookie) → new access, rotated refresh (`jti` replaced)
+4. `POST /api/v1/auth/logout` → refresh `jti` denylisted in Redis until `exp`
 5. Locked user: login and refresh fail
 
 ## Password
@@ -45,7 +47,7 @@ Argon2id, memory ≥ 19 MiB, one-way. Timing-safe compare. Generic error on unkn
 
 ## Guards
 
-A Spring Security filter (or `OncePerRequestFilter`) verifies signature, `exp`, `typ=access`, and that `users.status = active`. A method-security expression (`@PreAuthorize("hasRole('ADMIN')")`) or a dedicated voter checks `role` for `/admin/*`.
+A Spring Security filter (or `OncePerRequestFilter`) verifies signature, `exp`, `typ=access`, and that `users.status = active`. A method-security expression (`@PreAuthorize("hasRole('ADMIN')")`) or a dedicated voter checks `role` for `/api/v1/admin/*`.
 
 ## Threat notes
 
