@@ -57,6 +57,10 @@ A ticket that points at a missing or stale spec is invalid. Change the spec in t
 
 Open a GitHub Issue on **`gym-buddy-documentation`** using the existing template [`.github/ISSUE_TEMPLATE/ticket.yml`](../../.github/ISSUE_TEMPLATE/ticket.yml). Fill **every** field. An empty optional-looking box is not optional here.
 
+The form **automatically adds the issue to [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1)** (`projects: Projet-de-compensation-2025-2026/1`). That is required, not optional. Confirm the checkbox. Do not remove the issue from the board afterwards.
+
+If you create an issue without the form, attach it to the project in the same step. An issue that exists only in the repo issues list is not a ticket yet.
+
 | Template field | What to put |
 | --- | --- |
 | Title | `[GB] ` plus one imperative outcome |
@@ -65,10 +69,11 @@ Open a GitHub Issue on **`gym-buddy-documentation`** using the existing template
 | Spec IDs | `FS-…` / `TS-…` from those pages |
 | Implementation repository | Every repo that will change (`gym-buddy-documentation`, `gym-buddy-service`, `gym-buddy-ui`, `gym-buddy-openapi`) |
 | Acceptance | Checklist copied or cited from the linked spec |
+| Gym Buddy Project | Required checkbox. The form already attaches the issue. |
 
 The ticket **must** point at the documentation it implements. A title such as “implement events” with no wiki path is incomplete — go back to step 3.
 
-The ticket **must** be attached to the existing, singular GitHub Project [**Gym Buddy Project**](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1). Do not create a second project. Do not leave the issue sitting only in the repo issues list.
+The ticket **must** be on **Gym Buddy Project**. Do not create a second project.
 
 Newly created tickets default to **`Not Ready`**.
 
