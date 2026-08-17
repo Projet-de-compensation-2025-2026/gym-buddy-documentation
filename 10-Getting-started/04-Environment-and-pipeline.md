@@ -220,4 +220,4 @@ Let’s Encrypt **HTTP-01** needs port **80** reachable from the world for a few
 
 ## Feature workflow
 
-Wiki first, ticket on this documentation repo, Joaquim sets `Todo`. Full sequence: [../70-Engineering-practices/08-Feature-implementation.md](../70-Engineering-practices/08-Feature-implementation.md).
+Wiki first, ticket on this documentation repo, Atlas sets `Todo`. Full sequence: [../70-Engineering-practices/08-Feature-implementation.md](../70-Engineering-practices/08-Feature-implementation.md).

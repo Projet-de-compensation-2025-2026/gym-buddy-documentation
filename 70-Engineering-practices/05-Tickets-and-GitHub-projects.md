@@ -79,10 +79,10 @@ Exactly four. These replace any older Backlog / Ready / In review layout.
 
 | Status | Meaning |
 | --- | --- |
-| `Not Ready` | Default at creation. Specs and template are filled; Joaquim has not green-lit implementation |
-| `Todo` | Joaquim Kéloglanian has read, reviewed, and explicitly approved the ticket |
+| `Not Ready` | Default at creation. Specs and template are filled; not yet set to `Todo` |
+| `Todo` | Atlas has set `Todo`: the ticket and linked specs are complete enough to implement |
 | `In Progress` | Implementation of this ticket has started |
-| `Done` | Implemented, tested, formatted, and merged into `develop` |
+| `Done` | Implemented, tested, formatted, and merged into `develop`. Atlas sets `Done` after Sentinel confirms |
 
 Rules and the full feature sequence: [08-Feature-implementation.md](08-Feature-implementation.md).
 
