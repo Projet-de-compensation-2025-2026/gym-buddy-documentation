@@ -3,16 +3,18 @@
 | Field | Value |
 | --- | --- |
 | Status | Approved |
-| Related | [02-Git-workflow.md](02-Git-workflow.md), [06-Versioning.md](06-Versioning.md), [../20-Architecture/08-Hosting-and-GitHub-Pages.md](../20-Architecture/08-Hosting-and-GitHub-Pages.md) |
+| Related | [02-Git-workflow.md](02-Git-workflow.md), [06-Versioning.md](06-Versioning.md), [../20-Architecture/08-Hosting-and-GitHub-Pages.md](../20-Architecture/08-Hosting-and-GitHub-Pages.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
 How Gym Buddies is built, proven, released, and put on a machine. Tooling is **GitHub Actions** (the Jenkins-style job runner that lives next to the code). There is no separate Jenkins server.
+
+The operator runbook (ports, compose plan, VPS, Caddy, UFW) is [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md). This page is the pipeline contract.
 
 ## What we are automating
 
 Three promises, three workflows. They are not the same job.
 
 | Workflow | File | Trigger | Promise |
-| --- | --- | --- | --- |
+| --- | --- | --- |
 | **CI** | `.github/workflows/ci.yml` | Every pull request **to `develop`**, and every push **on `develop`** | The change is formatted, tested, and the built artifact actually **runs** |
 | **Release** | `.github/workflows/release.yml` | Manual `workflow_dispatch` (the “Jenkins release” button) | Format → test → smoke → **squash-merge `develop` onto `main`** → **annotated tag `vX.Y.Z`** |
 | **Deploy** | `.github/workflows/deploy.yml` | A `v*` tag on `main`, or called by Release | Distribute that version: GitHub Pages and/or a Docker image on the target VM |
@@ -27,7 +29,7 @@ feature/* ──PR──► develop          CI on every PR and every push
                     main   one squash commit + tag vX.Y.Z
                       │
                       ▼
-                   Deploy  Pages and/or docker pull on the VM
+                   Deploy  Pages and/or GHCR + replace.sh on the VM
 ```
 
 ## CI vs CD (the words)
@@ -73,7 +75,7 @@ Runs on `ubuntu-latest`. It never publishes.
 | --- | --- |
 | Format | The tree matches the formatter. This wiki: Prettier on YAML / JSON / HTML (`prettier --check`). Markdown is **not** auto-reflowed (tables and Mermaid). Application repos: Spotless / Prettier. CI does **not** rewrite files. |
 | Test | Repo-specific tests. In this wiki: every content folder still has a `README.md`, required pipeline files exist. Later: JUnit, Angular unit tests, OpenAPI lint. |
-| Smoke | The **built** thing is started and answers HTTP. Compiling is not enough. This wiki: Jekyll writes `_site/`, a local static server is started, `curl` must get a page that contains “Gym Buddies”. Service: container starts and `/` or `/actuator/health` returns 2xx. |
+| Smoke | The **built** thing is started and answers HTTP. Compiling is not enough. This wiki: Jekyll writes `_site/`, a local static server is started, `curl` must get a page that contains “Gym Buddies”. Service **today** (Python probe): container starts and `GET /` returns 2xx. Service **target** (Spring): `GET /api/v1/healthz` and `GET /api/v1/readyz` return 2xx. Do not treat `/actuator/health` as the public smoke. |
 
 Required check name on `develop`: **`ci`**.
 
@@ -115,13 +117,15 @@ Release then, in order:
 3. Runs the same tests as CI.
 4. Builds the project and **smokes it** (process up, HTTP 2xx).
 5. Computes the version (manual or automatic).
-6. Moves `CHANGELOG.md` bullets from `Unreleased` into `## [X.Y.Z] — <date>`.
+6. Moves `CHANGELOG.md` bullets from `Unreleased` into `## [X.Y.Z] — `.
 7. Commits any prep onto `develop` as `chore(release): prepare vX.Y.Z`.
 8. `git merge --squash` of `develop` onto `main`, commit `release: vX.Y.Z`, annotated tag `vX.Y.Z`, push `main` and the tag.
 9. Merges `main` back into `develop` (`chore(release): sync develop with vX.Y.Z`) so the next squash does not replay history.
 10. Calls **Deploy**.
 
 If any of 2–4 fail, steps 7–10 do not run.
+
+On `gym-buddy-service` this is how **v0.1.1** was cut.
 
 ### Deploy — distribution
 
@@ -130,15 +134,19 @@ Triggered by the `v*` tag (and always invoked by Release, because a push made wi
 | Repository | Artifact | Where it goes |
 | --- | --- | --- |
 | `gym-buddy-documentation` | Jekyll `_site/` | GitHub Pages |
-| `gym-buddy-ui` | `ng build` static files | GitHub Pages |
-| `gym-buddy-openapi` | Spec + Swagger/Redoc | GitHub Pages |
-| `gym-buddy-service` | Docker image | `ghcr.io/<owner>/gym-buddy-service:vX.Y.Z` **and**, if SSH secrets exist, `docker pull` + replace the container on the VM |
+| `gym-buddy-ui` | `ng build` static files | GitHub Pages (when the repo can publish Pages) |
+| `gym-buddy-openapi` | Spec + Swagger/Redoc | GitHub Pages (when the repo can publish Pages) |
+| `gym-buddy-service` | Docker image | `ghcr.io/projet-de-compensation-2025-2026/gym-buddy-service:vX.Y.Z` **and** SSH `replace.sh` on the VPS |
 
-Service deploy on the VM (when secrets are set):
+Service deploy on the VM (secrets are set):
 
 1. Build `docker build` of the tagged commit.
 2. Push to GHCR.
-3. SSH to `DEPLOY_HOST` and run the replace script (pull the new tag, `docker compose up -d`, drop the previous container).
+3. SSH to `DEPLOY_HOST` as `DEPLOY_USER`.
+4. `replace.sh` runs `docker login ghcr.io` with `GITHUB_TOKEN` and `github.actor` (private image).
+5. Pull the new tag, stop the previous container, `docker run` the new one bound to `${DEPLOY_BIND:-127.0.0.1}:${PORT:-8080}:8080`.
+
+This is **not** `docker compose up -d` on the VM. Compose is the **local** (and later private data-plane) story. The public HTTP entry is Caddy on the hostname, proxying to loopback `:8080`.
 
 ## Repository rules (so `main` stays clean)
 
@@ -184,8 +192,8 @@ Each repository owns four scripts. Workflows call them; they do not inline stack
 | `.github/scripts/ci/next_version.py` | no | yes |
 | `.github/scripts/ci/prepare_changelog.py` | no | yes |
 
-When application code appears, **change the scripts**, not the workflow names or triggers. The contract on this page stays.
+When application code appears, **change the scripts**, not the workflow names or triggers. The contract on this page stays. Service smoke moves from `GET /` to `/api/v1/healthz` + `/readyz` when `pom.xml` exists.
 
 ## What to say at the defense
 
-We use GitHub Actions as the only CI/CD runner. Pull requests onto `develop` always run format, tests, and a live smoke. A separate Release workflow is the only way onto `main`: it squash-merges, tags SemVer (automatic or typed in), and that tag is the deploy.
+We use GitHub Actions as the only CI/CD runner. Pull requests onto `develop` always run format, tests, and a live smoke. A separate Release workflow is the only way onto `main`: it squash-merges, tags SemVer (automatic or typed in), and that tag is the deploy. The API image is pulled on an OVH VPS, bound to localhost, and served by Caddy.
