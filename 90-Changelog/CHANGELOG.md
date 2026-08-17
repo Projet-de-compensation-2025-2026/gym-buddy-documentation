@@ -11,7 +11,18 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Added
 
+- Environment and pipeline runbook: local compose plan (PostgreSQL 18, Redis, MinIO, API, optional MailHog), env key catalog, CI/Release/Deploy as built, OVH VPS + Caddy + UFW
+- How to record the instructor cadrage (no invented minutes)
+- Academic report chapter map, presentation speaker notes, screenshot checklist including VPS health
+
 ### Changed
+
+- Related-repository table now uses the four real GitHub URLs
+- CI/CD: VM replace is `replace.sh` + `docker run` on `127.0.0.1`, not `docker compose up -d`; GHCR login on the VM; probe smoke is `GET /`, target is `/api/v1/healthz` and `/readyz`
+- Hosting: backend is the OVH VPS `vps-c39cdf03.vps.ovh.net`, not a generic PaaS
+- Fixtures: Datafaker (Java), not `@faker-js/faker`
+- Technology-choices cadence row: Approved
+- Changelog compare links point at this repository
 
 ## [0.2.0] — 2026-08-14
 
@@ -42,6 +53,6 @@ Until the first application release, versions refer to the **documentation contr
 
 - English and French assignment text under `00-Project-brief`
 
-[Unreleased]: https://github.com/
+[Unreleased]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/compare/v0.2.0...HEAD
 [0.2.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v0.2.0
-[0.1.0]: https://github.com/
+[0.1.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v0.1.0
