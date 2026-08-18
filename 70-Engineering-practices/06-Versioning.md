@@ -74,12 +74,12 @@ The number is written as an annotated git tag `vX.Y.Z` on the squash commit on `
 
 | Repo | What Release already does | File bump |
 | --- | --- | --- |
-| `gym-buddy-ui` | Compute SemVer, `prepare_changelog.py`, commit prep, squash-merge onto `main`, annotated tag, sync `develop` | Does **not** write `package.json`. That bump is **not landed**. `package.json` is **0.1.0**. Live Pages is **v0.1.1**. |
-| `gym-buddy-service` | Same changelog + squash + tag path | Does **not** write `pom.xml`. That bump is **not landed**. `pom.xml` is **0.2.0-SNAPSHOT** today (the file on `develop`; not a new 0.2.0 product release). |
+| `gym-buddy-ui` | Compute SemVer, `prepare_changelog.py`, write computed SemVer into `package.json` before the tag ([gym-buddy-ui#12](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-ui/pull/12) / **`63259a4`** / ticket **#53** Done), commit prep, squash-merge onto `main`, annotated tag, sync `develop` | **Landed.** Auto bump still refuses **1.0.0+**. `package.json` stays **0.1.0**. Live Pages is **v0.1.1**. **No** Release was dispatched. |
+| `gym-buddy-service` | Same changelog + squash + tag path **plus** write computed SemVer into `pom.xml` before the tag ([gym-buddy-service#12](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/12) / **`98c4ba0`** / ticket **#53** Done) | **Landed.** Auto bump still refuses **1.0.0+**. `pom.xml` stays **0.2.0-SNAPSHOT** until a later 0.1.x Release (the file on `develop`; not a 0.2.0 product release). **No** Release was dispatched. |
 | `gym-buddy-openapi` | Same path **plus** `sync_package_version.py` writes `package.json` and OpenAPI `info.version` | OpenAPI-only. Not UI/service. |
 | this wiki | Changelog + squash + tag | Docs stay **0.3.0** [Unreleased]. The only docs git tag is still **v0.2.0**. |
 
-That UI/service auto-bump is the target. It is **not landed**.
+That UI/service auto-bump **has landed** (ticket **#53** Done). Versions on disk are unchanged. Do **not** invent **1.0.0**. Do **not** claim a 0.2.0 product release.
 
 ## What each number means (after 1.0.0)
 
