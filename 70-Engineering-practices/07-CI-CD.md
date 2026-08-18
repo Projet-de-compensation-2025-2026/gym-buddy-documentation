@@ -55,7 +55,7 @@ You do not need Jenkins, a second CI product, or to click through GitHub’s UI 
 **GitHub Free limits on private repos** (this org today):
 
 - Repository **rulesets** and classic **branch protection** require GitHub Pro (or a public repo). Workflows still run; they are not blocked. The public `gym-buddy-documentation` repo *does* have rulesets (`ci` required on `develop`, linear history on `main`).
-- **GitHub Pages** on a private repo also needs Pro (or the [Student Developer Pack](https://education.github.com/pack)). Public repos can publish Pages. Until then, service deploy is GHCR + SSH; UI/OpenAPI Pages jobs will fail closed on a private repo.
+- **GitHub Pages** on a private repo also needs Pro (or the [Student Developer Pack](https://education.github.com/pack)). Public repos can publish Pages. `gym-buddy-ui` is **public** and its project site is live (ticket **#30** Done): https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ returns HTTP **200**. OpenAPI Pages jobs still fail closed while that repo is private. Service deploy is GHCR + SSH.
 
 ## Success criteria (this page’s contract)
 
@@ -134,7 +134,7 @@ Triggered by the `v*` tag (and always invoked by Release, because a push made wi
 | Repository | Artifact | Where it goes |
 | --- | --- | --- |
 | `gym-buddy-documentation` | Jekyll `_site/` | GitHub Pages |
-| `gym-buddy-ui` | `ng build` static files | GitHub Pages (when the repo can publish Pages) |
+| `gym-buddy-ui` | `ng build` static files | GitHub Pages — https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**; first tag **v0.1.0**; ticket **#30** Done). Direct `/register` is HTTP **404** with the SPA index body (`404.html`). Ticket **#31** Not Ready; do **not** claim login-from-Pages |
 | `gym-buddy-openapi` | Spec + Swagger/Redoc | GitHub Pages (when the repo can publish Pages) |
 | `gym-buddy-service` | Docker image | `ghcr.io/projet-de-compensation-2025-2026/gym-buddy-service:vX.Y.Z` **and** SSH `replace.sh` on the VPS |
 

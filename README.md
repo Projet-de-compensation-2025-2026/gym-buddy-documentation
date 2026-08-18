@@ -2,7 +2,7 @@
 
 This repository is the **source of truth** for Gym Buddies: a social application that connects athletes (for example fitness practitioners) so they can train together, motivate each other, and find their gym buddy.
 
-It is a Confluence-style wiki adapted for Markdown and GitHub. Other Gym Buddies repositories (`gym-buddy-service`, `gym-buddy-ui`, `gym-buddy-openapi`) should link here instead of duplicating product or process decisions. This wiki is intended to be published on [GitHub Pages](20-Architecture/08-Hosting-and-GitHub-Pages.md).
+It is a Confluence-style wiki adapted for Markdown and GitHub. Other Gym Buddies repositories (`gym-buddy-service`, `gym-buddy-ui`, `gym-buddy-openapi`) should link here instead of duplicating product or process decisions. This wiki is intended to be published on [GitHub Pages](20-Architecture/08-Hosting-and-GitHub-Pages.md). The Angular member app is hosted at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**, production `baseHref` `/gym-buddy-ui/`; ticket **#30** Done). That is the static app. Do **not** claim login-from-Pages or that the Pages app talks to the VPS (ticket **#31** still **Not Ready**).
 
 | | |
 | --- | --- |
