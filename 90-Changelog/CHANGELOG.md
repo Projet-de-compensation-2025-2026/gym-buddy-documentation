@@ -36,6 +36,7 @@ Until the first application release, versions refer to the **documentation contr
 - Versioning: application `0.2.0` is defined as the first Java + data-plane + auth slice (distinct from documentation `0.2.0`)
 - Runbook today-vs-target: local compose is in the service repo; Spring / Flyway still absent
 - Tickets: Atlas (ops agent) owns `Not Ready` → `Todo` and `In Progress` → `Done`; Done requires Sentinel confirmation against functional requirements in this wiki. Joaquim remains product owner for consult / scope and no longer makes those two board moves by hand.
+- OpenAPI stub and wiki now agree on `GET /api/v1/healthz` and `GET /api/v1/readyz` (ticket #11); probe smoke is still `GET /` until Spring
 
 ## [0.2.0] — 2026-08-14
 
