@@ -13,7 +13,7 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Added
 
-- Visual design page ([09-Visual-design.md](../20-Architecture/09-Visual-design.md)): Stitch light-mode tokens, derived dark-mode role mapping, Inter, Material Symbols Outlined recommendation, and committed Stitch mockups under `20-Architecture/mockups/`
+- Visual design page ([09-Visual-design.md](../20-Architecture/09-Visual-design.md)): Stitch light-mode tokens, derived dark-mode role mapping, Inter, Material Symbols Outlined recommendation, and mockup table embedding PNGs under `20-Architecture/mockups/`
 - Environment and pipeline runbook: local compose plan (PostgreSQL 18, Redis, MinIO, API, optional MailHog), env key catalog, CI/Release/Deploy as built, OVH VPS + Caddy + UFW
 - How to record the instructor cadrage (no invented minutes)
 - Academic report chapter map, presentation speaker notes, screenshot checklist including VPS health
