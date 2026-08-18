@@ -134,7 +134,7 @@ Triggered by the `v*` tag (and always invoked by Release, because a push made wi
 | Repository | Artifact | Where it goes |
 | --- | --- | --- |
 | `gym-buddy-documentation` | Jekyll `_site/` | GitHub Pages |
-| `gym-buddy-ui` | `ng build` static files | GitHub Pages — https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**; first tag **v0.1.0**; ticket **#30** Done). Direct `/register` is HTTP **404** with the SPA index body (`404.html`). Ticket **#31** Not Ready; do **not** claim login-from-Pages |
+| `gym-buddy-ui` | `ng build` static files | GitHub Pages — https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**; first tag **v0.1.0**; ticket **#30** Done). Direct `/register` is HTTP **404** with the SPA index body (`404.html`). Ticket **#31** is **Todo** (production `apiBaseUrl` still `http://127.0.0.1:8080/api/v1`; Kernel implementing). Do **not** claim login-from-Pages |
 | `gym-buddy-openapi` | Spec + Swagger/Redoc | GitHub Pages (when the repo can publish Pages) |
 | `gym-buddy-service` | Docker image | `ghcr.io/projet-de-compensation-2025-2026/gym-buddy-service:vX.Y.Z` **and** SSH `replace.sh` on the VPS |
 

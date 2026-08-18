@@ -61,7 +61,7 @@ If the first build fails on Mermaid or a plugin, use **GitHub Actions** (`action
 - Live URL: https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/
 - Root returns **HTTP 200** and serves the Angular app with production `baseHref` `/gym-buddy-ui/`. Root 200 is the acceptance.
 - Direct `/register` (and other client routes) return **HTTP 404** with the same SPA `index.html` body (`404.html` copied by Deploy). That is GitHub Pages’ static fallback, **not** a broken app and **not** a working auth route.
-- Production `apiBaseUrl` is still `http://127.0.0.1:8080/api/v1`. Ticket **#31** (`apiBaseUrl` / CORS / login-from-Pages) is **Not Ready**. Do **not** claim the Pages app talks to the VPS. Do **not** claim login-from-Pages.
+- Production `apiBaseUrl` is still `http://127.0.0.1:8080/api/v1`. Ticket **#31** is **Todo** (production `apiBaseUrl` still `http://127.0.0.1:8080/api/v1`; Kernel implementing). Do **not** claim the Pages app talks to the VPS. Do **not** claim login-from-Pages.
 - Approved toolchain stays TypeScript **`~6.0.2`** + **pnpm**. First UI tag is **v0.1.0**.
 
 Target (ticket **#31**, not this confirm):
