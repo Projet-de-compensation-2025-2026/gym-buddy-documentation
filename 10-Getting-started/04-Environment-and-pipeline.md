@@ -266,8 +266,9 @@ The next slice is **documentation `0.3.0`** (technical foundation). Local compos
 
 | Work | Where |
 | --- | --- |
-| Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven. Do **not** Todo **#37**. Joaquim’s Pages login is operator-home only. Sentinel IPv4 `104.30.175.37` (US) → `https://vps-c39cdf03.vps.ovh.net/api/v1/healthz` TLS unexpected EOF. Cookie `HttpOnly`+`Secure`+`SameSite=Lax`, path `/api/v1/auth` | `gym-buddy-ui` + UFW / cookies |
-| Expand the OpenAPI contract past health + the four auth operations (rest of `/api/v1`). The `$ref` tree + checked-in `openapi/bundled.yaml` **has landed** (ticket **#40** Done; `7fa5108`). Service codegen **has landed** (ticket **#41** Done; `c40f122`). UI orval **has landed** (ticket **#42** Done; `b8da6bf`). Do **not** list codegen as remaining. | `gym-buddy-openapi` |
+| Expand `/api/v1` past health + auth | `gym-buddy-openapi` |
+| Ticket **#37** stays **Not Ready** (login-from-Pages **not** proven). Do **not** Todo it. Joaquim’s Pages login is operator-home only. Sentinel IPv4 `104.30.175.37` (US) → `https://vps-c39cdf03.vps.ovh.net/api/v1/healthz` TLS unexpected EOF. Cookie `HttpOnly`+`Secure`+`SameSite=Lax`, path `/api/v1/auth` | `gym-buddy-ui` + UFW / cookies |
+| Ticket **#24** stays cancelled | TypeScript 6→7 is **not** remaining work |
 | Remaining Angular surfaces (friends / feed / events / back-office) | `gym-buddy-ui` |
 | Instructor cadrage minutes | [../00-Project-brief/01-Scope-and-modules.md](../00-Project-brief/01-Scope-and-modules.md) — still **Not done** |
 
