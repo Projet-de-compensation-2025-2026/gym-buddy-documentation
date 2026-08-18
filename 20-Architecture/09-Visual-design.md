@@ -5,19 +5,19 @@
 | Status | Proposed |
 | Related | [04-Frontend.md](04-Frontend.md), [05-Back-office.md](05-Back-office.md), [07-Technology-choices.md](07-Technology-choices.md) |
 
-Visual tokens and Stitch mockups for the member app and the back-office. The design source Joaquim used is the Stitch project [Gym Buddy Web App](https://stitch.withgoogle.com/projects/2603399363233092540). That URL is a **related link**, not the source of truth. This page plus the PNGs under [`mockups/`](mockups/) are the committed source of truth.
+Visual tokens and mockups for the member app and the back-office. Joaquim replaced the earlier Stitch canvas PNGs with higher-quality JPG screens on `fix/mockups`. The committed source of truth is this page plus the files under [`mockups/`](mockups/). The Stitch project [Gym Buddy Web App](https://stitch.withgoogle.com/projects/2603399363233092540) is a **related link**, not the SoT.
 
-The PNGs are **Stitch canvas captures** (1280×800, some Stitch chrome visible). They are **not** live Angular screenshots. Academic report shots stay on [../99-Academic-deliverables/03-Screenshots.md](../99-Academic-deliverables/03-Screenshots.md) and must wait for a stable UI.
+These JPGs are **mockup screens**, not live Angular screenshots. Academic report shots stay on [../99-Academic-deliverables/03-Screenshots.md](../99-Academic-deliverables/03-Screenshots.md) and must wait for a stable UI.
+
+Design tokens Joaquim added for this pass live in [`mockups/00-DESIGN.md`](mockups/00-DESIGN.md) (frontmatter + brand notes). The measured tables below stay from the earlier Stitch captures until a later wiki change replaces them.
 
 ## Color palette
 
-Do not invent extra brand hues. Three tables: Stitch board chips, pixels sampled from the mockup chrome, and a derived dark mapping. Prefer **Measured on screenshots** for implementation, except the primary seed (see the 1-RGB webp note).
+Do not invent extra brand hues. Three tables: Stitch board chips, pixels sampled from the earlier mockup chrome, and a derived dark mapping. Prefer **Measured on screenshots** for implementation, except the primary seed (see the 1-RGB webp note).
 
 ### Stitch tokens
 
-![Stitch style-guide board for Gym Buddy](mockups/00-style-guide.png)
-
-Transcribed from the Stitch style-guide board. Each chip also shows a tint/shade ramp on this PNG. Those ramp hexes are **not** transcribed here.
+The style-guide PNGs (`00-style-guide.png`, `00-style-guide-theme.png`) are gone on this branch. Use [`mockups/00-DESIGN.md`](mockups/00-DESIGN.md) for Joaquim’s current token dump.
 
 | Role | Hex | Notes |
 | --- | --- | --- |
@@ -28,7 +28,7 @@ Transcribed from the Stitch style-guide board. Each chip also shows a tint/shade
 
 ### Measured on screenshots
 
-Pixel-sampled from the Stitch canvas captures. **Prefer this table for implementation.** Primary on the mockup chrome is `#006E78` (11188 px mode). That is a **1-RGB webp delta** from the board seed; the token to implement is still **`#006D77`**. Reject `#008D97` (distance 43.8 from the seed; white-on-it contrast 3.99, fails AA).
+Pixel-sampled from the earlier Stitch canvas captures. **Prefer this table for implementation.** Primary on the mockup chrome is `#006E78` (11188 px mode). That is a **1-RGB webp delta** from the board seed; the token to implement is still **`#006D77`**. Reject `#008D97` (distance 43.8 from the seed; white-on-it contrast 3.99, fails AA).
 
 | Role | Measured | Implement | Notes |
 | --- | --- | --- | --- |
@@ -51,7 +51,7 @@ Secondary `#83C5BE` is a Stitch board chip only. It was not a mode on the mockup
 
 ### Dark mapping
 
-Joaquim asked for light + dark without regenerating mockups. **Derived mapping**, not sampled from a dark Stitch file. No new brand hues.
+Joaquim asked for light + dark without regenerating mockups. **Derived mapping**, not sampled from a dark file. No new brand hues.
 
 | Role | Light (implement) | Dark |
 | --- | --- | --- |
@@ -67,11 +67,7 @@ Joaquim asked for light + dark without regenerating mockups. **Derived mapping**
 
 ## Typography
 
-Transcribed exactly from the Stitch theme panel:
-
-![Stitch theme panel naming Inter](mockups/00-style-guide-theme.png)
-
-Stitch theme panel. Headline, Body, and Label are all Inter.
+Headline, Body, and Label are all **Inter** (Stitch theme panel and `00-DESIGN.md`).
 
 - Headline: **Inter**
 - Body: **Inter**
@@ -85,50 +81,48 @@ Stitch did **not** name an icon library.
 
 Recommendation for Angular 22: **Material Symbols Outlined** (`material-symbols-outlined` font, or `@angular/material` + Material Symbols). One set only. Do not add Font Awesome or Lucide unless a later wiki change says so.
 
-Nav in the mockups is home / search / person plus icon buttons; those match Material Symbols Outlined.
-
 ## Mockups
 
-Each row is a member route from [04-Frontend.md](04-Frontend.md) or a back-office surface from [05-Back-office.md](05-Back-office.md). Captions describe the Stitch mockup, not a running app.
+Each row is a member route from [04-Frontend.md](04-Frontend.md) or a back-office surface from [05-Back-office.md](05-Back-office.md). Captions describe the mockup screen, not a running app. Filenames match `mockups/*.jpg` on this branch.
+
+Dropped from this pass (no replacement file): `03-feed-lower`, `04-post-detail`, `16-settings-privacy-danger`, and the two style-guide PNGs.
 
 ### Member application
 
 | Route | Spec | Mockup | Caption |
 | --- | --- | --- | --- |
-| `/register` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Register](mockups/01-register.png) | Stitch mockup of the member register screen (canvas capture, includes Stitch chrome). |
-| `/login` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Login](mockups/02-login.png) | Stitch mockup of the member login screen (canvas capture, includes Stitch chrome). |
-| `/` (feed) | [FS feed](../30-Functional-specifications/04-News-feed.md) | ![Feed](mockups/03-feed.png) | Stitch mockup of the friends news feed (upper canvas). |
-| `/` (feed, lower) | [FS feed](../30-Functional-specifications/04-News-feed.md) | ![Feed lower](mockups/03-feed-lower.png) | Stitch mockup of the same feed scrolled to the lower posts. |
-| `/posts/:id` | [FS posts](../30-Functional-specifications/05-Posts-and-engagement.md) | ![Post detail](mockups/04-post-detail.png) | Stitch mockup of a single post with engagement actions. |
-| `/posts/:id` (comments) | [FS comments](../30-Functional-specifications/06-Nested-comments.md) | ![Post comments](mockups/04-post-comments.png) | Stitch mockup of the nested comment thread on a post. |
-| `/u/:handle` (public) | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Public profile](mockups/05-public-profile.png) | Stitch mockup of a public profile visible to any member. |
-| `/u/:handle` (private stub) | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Private profile](mockups/06-private-profile.png) | Stitch mockup of the private-profile stub a stranger sees. |
-| `/friends` | [FS friends](../30-Functional-specifications/03-Friends.md) | ![Friends](mockups/07-friends.png) | Stitch mockup of the friends list with search and Unfriend / Block actions. |
-| `/friends/suggestions` | [FS suggestions](../30-Functional-specifications/09-Friend-suggestions.md) | ![Friend suggestions](mockups/08-suggestions.png) | Stitch mockup of friend suggestions with Add Friend / Dismiss and interest tags. |
-| `/events` | [FS events](../30-Functional-specifications/07-Events.md) | ![Events](mockups/09-events.png) | Stitch mockup of Upcoming Sessions with Instant / Recurring filters and Create Event. |
-| `/events/new` | [FS events](../30-Functional-specifications/07-Events.md) | ![Create event](mockups/10-new-event.png) | Stitch mockup of the Create Event form (title, activity, place, schedule, capacity). |
-| `/events/:id` | [FS events](../30-Functional-specifications/07-Events.md) | ![Event detail](mockups/11-event-detail.png) | Stitch mockup of event detail with Apply to Join, organizer queue, and occurrence list. |
-| `/search` | [FS search](../30-Functional-specifications/08-Advanced-search.md) | ![Search](mockups/12-search.png) | Stitch mockup of people/events search with filters for city, sports, and experience. |
-| `/messages` | [FS messaging](../30-Functional-specifications/10-Instant-messaging.md) | ![Inbox](mockups/13-inbox.png) | Stitch mockup of the inbox thread list with unread badges. |
-| `/messages/:id` | [FS messaging](../30-Functional-specifications/10-Instant-messaging.md) | ![Chat](mockups/14-chat.png) | Stitch mockup of a chat thread with text, shared image, and a voice bubble. |
-| `/settings/profile` | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Edit profile](mockups/15-settings-profile.png) | Stitch mockup of Edit Profile (photo, display name, username, bio, city). |
-| `/settings/privacy` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Privacy](mockups/16-settings-privacy.png) | Stitch mockup of profile visibility (Public / Private) and change-password fields. |
-| `/settings/privacy` (danger) | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Privacy danger zone](mockups/16-settings-privacy-danger.png) | Stitch mockup of Update Password plus the Danger Zone Close Account control. |
+| `/register` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Register](mockups/01-register.jpg) | High-quality mockup of the member register screen. |
+| `/login` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Login](mockups/02-login.jpg) | High-quality mockup of the member login screen. |
+| `/` (feed) | [FS feed](../30-Functional-specifications/04-News-feed.md) | ![Feed](mockups/03-feed.jpg) | High-quality mockup of the friends news feed. |
+| `/posts/:id` (comments) | [FS comments](../30-Functional-specifications/06-Nested-comments.md) | ![Post comments](mockups/04-post-comments.jpg) | High-quality mockup of the nested comment thread on a post. |
+| `/u/:handle` (public) | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Public profile](mockups/05-public-profile.jpg) | High-quality mockup of a public profile visible to any member. |
+| `/u/:handle` (public, partial) | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Public profile partially hidden](mockups/05-public-profile-partially-hidden.jpg) | High-quality mockup of a public profile with some fields hidden. |
+| `/u/:handle` (private stub) | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Private profile](mockups/06-private-profile.jpg) | High-quality mockup of the private-profile stub a stranger sees. |
+| `/friends` | [FS friends](../30-Functional-specifications/03-Friends.md) | ![Friends](mockups/07-friends.jpg) | High-quality mockup of the friends list with search and Unfriend / Block. |
+| `/friends/suggestions` | [FS suggestions](../30-Functional-specifications/09-Friend-suggestions.md) | ![Friend suggestions](mockups/08-suggestions.jpg) | High-quality mockup of friend suggestions with Add Friend / Dismiss. |
+| `/events` | [FS events](../30-Functional-specifications/07-Events.md) | ![Events](mockups/09-events.jpg) | High-quality mockup of Upcoming Sessions with Instant / Recurring filters. |
+| `/events/new` | [FS events](../30-Functional-specifications/07-Events.md) | ![Create event](mockups/10-new-event.jpg) | High-quality mockup of the Create Event form. |
+| `/events/:id` | [FS events](../30-Functional-specifications/07-Events.md) | ![Event detail](mockups/11-event-detail.jpg) | High-quality mockup of event detail with Apply to Join and occurrence list. |
+| `/search` | [FS search](../30-Functional-specifications/08-Advanced-search.md) | ![Search](mockups/12-search.jpg) | High-quality mockup of people/events search with filters. |
+| `/messages` | [FS messaging](../30-Functional-specifications/10-Instant-messaging.md) | ![Inbox](mockups/13-inbox.jpg) | High-quality mockup of the inbox thread list. |
+| `/messages/:id` | [FS messaging](../30-Functional-specifications/10-Instant-messaging.md) | ![Chat](mockups/14-chat.jpg) | High-quality mockup of a chat thread. |
+| `/settings/profile` | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Edit profile](mockups/15-settings-profile.jpg) | High-quality mockup of Edit Profile. |
+| `/settings/privacy` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Privacy](mockups/16-settings-privacy.jpg) | High-quality mockup of profile visibility and password fields. |
 
 ### Back-office
 
 | Surface | Spec | Mockup | Caption |
 | --- | --- | --- | --- |
-| Users | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin users](mockups/17-admin-users.png) | Stitch mockup of User Management (search, roles, lock state, Invite User). |
-| Content | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin content](mockups/18-admin-content.png) | Stitch mockup of Content Moderation with flagged posts and Approve / Hide Content. |
-| Reports | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin reports](mockups/19-admin-reports.png) | Stitch mockup of the Reports Queue with priority tiles and Review / Close Report. |
-| Media | [FS media](../30-Functional-specifications/12-Media-and-files.md) | ![Admin media](mockups/20-admin-media.png) | Stitch mockup of Media Management (object list, metadata, ACL, read-only delivery URL). |
-| Fixtures | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin fixtures](mockups/21-admin-fixtures.png) | Stitch mockup of Database Fixtures generate/reset cards (non-production warning). |
-| Audit | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin audit](mockups/22-admin-audit.png) | Stitch mockup of the append-only Audit Log table (timestamp, staff, action, target). |
+| Users | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin users](mockups/17-admin-users.jpg) | High-quality mockup of User Management. |
+| Content | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin content](mockups/18-admin-content.jpg) | High-quality mockup of Content Moderation. |
+| Reports | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin reports](mockups/19-admin-reports.jpg) | High-quality mockup of the Reports Queue. |
+| Media | [FS media](../30-Functional-specifications/12-Media-and-files.md) | ![Admin media](mockups/20-admin-media.jpg) | High-quality mockup of Media Management. |
+| Fixtures | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin fixtures](mockups/21-admin-fixtures.jpg) | High-quality mockup of Database Fixtures generate/reset. |
+| Audit | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin audit](mockups/22-admin-audit.jpg) | High-quality mockup of the append-only Audit Log. |
 
 ## What these are not
 
-- Not the academic screenshot checklist in [../99-Academic-deliverables/03-Screenshots.md](../99-Academic-deliverables/03-Screenshots.md). Do not copy these PNGs there. That gallery waits for real Angular shots after the UI is stable.
+- Not the academic screenshot checklist in [../99-Academic-deliverables/03-Screenshots.md](../99-Academic-deliverables/03-Screenshots.md). Do not copy these JPGs there. That gallery waits for real Angular shots after the UI is stable.
 - Not a live UI. `gym-buddy-ui` on `develop` still has `/register`, `/login`, and log-out only.
-- Login-from-Pages (ticket **#37**) is still **Not Ready**. Do **not** Todo **#37**.
+- Ticket **#37** is **closed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** Todo it. Do **not** start Kernel on it.
 - Expanding `/api/v1` past health + auth is still open. These mockups do not implement those routes.
