@@ -10,7 +10,7 @@ Even on an individual project, every merge to `develop` (features) or `main` (re
 ## Checklist
 
 - [ ] Ticket exists on `gym-buddy-documentation`, is on **Gym Buddy Project**, and **links a wiki page** ([05-Tickets-and-GitHub-projects.md](05-Tickets-and-GitHub-projects.md), [08-Feature-implementation.md](08-Feature-implementation.md)) — or the commit has **no** ticket id in the scope
-- [ ] Ticket is `In Progress` while the PR is open; it becomes `Done` only after the merge to `develop`. Atlas sets `Done` after Sentinel confirms
+- [ ] Ticket is `In Progress` while the PR is open (Kernel sets `Todo` → `In Progress` when work starts). It becomes `Done` only after the merge to `develop`. Atlas sets `Done` after Sentinel confirms. Sentinel does not move the board
 - [ ] Commit scopes follow [02-Git-workflow.md](02-Git-workflow.md): `(#42)` if there is a ticket, topical otherwise
 - [ ] `Refs: <owner>/gym-buddy-documentation#<id>` in the commit/PR body when a ticket exists
 - [ ] Spec IDs in the description (`FS-…`, `TS-…`)

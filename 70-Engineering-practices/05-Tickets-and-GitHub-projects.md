@@ -81,7 +81,7 @@ If there is no ticket, **do not** put a ticket number in the commit scope. Use a
 
 Exactly four. These replace any older Backlog / Ready / In review layout.
 
-Atlas alone sets `Not Ready` → `Todo`. Atlas sets `In Progress` → `Done` only after Sentinel confirms the work was implemented and satisfies the functional requirements. No other transitions.
+Atlas alone sets `Not Ready` → `Todo`. Kernel sets `Todo` → `In Progress` when they start the ticket (after creating or linking the branch from the issue Development panel). Do not leave a card in `Todo` while Kernel is implementing. Atlas sets `In Progress` → `Done` only after Sentinel confirms the work was implemented and satisfies the gym-buddy-documentation functional requirements. Atlas does not invent other status transitions. Sentinel does not move the board. Joaquim is not the merge/board gate.
 
 Create each implementation branch from the issue’s **Development → Create a branch** action, or link the PR/branch there, so the project item exposes it.
 
@@ -89,7 +89,7 @@ Create each implementation branch from the issue’s **Development → Create a 
 | --- | --- | --- |
 | `Not Ready` | Default at creation. Specs and template are filled; not yet set to `Todo` | Default at creation |
 | `Todo` | The ticket and linked specs are complete enough to implement | Atlas alone (`Not Ready` → `Todo`) |
-| `In Progress` | Implementation of this ticket has started | Whoever starts the work |
+| `In Progress` | Implementation of this ticket has started | Kernel (`Todo` → `In Progress`) |
 | `Done` | Implemented, tested, formatted, and merged into `develop` | Atlas (`In Progress` → `Done`), only after Sentinel confirms |
 
 Rules and the full feature sequence: [08-Feature-implementation.md](08-Feature-implementation.md).
