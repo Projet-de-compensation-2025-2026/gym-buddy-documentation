@@ -30,8 +30,7 @@ All Gym Buddies application repositories. This wiki uses Markdown rules in [04-D
 
 ## TypeScript / Angular (frontend)
 
-- **Approved:** TypeScript **7.0.0**, `strict` true. Install from the `typescript` npm package. `tsc` is the Go-native compiler (Project Corsa). Do not send work to `@typescript/native-preview` / `tsgo`.
-- **Today** (`gym-buddy-ui` `develop`, app `0.1.0`): TypeScript `~6.0.2`. Ticket **#24** is the TypeScript **7.0.0** follow-up. Do **not** claim TypeScript 7.
+- **Approved and today** (`gym-buddy-ui` `develop`, app `0.1.0`): TypeScript **6** (`~6.0.2`), `strict` true. Angular 22 `@angular/compiler-cli` **22.1.2** peers `>=6.0 <6.1`. Joaquim cancelled the TypeScript 6→7 migration (ticket #24 cancelled/closed). Do **not** treat 7.0.0 or 7.0.2 as the approved compiler. Do not pin `@typescript/native-preview` / `tsgo`.
 - Standalone components, typed forms
 - Do not store the access token in `localStorage` (XSS)
 - Empty, loading, and error states are mandatory for list pages
@@ -50,7 +49,7 @@ All Gym Buddies application repositories. This wiki uses Markdown rules in [04-D
    - **Do not invent a `package.json` field.** pnpm does not read this from `package.json`.
 4. Disable or tightly allow dependency lifecycle scripts (`onlyBuiltDependencies` and/or ignore-scripts). Required. Empty allow-list unless a native addon must build. Keep the allow-list in `pnpm-workspace.yaml` (or `.npmrc` for older pnpm), not a made-up `package.json` key.
 
-**Today** `gym-buddy-ui` on `develop` is **`pnpm@11.22.0`** (ui #4 / `63bebed`): committed `pnpm-lock.yaml`, `minimumReleaseAge` **40320**. TypeScript is still `~6.0.2` until ticket **#24**. Do **not** claim TypeScript 7.
+**Today and approved** `gym-buddy-ui` on `develop` is **`pnpm@11.22.0`** (ui #4 / `63bebed`; ticket **#23** Done): committed `pnpm-lock.yaml`, `minimumReleaseAge` **40320**. TypeScript is **6** (`~6.0.2`). Ticket #24 is cancelled. Do **not** claim TypeScript 7 shipped.
 
 Renovate / Dependabot cooldown must be at least as long as this floor (four weeks). The pipeline contract is [07-CI-CD.md](07-CI-CD.md).
 
