@@ -69,7 +69,7 @@ Rejected for the API (fine as notes, not the plan): Render, Fly.io, Railway as t
 
 | Need | Where |
 | --- | --- |
-| Java API | Docker on the VPS, bound to `127.0.0.1:8080`. Today: `gym-buddy-service` `develop` **`e2ef2aa`**. Loopback `GET healthz` and `GET readyz` **200**. `replace.sh` skip-pull for local tags is on `develop` (service #8 / `fb1e618`). **Not** a GHCR pull / Release / replace-from-registry |
+| Java API | Docker on the VPS, bound to `127.0.0.1:8080`. Today: `gym-buddy-service` `develop` **`e2ef2aa`**. Loopback `GET /api/v1/healthz` and `GET /api/v1/readyz` **200**. `replace.sh` skip-pull for local tags is on `develop` (service #8 / `fb1e618`). **Not** a GHCR pull / Release / replace-from-registry |
 | HTTPS | Caddy on the hostname → loopback `:8080`, Let’s Encrypt |
 | PostgreSQL 18 / Redis / MinIO | Local compose proven on a laptop (`docs/local-compose-proof.md`). VPS apply **done** (ticket **#20** **Done / closed**; [gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e`): `gym-buddy-data`, ports unpublished |
 | Public `:8080` | Never. UFW denies it. |
