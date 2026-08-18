@@ -49,6 +49,6 @@ flowchart LR
 | Object storage | Yes | MinIO locally, S3-compatible in deploy. Production refuses to start without it. |
 | Geocoding | No | Members may type a free-text place + optional lat/lng |
 | Push notifications | No | In-app + websocket is enough for the defense |
-| GitHub Pages | Yes for static artifacts | Wiki; Angular member app at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**, ticket **#30** Done); later OpenAPI UI. Do **not** claim login-from-Pages. |
+| GitHub Pages | Yes for static artifacts | Wiki; Angular member app at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**, ticket **#30** Done); later OpenAPI UI. Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven. Do **not** Todo **#37**. |
 
 GitHub is part of the **academic** system, not the runtime.
