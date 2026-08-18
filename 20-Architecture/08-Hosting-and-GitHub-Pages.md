@@ -18,7 +18,7 @@ That constraint decides what can live on Pages and what cannot.
 | Piece | On GitHub Pages? | How |
 | --- | --- | --- |
 | This documentation wiki | **Yes** | Jekyll (built in) turns the Markdown tree into a site. Config is already in this repo (`_config.yml`). |
-| Member frontend (Angular) | **Yes** | `ng build` emits static files. Deploy the `dist/` folder to Pages (project site or `gh-pages` branch / Actions). |
+| Member frontend (Angular) | **Yes** — **live** | Project site https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ returns HTTP **200** and serves the Angular app with production `baseHref` `/gym-buddy-ui/` (ticket **#30** Done; first UI tag **v0.1.0**). Root 200 is the acceptance. |
 | Back-office (Angular, same frontend repo) | **Yes** | Second configuration / `baseHref`, same static model. |
 | OpenAPI contract + reference UI | **Yes** | Host the YAML/JSON plus a static [Swagger UI](https://swagger.io/tools/swagger-ui/) or Redoc build in `gym-buddy-openapi`. |
 | Java backend | **No** | Needs a process (Spring Boot). Pages cannot run it. Lives on the OVH VPS. |
@@ -56,8 +56,17 @@ If the first build fails on Mermaid or a plugin, use **GitHub Actions** (`action
 
 ## Frontend on Pages
 
-- Build with a production `baseHref` of `/gym-buddy-ui/` (project site) or a custom domain
-- Environment: `apiBaseUrl` pointing at the **real** backend (`https://vps-c39cdf03.vps.ovh.net/api/v1` once Spring exists), not at Pages
+**Today (2026-08-18, ticket #30 Done):** the member app is on the GitHub Pages project site.
+
+- Live URL: https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/
+- Root returns **HTTP 200** and serves the Angular app with production `baseHref` `/gym-buddy-ui/`. Root 200 is the acceptance.
+- Direct `/register` (and other client routes) return **HTTP 404** with the same SPA `index.html` body (`404.html` copied by Deploy). That is GitHub Pages’ static fallback, **not** a broken app and **not** a working auth route.
+- Production `apiBaseUrl` is still `http://127.0.0.1:8080/api/v1`. Ticket **#31** (`apiBaseUrl` / CORS / login-from-Pages) is **Not Ready**. Do **not** claim the Pages app talks to the VPS. Do **not** claim login-from-Pages.
+- Approved toolchain stays TypeScript **`~6.0.2`** + **pnpm**. First UI tag is **v0.1.0**.
+
+Target (ticket **#31**, not this confirm):
+
+- Environment: `apiBaseUrl` pointing at the **real** backend (`https://vps-c39cdf03.vps.ovh.net/api/v1`), not at Pages
 - CORS on the backend must allow the Pages origin
 - Cookies (`SameSite`, `Secure`) must match HTTPS Pages
 

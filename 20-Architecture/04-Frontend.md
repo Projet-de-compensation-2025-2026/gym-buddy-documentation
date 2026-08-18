@@ -5,11 +5,13 @@
 | Status | Approved |
 | Related | [05-Back-office.md](05-Back-office.md), [../30-Functional-specifications](../30-Functional-specifications/README.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
-The member frontend is the athlete-facing web app. **Approved stack:** **Angular 22** + **TypeScript 6** (`~6.0.2`) + **pnpm** ([07-Technology-choices.md](07-Technology-choices.md), [../70-Engineering-practices/01-Coding-standards.md](../70-Engineering-practices/01-Coding-standards.md)). It talks to the backend through a client **generated from** [`gym-buddy-openapi`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi). The static build is eligible for GitHub Pages ([08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md)).
+The member frontend is the athlete-facing web app. **Approved stack:** **Angular 22** + **TypeScript 6** (`~6.0.2`) + **pnpm** ([07-Technology-choices.md](07-Technology-choices.md), [../70-Engineering-practices/01-Coding-standards.md](../70-Engineering-practices/01-Coding-standards.md)). It talks to the backend through a client **generated from** [`gym-buddy-openapi`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi). The static build is hosted on GitHub Pages at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ ([08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md)).
 
 Today `gym-buddy-ui` on `develop` (app version `0.1.0`, ui #3 / ticket #12) is Angular 22 + **TypeScript `~6.0.2`** + **`packageManager`: `pnpm@11.22.0`** ([gym-buddy-ui#4](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-ui/pull/4) / `63bebed`): committed `pnpm-lock.yaml`, `minimumReleaseAge` **40320**. Ticket **#23** (pnpm) is **Done**. Angular 22 includes `@angular/compiler-cli` **22.1.2**, peer `>=6.0 <6.1`. Stay on TypeScript `~6.0.2` until Angular actually supports 7. Joaquim cancelled the TypeScript 6→7 migration (ticket #24 cancelled/closed). Do **not** claim TypeScript 7 landed. Do **not** treat 7.0.0 or 7.0.2 as the next compiler.
 
 Today the app has `/register`, `/login`, and a log-out control that call `POST /api/v1/auth/register`, `/login`, `/logout`. Access JWT stays in memory. Refresh cookie credentials are sent (`path /api/v1/auth`). No friends / feed / events. The service on `develop` implements those endpoints (service #5 / `e2ef2aa`). Ticket #12 is closed. Do not claim login is running on the VPS.
+
+**Today (ticket #30 Done):** GitHub Pages hosts the production build at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/. Sentinel confirmed the root returns **HTTP 200** and serves the Angular app with production `baseHref` `/gym-buddy-ui/`. Root 200 is the acceptance. Direct `/register` returns **HTTP 404** with the SPA index body (`404.html`). That is Pages’ static fallback, **not** a broken app and **not** a working auth route. Ticket **#31** (`apiBaseUrl` / CORS / login-from-Pages) is **Not Ready**. Do **not** claim the Pages app talks to the VPS. Do **not** claim login-from-Pages.
 
 ## Toolchain (today vs approved)
 
@@ -26,7 +28,8 @@ Today the app has `/register`, `/login`, and a log-out control that call `POST /
 | Environment | `apiBaseUrl` |
 | --- | --- |
 | Local | `http://127.0.0.1:8080/api/v1` (`environment.ts`; `ng serve` proxies `/api`) |
-| Live (operator network) | `https://vps-c39cdf03.vps.ovh.net/api/v1` — VPS container is `develop` **`e2ef2aa`**. Loopback `GET /api/v1/healthz` and `GET /api/v1/readyz` **200**. A bad `POST /api/v1/auth/register` → **422 `VALIDATION`** (auth routes exist; **not** a completed register/login). Caddy is **not** proven. **Not** a GHCR pull / Release |
+| GitHub Pages (today) | Production `apiBaseUrl` is still `http://127.0.0.1:8080/api/v1`. The live static app is https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**; ticket **#30** Done). Ticket **#31** is **Not Ready**. Do **not** claim the Pages app talks to the VPS. |
+| Live API (operator network) | `https://vps-c39cdf03.vps.ovh.net/api/v1` — VPS container is `develop` **`e2ef2aa`**. Loopback `GET /api/v1/healthz` and `GET /api/v1/readyz` **200**. A bad `POST /api/v1/auth/register` → **422 `VALIDATION`** (auth routes exist; **not** a completed register/login). Caddy is **not** proven. **Not** a GHCR pull / Release. Do **not** claim login-from-Pages. |
 
 ## Surfaces
 

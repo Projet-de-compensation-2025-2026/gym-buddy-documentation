@@ -90,6 +90,6 @@ Modules are **bounded contexts** in one deployable. They may not import each oth
 
 - **Local:** Docker Compose in `gym-buddy-service` (plan — file not in the repo yet). Ports bind to `127.0.0.1`.
 - **Defense / live API:** OVH VPS `vps-c39cdf03.vps.ovh.net`. Caddy terminates HTTPS and proxies to `127.0.0.1:8080`. The API container is replaced by `replace.sh`, not compose.
-- **Static sites:** GitHub Pages (this wiki, later Angular and OpenAPI UI).
+- **Static sites:** GitHub Pages (this wiki; Angular member app at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ — HTTP **200**, ticket **#30** Done; later OpenAPI UI). Do **not** claim login-from-Pages.
 
 Details: [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
