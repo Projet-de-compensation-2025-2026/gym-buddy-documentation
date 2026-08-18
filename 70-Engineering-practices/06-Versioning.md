@@ -38,13 +38,13 @@ Documentation and application artifacts may sit on different `0.y.z` numbers unt
 | `0.1.x` | Service / UI / OpenAPI (current) | Stay here until the documentation `0.3.0` foundation is done on `develop` and then tagged |
 | `1.0.0` | All four repos, same day | Academic ship |
 
-On `develop` today (ticket #11, not yet a product tag): `gym-buddy-service` is already a Spring Boot app (Java 25 LTS) with Flyway **V1 baseline**, `GET /api/v1/healthz` and `GET /api/v1/readyz`. Register / login / logout are **not** shipped. Local `compose.yaml` and `.env.example` exist (ticket #7). Runtime boot of that compose is **not** claimed. The VPS is still one `docker run` API container (tag **v0.1.1**). PostgreSQL does **not** run on the VPS today.
+On `develop` today (ticket #11, not yet a product tag): `gym-buddy-service` is already a Spring Boot app (Java 25 LTS) with Flyway **V1 baseline**, `GET /api/v1/healthz` and `GET /api/v1/readyz`. The OpenAPI stub documents auth and the UI has sign-up / sign-in / log-out pages (ui #3). Register / login / logout is **not** a done product slice: the service has not implemented those operations (service #5 still open). Local `compose.yaml` and `.env.example` exist (ticket #7). Runtime boot of that compose is **not** claimed. The VPS is still one `docker run` API container (tag **v0.1.1**). PostgreSQL does **not** run on the VPS today.
 
 Documentation `0.3.0` is done when all of these are true on `develop` and then tagged on `main` via Release (coding agents can then work from this point):
 
 1. **Local compose proven at runtime** — not just files in git. `docker compose up -d` on a laptop has been booted: PostgreSQL 18, Redis, MinIO, Java 25 LTS Spring service, binds `127.0.0.1`. `GET /api/v1/healthz` returns 200 and `GET /api/v1/readyz` returns 200. Today those files exist (tickets #7 / #11); **runtime boot is not yet claimed**.
 2. **PostgreSQL and the Java service run on the existing OVH VPS** (`vps-c39cdf03.vps.ovh.net`). Not laptop-only compose. Private data-plane on the Docker network; do not publish `5432` / `6379` / `9000`. Public story stays Caddy → `127.0.0.1:8080`. Today the VM is still one `docker run` API container (tag **v0.1.1** probe/replace).
-3. **Sign-up and sign-in** (existing ticket #12; log-out stays in that ticket because it is already specified). **Not shipped today**.
+3. **Sign-up and sign-in** (existing ticket #12; log-out stays in that ticket because it is already specified). OpenAPI stub and UI pages exist on `develop`. The service has **not** landed. **Not done today**.
 4. **Developers and coding agents can work** on `gym-buddy-service`, `gym-buddy-ui`, and `gym-buddy-openapi`, push to `develop`, and when a version is stable, update the remote machines via the existing Release → Deploy path.
 
 Do not invent extra product features for this slice: no friends, feed, events, search, chat, or admin UI.

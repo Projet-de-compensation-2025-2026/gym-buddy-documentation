@@ -25,7 +25,7 @@ The HTTP API is specified in a **dedicated repository**, not discovered from a r
 | --- | --- | --- |
 | Document | OpenAPI 3.1.0 stub (`info.version` `0.1.0`) | Full `/api/v1` |
 | Health | `GET /api/v1/healthz` and `GET /api/v1/readyz` (stub **and** service) | `GET /api/v1/healthz` and `GET /api/v1/readyz` |
-| Auth | Stub documents `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` (openapi #4 / ticket #12). Service and UI have **not** shipped them. | Same four operations, implemented |
+| Auth | Stub documents `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` (openapi #4 / ticket #12). UI on `develop` has `/register`, `/login`, and a log-out control that call register / login / logout (ui #3). Service has **not** implemented them (service #5 still open). | Same four operations, implemented |
 
 Locked health paths: [01-API-conventions.md](01-API-conventions.md). The service implements `healthz` / `readyz` on `develop`. Public contract is not `/actuator/health`.
 
@@ -38,7 +38,7 @@ Auth paths on the stub (server prefix `/api/v1`; [gym-buddy-openapi#4](https://g
 | `POST` | `/api/v1/auth/refresh` | Cookie only → new access, rotated refresh `jti`. |
 | `POST` | `/api/v1/auth/logout` | Revokes refresh `jti` in Redis denylist; clears cookie. |
 
-This is a contract document, not an implementation. Ticket #12 stays open until the service and UI ship register / login / logout.
+This is a contract document, not an implementation. The UI pages exist; the service has **not** landed. Ticket #12 stays open until register / login / logout works end-to-end.
 
 ## Why not “just expose `/v3/api-docs`”
 

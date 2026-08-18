@@ -7,14 +7,14 @@
 
 The member frontend is the athlete-facing web app: **Angular 22** + **TypeScript 7.0** ([07-Technology-choices.md](07-Technology-choices.md)). It talks to the backend through a client **generated from** [`gym-buddy-openapi`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi). The static build is eligible for GitHub Pages ([08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md)).
 
-Today `gym-buddy-ui` is a static HTML probe. Angular work has not started.
+Today `gym-buddy-ui` on `develop` is Angular 22 (app version `0.1.0`, ui #3 / ticket #12): `/register`, `/login`, and a log-out control that call `POST /api/v1/auth/register`, `/login`, `/logout`. Access JWT stays in memory. Refresh cookie credentials are sent (`path /api/v1/auth`). No friends / feed / events. The service has **not** implemented those endpoints, so end-to-end sign-up / sign-in is not done.
 
 ## API base URL
 
 | Environment | `apiBaseUrl` |
 | --- | --- |
-| Local | `http://localhost:8080/api/v1` |
-| Live (operator network) | `https://vps-c39cdf03.vps.ovh.net/api/v1` once Spring exists |
+| Local | `http://127.0.0.1:8080/api/v1` (`environment.ts`; `ng serve` proxies `/api`) |
+| Live (operator network) | `https://vps-c39cdf03.vps.ovh.net/api/v1` — today’s VPS container is still the health-only replace (tag **v0.1.1**), not auth |
 
 ## Surfaces
 

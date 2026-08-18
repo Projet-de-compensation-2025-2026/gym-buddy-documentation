@@ -7,17 +7,17 @@
 
 The approved / target backend is a single **Java 25 LTS** service (Spring Boot — see [07-Technology-choices.md](07-Technology-choices.md)) exposing HTTP and a WebSocket gateway. It **implements** the contract published in [`gym-buddy-openapi`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi); it does not own that contract.
 
-Today [`gym-buddy-service`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service) `develop` **is** that stack: `pom.xml` exists (ticket #11). Register / login / logout are not shipped.
+Today [`gym-buddy-service`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service) `develop` **is** that stack: `pom.xml` exists (ticket #11). Register / login / logout are **not** implemented on the service (service #5 still open). The UI has the matching pages (ui #3).
 
 ## Today versus target
 
 | | Today | Target |
 | --- | --- | --- |
 | Runtime | Java 25 LTS / Spring Boot (`pom.xml` on `develop`) | Java 25 LTS / Spring Boot modular monolith |
-| Contract | Service and OpenAPI stub: `GET /api/v1/healthz` and `GET /api/v1/readyz`. Public contract is **not** `/actuator/health`. | Full `/api/v1`; health stays `healthz` / `readyz` |
+| Contract | Service implements `GET /api/v1/healthz` and `GET /api/v1/readyz`. OpenAPI stub also documents `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` (openapi #4). Service has **not** implemented auth. Public contract is **not** `/actuator/health`. | Full `/api/v1`; health stays `healthz` / `readyz` |
 | Data plane | Local compose (PostgreSQL 18, Redis, MinIO). Flyway **V1 baseline** only. None on the VPS | Same local compose; private data-plane compose on the VPS; full domain schema |
 
-Do not claim register / login / logout, VPS compose, or domain tables beyond Flyway V1.
+Do not claim the service shipped register / login / logout, VPS compose, or domain tables beyond Flyway V1.
 
 ## Modules
 
