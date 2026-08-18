@@ -28,7 +28,7 @@ This page is updated after implementation. It already records **design-level** s
 - Search quality on messy city strings will be poor without geocoding.
 - Instant messaging is not E2E encrypted; staff can read plaintext in the DB.
 - Large fixtures with shared image keys make the demo look repetitive.
-- Angular 22 auth pages exist on `develop` (ui #3). Service auth is on `develop` (service #5 / `e2ef2aa`): `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout`. Ticket #12 is closed. Do not claim login is running on the VPS. Local compose is proven on a laptop. VPS data-plane **files** landed (service #7 / `a07e21e`); **apply is not done**. The VPS still runs one API container. Ticket #20 stays open. Flyway on `develop` is V1 + V2 (`users` + `profiles`).
+- Angular 22 auth pages exist on `develop` (ui #3). Service auth is on `develop` (service #5 / `e2ef2aa`): `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout`. Ticket #12 is closed / Done. Do not claim login is running on the VPS. Local compose is proven on a laptop. VPS apply is **done** (ticket #20 **Done**; Kernel rebuilt as develop `e2ef2aa`): loopback `healthz` / `readyz` 200; data-plane ports unpublished. Empty register → 422 `VALIDATION` is not a signup / login proof. Caddy is not proven. Flyway on `develop` is V1 + V2 (`users` + `profiles`).
 
 ## Risks
 
@@ -43,4 +43,4 @@ This page is updated after implementation. It already records **design-level** s
 
 ## Academic honesty
 
-Do not claim machine learning if we ship weighted sums. The justification pages exist so the defense can be precise. `gym-buddy-service` `develop` is Java 25 LTS / Spring Boot (`pom.xml`) and implements register / login / refresh / logout (service #5 / `e2ef2aa`). Do not claim the last tagged VPS image (`v0.1.1`) until a new Release, and do not claim login on the VPS. Local laptop compose is proven (`docs/local-compose-proof.md`). VPS compose files exist on `develop`; do not claim VPS apply, a live VPS data plane, or VPS `healthz` / `readyz` 200.
+Do not claim machine learning if we ship weighted sums. The justification pages exist so the defense can be precise. `gym-buddy-service` `develop` is Java 25 LTS / Spring Boot (`pom.xml`) and implements register / login / refresh / logout (service #5 / `e2ef2aa`). Ticket #12 is closed / Done. The VPS runs that **`e2ef2aa` build** on loopback (`healthz` / `readyz` 200); ticket #20 is **Done**. That is **not** a GHCR / Release. Do not claim login on the VPS. Do not claim Caddy is proven. Local laptop compose is proven (`docs/local-compose-proof.md`).

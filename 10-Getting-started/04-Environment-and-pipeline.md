@@ -9,16 +9,16 @@ How to run Gym Buddies locally, how a change is proven and released, and how the
 
 ## Today versus target
 
-Be honest at the defense. The pipeline, the VPS API replace, the **local data-plane files**, and the **Java 25 LTS / Spring Boot** service exist on `develop` (`pom.xml`, ticket #11). Local compose runtime is **proven on a laptop** ([gym-buddy-service#6](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/6) / `025a351`; evidence: [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md)). `gym-buddy-service` `develop` implements `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` ([gym-buddy-service#5](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/5) / `e2ef2aa`): Argon2id, HS256 access JWT, refresh cookie, Redis denylist — [../40-Technical-specifications/02-JWT-authentication.md](../40-Technical-specifications/02-JWT-authentication.md). OpenAPI stub (openapi #4) and UI pages (ui #3) were already on `develop`. Ticket #12 is **closed**. Do **not** claim login is running on the VPS. VPS data-plane **files** landed on `gym-buddy-service` `develop` ([gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e`). **Apply is not done.** Do not claim the VPS is running PostgreSQL + the Java service, and do not claim VPS `healthz` / `readyz` 200. Ticket #20 stays **open / Todo**. That remaining apply is the **documentation `0.3.0` technical foundation** ([../70-Engineering-practices/06-Versioning.md](../70-Engineering-practices/06-Versioning.md)). There is no planned application `0.2.0` next slice.
+Be honest at the defense. The pipeline, the VPS API replace path, the **local data-plane files**, and the **Java 25 LTS / Spring Boot** service exist on `develop` (`pom.xml`, ticket #11). Local compose runtime is **proven on a laptop** ([gym-buddy-service#6](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/6) / `025a351`; evidence: [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md)). `gym-buddy-service` `develop` implements `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` ([gym-buddy-service#5](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/5) / `e2ef2aa`): Argon2id, HS256 access JWT, refresh cookie, Redis denylist — [../40-Technical-specifications/02-JWT-authentication.md](../40-Technical-specifications/02-JWT-authentication.md). OpenAPI stub (openapi #4) and UI pages (ui #3) were already on `develop`. Ticket #12 is **closed / Done**. Do **not** claim login is running on the VPS. VPS apply **is done** (ticket #20 **Done**; [gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e` files; Kernel rebuilt the VPS as develop `e2ef2aa`; Sentinel confirm): `GET /api/v1/healthz` and `GET /api/v1/readyz` 200 on `127.0.0.1:8080`; Java API bound to `127.0.0.1`; PostgreSQL 18.6 / Redis / MinIO on `gym-buddy-data`; ports `5432` / `6379` / `9000` / `9001` unpublished. The VPS runs the **develop `e2ef2aa` build**, not a pre-auth snapshot and **not** a GHCR / Release tag. `POST /api/v1/auth/register` with an empty body returned **422 `VALIDATION`**: the endpoint is live; that is **not** a successful signup and **not** a completed VPS register / login. Caddy was not reachable from Sentinel; do **not** claim Caddy is proven. Documentation `0.3.0` foundation: [../70-Engineering-practices/06-Versioning.md](../70-Engineering-practices/06-Versioning.md). There is no planned application `0.2.0` next slice.
 
 | Piece | Today (August 2026) | Target (locked) |
 | --- | --- | --- |
-| `gym-buddy-service` | Java 25 LTS / Spring Boot (`pom.xml` on `develop`). Flyway `V1__baseline.sql` and `V2__users_and_profiles.sql`. Implements `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` (service #5 / `e2ef2aa`). `compose.yaml` and `.env.example` are in the repo. Latest released tag **v0.1.1** (health-only replace; do not claim login on the VPS). | Java 25 LTS / Spring Boot modular monolith |
+| `gym-buddy-service` | Java 25 LTS / Spring Boot (`pom.xml` on `develop`). Flyway `V1__baseline.sql` and `V2__users_and_profiles.sql`. Implements `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` (service #5 / `e2ef2aa`). `compose.yaml` and `.env.example` are in the repo. VPS runs the **develop `e2ef2aa` build** (not a GHCR / Release tag). Do not claim login on the VPS. | Java 25 LTS / Spring Boot modular monolith |
 | `gym-buddy-openapi` | OpenAPI 3.1.0 stub (`info.version` `0.1.0`): `GET /healthz` and `GET /readyz` under `/api/v1`, plus `POST /auth/register`, `/login`, `/refresh`, `/logout` (openapi #4 / ticket #12). The service on `develop` implements those four operations. | Full contract; health stays `GET /api/v1/healthz` and `GET /api/v1/readyz` |
 | `gym-buddy-ui` | Angular 22 (app version `0.1.0`), **TypeScript `~6.0.2`**, **`packageManager`: `npm@10.9.8`**: `/register`, `/login`, and a log-out control that call `POST /api/v1/auth/register`, `/login`, `/logout` (ui #3). Access JWT in memory. Refresh cookie credentials sent (`path /api/v1/auth`). No friends / feed / events. Service auth is on `develop`; do not claim those pages hit the VPS. Do not claim TypeScript 7 or pnpm already landed. | Angular 22 + **TypeScript 7.0.0** + **pnpm** (Corepack pin, committed `pnpm-lock.yaml`, `minimumReleaseAge` **40320** minutes, `onlyBuiltDependencies` and/or ignore-scripts) member app + back-office |
 | Health | Service implements unauthenticated `GET /api/v1/healthz` (liveness) and `GET /api/v1/readyz` (`200` or `503` with `details` for `postgres` / `objectStorage`). CI smoke hits **`GET /api/v1/healthz` only** — the smoke image is built without Postgres/MinIO. Probe `GET /` is not today’s service smoke. | Same public paths. Do not smoke `/actuator/health`. |
 | Local data plane | Laptop compose **proven** ([gym-buddy-service#6](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/6) / `025a351`, 2026-08-18 10:40:55Z): `cp .env.example .env && docker compose up -d --build`. Postgres 18.6, Redis 8.10.0, MinIO `RELEASE.2025-09-07T16-13-09Z`, Java 25.0.3 Temurin / Spring Boot 4.1.0. Binds `127.0.0.1` only (`8080`, `5432`, `6379`, `9000`, `9001`). `GET /api/v1/healthz` → 200 `{"status":"ok"}`. `GET /api/v1/readyz` → 200 `{"status":"ok"}`. Evidence: [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md). `.env` stays gitignored; only `.env.example` is in git. **Not** the VPS. | Same file |
-| VM | One API container (`docker run` via `replace.sh`), bound to `127.0.0.1:8080`. Caddy terminates TLS. VPS data-plane **files** exist on `develop` (`deploy/compose.yaml`, `deploy/replace.sh`, `deploy/vps.env.example`, [`docs/vps-data-plane.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/vps-data-plane.md); [gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e`). **Apply is not done.** Do not claim VPS `healthz` / `readyz` 200, and do not claim login on the VPS. | Same API replace, plus a **private** data-plane compose **applied** on the Docker network (`5432` / `6379` / `9000` / `9001` not published) |
+| VM | Apply **done** (ticket #20 **Done**). Develop **`e2ef2aa`** on `127.0.0.1:8080`. `GET /api/v1/healthz` and `GET /api/v1/readyz` 200 on loopback. PostgreSQL 18.6 / Redis / MinIO on `gym-buddy-data`; `5432` / `6379` / `9000` / `9001` unpublished. **Not** a GHCR / Release. Empty `POST /api/v1/auth/register` → **422 `VALIDATION`** (endpoint live; not a signup / login proof). Do not claim Caddy is proven. | Same loopback API + private data plane; GHCR replace when a version is tagged |
 | Production object storage | `SPRING_PROFILES_ACTIVE=prod` **refuses to start** if S3-compatible storage is missing | Same |
 
 Public health is `healthz` / `readyz`, not `/actuator/health`.
@@ -72,8 +72,8 @@ Values live in a local `.env` that is **not** committed. This table is names and
 
 | Key | Where | Purpose |
 | --- | --- | --- |
-| `DATABASE_URL` | Local / VPS env file (apply not done) | PostgreSQL 18 connection |
-| `REDIS_URL` | Local / VPS env file (apply not done) | Cache, refresh denylist, rate limits |
+| `DATABASE_URL` | Local / VPS env file | PostgreSQL 18 connection |
+| `REDIS_URL` | Local / VPS env file | Cache, refresh denylist, rate limits |
 | `JWT_ACCESS_SECRET` | Local / VM | HS256 signing secret for access tokens |
 | `S3_ENDPOINT` | Local MinIO / later production bucket | S3-compatible API URL |
 | `S3_BUCKET` | Local / production | Bucket name |
@@ -154,7 +154,7 @@ Release fails closed: if format, tests, or smoke fail, there is no commit on `ma
 3. If `DEPLOY_HOST`, `DEPLOY_USER`, and `DEPLOY_SSH_KEY` are set, it copies `deploy/replace.sh` over SSH and runs it with the image name plus `GHCR_USERNAME` / `GHCR_TOKEN`.
 4. `replace.sh` on `develop` ([gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e`) logs in to `ghcr.io`, `docker pull`s the tag, stops and removes the previous container, then `docker run`s with `--network gym-buddy-data` (or `DEPLOY_NETWORK`), `-p ${DEPLOY_BIND:-127.0.0.1}:${DEPLOY_HOST_PORT:-8080}:8080`, and `-e` for `SPRING_PROFILES_ACTIVE=prod`, `DATABASE_URL`, `REDIS_URL`, `JWT_ACCESS_SECRET`, `S3_ENDPOINT`, `S3_BUCKET`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`, `S3_REGION` from `/etc/gym-buddy/vps.env` (or `DEPLOY_ENV_FILE`). It fails if that file, a required key, or the Docker network is missing. It refuses `DEPLOY_BIND=0.0.0.0`.
 
-That is still **`docker run`** for the API, not `docker compose up -d` of the API. The data-plane file is `deploy/compose.yaml`. **Those files are on `develop`; apply on the VPS is not done.**
+That is still **`docker run`** for the API, not `docker compose up -d` of the API. The data-plane file is `deploy/compose.yaml`. **Today’s VPS runs the develop `e2ef2aa` build.** That is **not** a GHCR / Release.
 
 `DEPLOY_BIND` defaults to `127.0.0.1`. The container is not published on a public interface. Caddy is the only process that talks to `127.0.0.1:8080`.
 
@@ -194,20 +194,29 @@ Caddy reverse-proxies the hostname to `127.0.0.1:8080` and obtains a Let’s Enc
 
 Do not publish the operator prefix in this public wiki.
 
-### VPS data plane (files on `develop`; apply not done)
+### VPS data plane (apply done on loopback)
 
-[gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) squash-merged as `a07e21e`. Operator steps: [`docs/vps-data-plane.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/vps-data-plane.md).
+[gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) squash-merged as `a07e21e`. Operator steps: [`docs/vps-data-plane.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/vps-data-plane.md). Ticket #20 is **Done** (Kernel loopback + Sentinel confirm).
 
 | Path | Role |
 | --- | --- |
 | `deploy/compose.yaml` | Private data plane: PostgreSQL 18.6, Redis, MinIO on named network `gym-buddy-data`. No published ports. The API is **not** in this file. |
 | `deploy/vps.env.example` | Key template. Copy to `/etc/gym-buddy/vps.env` on the host (not in git). |
-| `deploy/replace.sh` | Still GHCR `docker pull` + `docker run`. Joins `gym-buddy-data`. Injects VPS env. `DEPLOY_BIND` default `127.0.0.1`; `0.0.0.0` refused. |
+| `deploy/replace.sh` | `docker run` of the API. Joins `gym-buddy-data`. Injects VPS env. `DEPLOY_BIND` default `127.0.0.1`; `0.0.0.0` refused. Today’s VPS is the **develop `e2ef2aa` build**, not a GHCR / Release tag. |
 | `docs/vps-data-plane.md` | Operator runbook |
 
-**Apply is not done.** Nobody has proven the VPS is running PostgreSQL + the Java service. Do not claim VPS `healthz` / `readyz` 200. Ticket #20 stays open.
+**Apply is done.** Proven on the VPS loopback (Kernel rebuilt as develop `e2ef2aa`; Sentinel confirm):
 
-When applied, do **not** publish `5432`, `6379`, `9000`, or `9001` on the host. The API container reaches them by Docker DNS (`postgres`, `redis`, `minio`). The public story stays: Caddy → `127.0.0.1:8080`.
+- `GET /api/v1/healthz` 200 and `GET /api/v1/readyz` 200 on `127.0.0.1:8080`
+- Java API bind `127.0.0.1`
+- PostgreSQL 18.6 / Redis / MinIO on `gym-buddy-data`
+- Ports `5432` / `6379` / `9000` / `9001` unpublished
+- Running **develop `e2ef2aa`** (not a pre-auth snapshot; not a GHCR / Release tag)
+- `POST /api/v1/auth/register` with an empty body returned **422 `VALIDATION`**: the route is live; this is **not** a successful signup and **not** a completed VPS register / login
+
+This is **not** a GHCR / Release. Do **not** claim login on the VPS. Caddy was not reachable from Sentinel; do **not** claim Caddy is proven.
+
+The API container reaches Postgres / Redis / MinIO by Docker DNS (`postgres`, `redis`, `minio`). Intended public story remains Caddy → `127.0.0.1:8080` (not proven in this confirm).
 
 Local compose (laptop `compose.yaml`) and VPS data-plane compose (`deploy/compose.yaml`) are different files. The laptop may bind those ports to `127.0.0.1` for `psql` / Redis Insight / the MinIO console. The VM must not.
 
@@ -219,11 +228,10 @@ Let’s Encrypt **HTTP-01** needs port **80** reachable from the world for a few
 
 ## What still has to be implemented
 
-The next slice is **documentation `0.3.0`** (technical foundation). Local compose runtime is **done** on a laptop (ticket #19 / service #6 / `025a351`). Sign-up / sign-in / log-out is **on `develop`** (openapi #4, ui #3, service #5 / `e2ef2aa`; ticket #12 closed). VPS data-plane **files** landed (service #7 / `a07e21e`). The items below are still open.
+The next slice is **documentation `0.3.0`** (technical foundation). Local compose runtime is **done** on a laptop (ticket #19 / service #6 / `025a351`). Sign-up / sign-in / log-out is **on `develop`** (openapi #4, ui #3, service #5 / `e2ef2aa`; ticket #12 **closed / Done**). VPS apply is **done** on loopback (service #7 / `a07e21e`; ticket #20 **Done**; develop `e2ef2aa`). The items below are still open.
 
 | Work | Where |
 | --- | --- |
-| Apply `deploy/compose.yaml` on the OVH VPS (`vps-c39cdf03.vps.ovh.net`) and prove PostgreSQL + the Java service (`healthz` / `readyz` 200). Files landed ([gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e`). **Apply is not done.** Private data-plane; do not publish `5432` / `6379` / `9000` / `9001`. Public story stays Caddy → `127.0.0.1:8080`. Today: one `docker run` API container (tag **v0.1.1**). Do not claim login on the VPS. | Ticket #20 — stays **open** / Todo |
 | Expand the OpenAPI contract past health + the four auth operations (rest of `/api/v1`) | `gym-buddy-openapi` |
 | Remaining Angular surfaces (friends / feed / events / back-office) | `gym-buddy-ui` |
 | Instructor cadrage minutes | [../00-Project-brief/01-Scope-and-modules.md](../00-Project-brief/01-Scope-and-modules.md) — still **Not done** |
@@ -232,4 +240,4 @@ The next slice is **documentation `0.3.0`** (technical foundation). Local compos
 
 ## Feature workflow
 
-Wiki first, ticket on this documentation repo, Atlas sets `Todo`. Full sequence: [../70-Engineering-practices/08-Feature-implementation.md](../70-Engineering-practices/08-Feature-implementation.md).
+Wiki first, ticket on this documentation repo, Atlas sets `Todo`, Kernel sets `In Progress`. Full sequence: [../70-Engineering-practices/08-Feature-implementation.md](../70-Engineering-practices/08-Feature-implementation.md).
