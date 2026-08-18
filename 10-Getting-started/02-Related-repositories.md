@@ -29,7 +29,7 @@ The contract is a **git artifact**, not a runtime accident:
 
 Spring may still expose `/v3/api-docs` in development as a convenience. That endpoint is **not** the source of truth. If it disagrees with `gym-buddy-openapi`, the repository wins.
 
-Today the OpenAPI repo is a stub (`GET /api/v1/health` only). Target health paths are `/api/v1/healthz` and `/api/v1/readyz` — [../40-Technical-specifications/01-API-conventions.md](../40-Technical-specifications/01-API-conventions.md).
+Today the OpenAPI repo is a stub (`GET /api/v1/healthz` and `GET /api/v1/readyz`). Those remain the target health paths — [../40-Technical-specifications/01-API-conventions.md](../40-Technical-specifications/01-API-conventions.md).
 
 ## Rules for application repos
 
@@ -43,7 +43,7 @@ Today the OpenAPI repo is a stub (`GET /api/v1/health` only). Target health path
 ```
 gym-buddy-documentation/     ← you are here (wiki + GitHub Project)
 gym-buddy-openapi/           ← HTTP contract
-gym-buddy-service/           ← Java 26 + Spring Boot (probe image until then)
+gym-buddy-service/           ← Java 25 LTS + Spring Boot (probe image until then)
 gym-buddy-ui/                ← Angular 22 (member + back-office)
 ```
 

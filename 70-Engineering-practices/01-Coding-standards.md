@@ -21,7 +21,7 @@ All Gym Buddies application repositories. This wiki uses Markdown rules in [04-D
 
 ## Java (backend)
 
-- Target **Java 26** (fallback Java 25 LTS if a dependency cannot run on 26)
+- Target **Java 25 LTS**
 - `null` avoided at boundaries: `Optional` for absence, Bean Validation on incoming payloads
 - Constructor injection only; no field `@Autowired`
 - Packages follow modules (`…auth`, `…events`, `…suggestions`)

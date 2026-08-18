@@ -19,7 +19,6 @@ This page is updated after implementation. It already records **design-level** s
 
 ## Weaknesses
 
-- Java 26 is the latest GA but not the LTS (that is 25). A library may force a temporary pin to 25.
 - TypeScript 7.0 is new (Go native compiler, July 2026). Angular 22 may trail it by a patch; that gap is a tooling risk, not a product one.
 - GitHub Pages cannot host the Java API or PostgreSQL. The API runs on the OVH VPS; 443 is limited to the operator network, so a stranger cannot open the demo URL without that prefix on UFW.
 - JWT HS256 + Redis denylist is not an identity platform (no step-up auth, no device list).

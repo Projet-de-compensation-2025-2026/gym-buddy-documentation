@@ -13,7 +13,7 @@ Be honest at the defense. The pipeline, the VPS, and the **local data plane** ex
 
 | Piece | Today (August 2026) | Target (locked) |
 | --- | --- | --- |
-| `gym-buddy-service` | Python 3.12 probe (`python:3.12-alpine`). Serves `probe/index.html` on port 8080. `compose.yaml` and `.env.example` are in the repo. No `pom.xml`. Latest released tag **v0.1.1**. | Java 26 / Spring Boot modular monolith |
+| `gym-buddy-service` | Python 3.12 probe (`python:3.12-alpine`). Serves `probe/index.html` on port 8080. `compose.yaml` and `.env.example` are in the repo. No `pom.xml`. Latest released tag **v0.1.1**. | Java 25 LTS / Spring Boot modular monolith |
 | `gym-buddy-openapi` | OpenAPI 3.1.0 stub: `GET /healthz` and `GET /readyz` under `/api/v1` | Full contract; health stays `GET /api/v1/healthz` and `GET /api/v1/readyz` |
 | `gym-buddy-ui` | Static HTML probe | Angular 22 member app + back-office |
 | Health | Probe answers `GET /`. Smoke looks for the string `Gym Buddy`. | Unauthenticated `GET /api/v1/healthz` (liveness) and `GET /api/v1/readyz` (PostgreSQL + object storage reachable) |
@@ -27,7 +27,7 @@ Do not claim Spring, Flyway, or Actuator exist until `pom.xml` is in `gym-buddy-
 
 When Spring work starts, a laptop is ready when all of these are true:
 
-1. **JDK 26** installed (Java 25 LTS is the fallback if a library does not run on 26 — see [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md)).
+1. **JDK 25 LTS** installed (see [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md)).
 2. **Docker** and Compose v2 available.
 3. Clone the four repositories (URLs in [02-Related-repositories.md](02-Related-repositories.md)). Default branch is `develop` everywhere.
 4. `compose.yaml` and `.env.example` are in `gym-buddy-service` (ticket #7).
