@@ -26,7 +26,7 @@ Today the app has `/register`, `/login`, and a log-out control that call `POST /
 | Environment | `apiBaseUrl` |
 | --- | --- |
 | Local | `http://127.0.0.1:8080/api/v1` (`environment.ts`; `ng serve` proxies `/api`) |
-| Live (operator network) | `https://vps-c39cdf03.vps.ovh.net/api/v1` — VPS container is `develop` **`e2ef2aa`**. Loopback `GET /actuator/health/healthz` and `GET /actuator/health/readyz` **200**. Empty/invalid `POST /auth/register` → **422 `VALIDATION`** (route live; **not** a completed register/login). Caddy is **not** proven. **Not** a GHCR pull / Release |
+| Live (operator network) | `https://vps-c39cdf03.vps.ovh.net/api/v1` — VPS container is `develop` **`e2ef2aa`**. Loopback `GET healthz` and `GET readyz` **200**. A bad `POST /api/v1/auth/register` → **422 `VALIDATION`** (auth routes exist; **not** a completed register/login). Caddy is **not** proven. **Not** a GHCR pull / Release |
 
 ## Surfaces
 
