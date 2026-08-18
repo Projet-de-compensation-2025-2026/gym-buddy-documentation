@@ -27,7 +27,7 @@ This page is updated after implementation. It already records **design-level** s
 - Search quality on messy city strings will be poor without geocoding.
 - Instant messaging is not E2E encrypted; staff can read plaintext in the DB.
 - Large fixtures with shared image keys make the demo look repetitive.
-- The service is still a Python probe. Spring, compose, and Angular are not started.
+- Angular is not started. Register / login / logout are not shipped. The VPS still runs one API container (no data-plane compose). Flyway on `develop` is V1 baseline only.
 
 ## Risks
 
@@ -42,4 +42,4 @@ This page is updated after implementation. It already records **design-level** s
 
 ## Academic honesty
 
-Do not claim machine learning if we ship weighted sums. The justification pages exist so the defense can be precise. Do not claim Spring is in production while the probe image is what Deploy ships.
+Do not claim machine learning if we ship weighted sums. The justification pages exist so the defense can be precise. `gym-buddy-service` `develop` is Java 25 LTS / Spring Boot (`pom.xml`); do not claim the last tagged VPS image (`v0.1.1`) until a new Release. Do not claim register / login / logout or VPS compose.

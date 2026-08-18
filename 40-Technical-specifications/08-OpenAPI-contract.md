@@ -24,9 +24,9 @@ The HTTP API is specified in a **dedicated repository**, not discovered from a r
 | | Today | Target |
 | --- | --- | --- |
 | Document | OpenAPI 3.1.0 stub | Full `/api/v1` |
-| Health | `GET /api/v1/healthz` and `GET /api/v1/readyz` | `GET /api/v1/healthz` and `GET /api/v1/readyz` |
+| Health | `GET /api/v1/healthz` and `GET /api/v1/readyz` (stub **and** service) | `GET /api/v1/healthz` and `GET /api/v1/readyz` |
 
-Locked paths: [01-API-conventions.md](01-API-conventions.md). The service does not implement them yet.
+Locked paths: [01-API-conventions.md](01-API-conventions.md). The service implements them on `develop`. Public contract is not `/actuator/health`.
 
 ## Why not “just expose `/v3/api-docs`”
 
