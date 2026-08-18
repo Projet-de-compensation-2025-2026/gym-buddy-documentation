@@ -16,6 +16,7 @@ This page is updated after implementation. It already records **design-level** s
 - Spec IDs give tests and the report a traceability story.
 - Two clients (member + back-office) satisfy the implementation triad without a mobile program.
 - The live API already has a pipeline (CI → Release → GHCR → `replace.sh`) and a named host (`vps-c39cdf03.vps.ovh.net`) behind Caddy.
+- Local compose boots on a laptop: Postgres 18.6, Redis, MinIO, and the Java 25 LTS Spring API answer `healthz` / `readyz` 200 (`docs/local-compose-proof.md` on `gym-buddy-service` `develop`).
 
 ## Weaknesses
 
@@ -27,7 +28,7 @@ This page is updated after implementation. It already records **design-level** s
 - Search quality on messy city strings will be poor without geocoding.
 - Instant messaging is not E2E encrypted; staff can read plaintext in the DB.
 - Large fixtures with shared image keys make the demo look repetitive.
-- Angular 22 auth pages exist on `develop` (ui #3). Register / login / logout is not a done product slice: the service has not implemented those operations (service #5 still open). The VPS still runs one API container (no data-plane compose). Flyway on `develop` is V1 baseline only.
+- Angular 22 auth pages exist on `develop` (ui #3). Register / login / logout is not a done product slice: the service has not implemented those operations (service #5 still open). Local compose is proven on a laptop. The VPS still runs one API container (no data-plane compose; ticket #20). Flyway on `develop` is V1 baseline only.
 
 ## Risks
 
@@ -42,4 +43,4 @@ This page is updated after implementation. It already records **design-level** s
 
 ## Academic honesty
 
-Do not claim machine learning if we ship weighted sums. The justification pages exist so the defense can be precise. `gym-buddy-service` `develop` is Java 25 LTS / Spring Boot (`pom.xml`); do not claim the last tagged VPS image (`v0.1.1`) until a new Release. Do not claim register / login / logout or VPS compose.
+Do not claim machine learning if we ship weighted sums. The justification pages exist so the defense can be precise. `gym-buddy-service` `develop` is Java 25 LTS / Spring Boot (`pom.xml`); do not claim the last tagged VPS image (`v0.1.1`) until a new Release. Local laptop compose is proven (`docs/local-compose-proof.md`). Do not claim register / login / logout or VPS compose.

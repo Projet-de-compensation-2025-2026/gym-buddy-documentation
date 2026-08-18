@@ -71,7 +71,7 @@ Rejected for the API (fine as notes, not the plan): Render, Fly.io, Railway as t
 | --- | --- |
 | Java API (probe today) | Docker on the VPS, bound to `127.0.0.1:8080` |
 | HTTPS | Caddy on the hostname → loopback `:8080`, Let’s Encrypt |
-| PostgreSQL 18 / Redis / MinIO | Local compose first. On the VPS later: private Docker network, ports not published |
+| PostgreSQL 18 / Redis / MinIO | Local compose proven on a laptop (`docs/local-compose-proof.md`). On the VPS later (ticket #20): private Docker network, ports not published |
 | Public `:8080` | Never. UFW denies it. |
 
 UFW: 22 open; 80 denied except during certificate HTTP-01; 443 allowed only from the operator IPv6 prefix configured on the server (the prefix is not written in this public wiki); 8080 denied.

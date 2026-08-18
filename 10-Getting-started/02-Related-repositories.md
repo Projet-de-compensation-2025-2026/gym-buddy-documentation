@@ -47,6 +47,6 @@ gym-buddy-service/           ← Java 25 LTS + Spring Boot (`pom.xml` on develop
 gym-buddy-ui/                ← Angular 22 (member + back-office)
 ```
 
-A compose file in the backend repo will start PostgreSQL 18, MinIO, Redis, and the API. The Angular apps point at `http://localhost:8080/api/v1`. OpenAPI files are consumed as a git submodule, a published package, or a raw tagged URL — pick one in the backend README and stick to it.
+A laptop `compose.yaml` in the backend repo starts PostgreSQL 18, MinIO, Redis, and the API. That boot is **proven** ([`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md) on `gym-buddy-service` `develop`). The Angular apps point at `http://localhost:8080/api/v1`. OpenAPI files are consumed as a git submodule, a published package, or a raw tagged URL — pick one in the backend README and stick to it. This is **not** the VPS story.
 
 How to run it, which ports to bind, and how a release reaches the VPS: [04-Environment-and-pipeline.md](04-Environment-and-pipeline.md).
