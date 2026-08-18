@@ -62,7 +62,7 @@ You do not need Jenkins, a second CI product, or to click through GitHub’s UI 
 1. **Every pull request targeting `develop` starts the CI workflow.** A push directly to `develop` does too.
 2. **`main` only moves via the Release workflow.** The result is a **squash** commit whose message is `release: vX.Y.Z` and an annotated tag `vX.Y.Z` on that commit.
 3. Release **fails closed**: if format, tests, or the smoke run fail, there is **no** commit on `main` and **no** tag.
-4. Versioning is **automatic** from Conventional Commits and the previous tag. You may **override** the number when you start the workflow.
+4. Versioning is **automatic** from Conventional Commits and the previous tag. You may **override** the number when you start the workflow. **Locked target:** that number is written into UI `package.json` and service `pom.xml` (and any matching lock / changelog Release already touches). **Today** UI/service Release do **not** write those files. OpenAPI Release already syncs `package.json`. New application versions stay **0.1.x** unless [06-Versioning.md](06-Versioning.md) says otherwise.
 5. A successful tag on `main` **is** the deploy: Pages for static repos, Docker image + VM replace for `gym-buddy-service`.
 
 ## The three jobs in detail
@@ -124,6 +124,10 @@ Release then, in order:
 10. Calls **Deploy**.
 
 If any of 2–4 fail, steps 7–10 do not run.
+
+**Locked target (Joaquim):** Release writes the new SemVer into UI `package.json` and service `pom.xml` (and any matching lock / changelog the existing Release already touches), then commits and tags. Humans do not hand-edit those versions. New application versions stay **0.1.x** unless [06-Versioning.md](06-Versioning.md) says otherwise. Do **not** invent **1.0.0**.
+
+**Today** (read from each repo’s `develop` `release.yml` via the GitHub API): UI and service Release do **not** bump those files. They compute SemVer, run `prepare_changelog.py`, commit if the changelog is dirty, squash, and tag. OpenAPI Release already runs `sync_package_version.py` (`package.json` + `info.version`). That is OpenAPI-only, not UI/service. Service `pom.xml` is **0.2.0-SNAPSHOT** today (the file, not a new 0.2.0 product release). UI `package.json` is **0.1.0**. Live UI is **v0.1.1**. That UI/service file bump is **not landed**.
 
 On `gym-buddy-service` this is how **v0.1.1** was cut.
 
