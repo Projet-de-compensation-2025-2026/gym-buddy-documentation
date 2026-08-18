@@ -29,7 +29,7 @@ The contract is a **git artifact**, not a runtime accident:
 
 Spring may still expose `/v3/api-docs` in development as a convenience. That endpoint is **not** the source of truth. If it disagrees with `gym-buddy-openapi`, the repository wins.
 
-Today the OpenAPI stub **and** the service implement `GET /api/v1/healthz` and `GET /api/v1/readyz`. Those remain the public health paths — [../40-Technical-specifications/01-API-conventions.md](../40-Technical-specifications/01-API-conventions.md). The public contract is not `/actuator/health`.
+Today the OpenAPI stub **and** the service implement `GET /api/v1/healthz` and `GET /api/v1/readyz`. Those remain the public health paths — [../40-Technical-specifications/01-API-conventions.md](../40-Technical-specifications/01-API-conventions.md). The public contract is not `/actuator/health`. The same stub also documents `POST /api/v1/auth/register`, `/login`, `/refresh`, and `/logout` (openapi #4 / ticket #12). The service and UI have **not** shipped those operations.
 
 ## Rules for application repos
 

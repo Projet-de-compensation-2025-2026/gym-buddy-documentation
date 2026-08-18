@@ -65,7 +65,7 @@ Do not publish `/actuator/health` as the contract. Actuator may exist internally
 
 | Surface | Path today | Notes |
 | --- | --- | --- |
-| `gym-buddy-service` on `develop` | `GET /api/v1/healthz` and `GET /api/v1/readyz` | Implemented (ticket #11). `readyz` is `200` or `503` with `details` for `postgres` / `objectStorage`. |
+| `gym-buddy-service` on `develop` | `GET /api/v1/healthz` and `GET /api/v1/readyz` | Implemented (ticket #11). `readyz` is `200` or `503` with `details` for `postgres` / `objectStorage`. Auth is **not** implemented. |
 | CI smoke | `GET /api/v1/healthz` only | The smoke image is built without Postgres/MinIO. Probe `GET /` is not today’s smoke. |
-| `gym-buddy-openapi` stub | `GET /api/v1/healthz` and `GET /api/v1/readyz` | Stub and service agree (openapi #2 / ticket #11). |
-| This page | `healthz` / `readyz` | Source of truth for the public health contract. Not `/actuator/health`. |
+| `gym-buddy-openapi` stub | `GET /api/v1/healthz` and `GET /api/v1/readyz`, plus `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` | Health agrees with the service (openapi #2 / ticket #11). Auth is documented only (openapi #4 / ticket #12). |
+| This page | `healthz` / `readyz` | Source of truth for the public health contract. Not `/actuator/health`. Auth flows: [02-JWT-authentication.md](02-JWT-authentication.md). |

@@ -14,7 +14,7 @@ Be honest at the defense. The pipeline, the VPS API replace, the **local data-pl
 | Piece | Today (August 2026) | Target (locked) |
 | --- | --- | --- |
 | `gym-buddy-service` | Java 25 LTS / Spring Boot (`pom.xml` on `develop`). Flyway `V1__baseline.sql`. `compose.yaml` and `.env.example` are in the repo. Latest released tag **v0.1.1**. | Java 25 LTS / Spring Boot modular monolith |
-| `gym-buddy-openapi` | OpenAPI 3.1.0 stub: `GET /healthz` and `GET /readyz` under `/api/v1` | Full contract; health stays `GET /api/v1/healthz` and `GET /api/v1/readyz` |
+| `gym-buddy-openapi` | OpenAPI 3.1.0 stub (`info.version` `0.1.0`): `GET /healthz` and `GET /readyz` under `/api/v1`, plus `POST /auth/register`, `/login`, `/refresh`, `/logout` (openapi #4 / ticket #12). Service and UI have **not** shipped auth. | Full contract; health stays `GET /api/v1/healthz` and `GET /api/v1/readyz` |
 | `gym-buddy-ui` | Static HTML probe | Angular 22 member app + back-office |
 | Health | Service implements unauthenticated `GET /api/v1/healthz` (liveness) and `GET /api/v1/readyz` (`200` or `503` with `details` for `postgres` / `objectStorage`). CI smoke hits **`GET /api/v1/healthz` only** — the smoke image is built without Postgres/MinIO. Probe `GET /` is not today’s service smoke. | Same public paths. Do not smoke `/actuator/health`. |
 | Local data plane | `compose.yaml` in `gym-buddy-service`: Postgres 18, Redis, MinIO, Spring API, optional MailHog. All binds `127.0.0.1`. Files exist (ticket #7). **Runtime boot is not claimed** (documentation `0.3.0`). | Same file |
@@ -168,7 +168,7 @@ If the three SSH secrets are missing, Deploy still pushes the image and **skips*
 | Today (implemented) | `GET /api/v1/readyz`: `200` when PostgreSQL and object storage are reachable, else `503` with `details` naming `postgres` and/or `objectStorage` (Testcontainers / local compose). |
 | Not today | Probe `GET /`. `/actuator/health` is not the public contract. |
 
-The OpenAPI stub **and** the service implement `GET /api/v1/healthz` and `GET /api/v1/readyz` (ticket #11 / [gym-buddy-openapi#2](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi/pull/2)).
+The OpenAPI stub **and** the service implement `GET /api/v1/healthz` and `GET /api/v1/readyz` (ticket #11 / [gym-buddy-openapi#2](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi/pull/2)). The stub also documents the four auth operations (openapi #4 / ticket #12); the service has **not** implemented them.
 
 ## VPS
 
@@ -216,8 +216,8 @@ The next slice is **documentation `0.3.0`** (technical foundation). None of the 
 | --- | --- |
 | Prove local compose at runtime: `docker compose up -d` on a laptop; Postgres 18, Redis, MinIO, Java 25 LTS Spring service; binds `127.0.0.1`; `GET /api/v1/healthz` 200 and `GET /api/v1/readyz` 200. Files exist (tickets #7 / #11); boot is not claimed. | Laptop + `gym-buddy-service` |
 | PostgreSQL and the Java service on the OVH VPS (`vps-c39cdf03.vps.ovh.net`). Private data-plane on the Docker network; do not publish `5432` / `6379` / `9000`. Public story stays Caddy → `127.0.0.1:8080`. Today: one `docker run` API container (tag **v0.1.1**). | Operator + `gym-buddy-service` |
-| Sign-up and sign-in (log-out stays in the same ticket) | Ticket #12 — not shipped |
-| Expand the OpenAPI contract past `healthz` / `readyz` (auth and the rest of `/api/v1`) | `gym-buddy-openapi` |
+| Sign-up and sign-in (log-out stays in the same ticket) | Ticket #12 — OpenAPI paths exist on the stub; service and UI have **not** shipped auth |
+| Expand the OpenAPI contract past health + the four auth operations (rest of `/api/v1`) | `gym-buddy-openapi` |
 | Angular 22 apps | `gym-buddy-ui` |
 | Instructor cadrage minutes | [../00-Project-brief/01-Scope-and-modules.md](../00-Project-brief/01-Scope-and-modules.md) — still **Not done** |
 
