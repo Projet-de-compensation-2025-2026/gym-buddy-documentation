@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Format the wiki. CI passes --check; Release passes --write.
+# Format the wiki. Default is --check; CI and Release pass --write.
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/../../.." && pwd)"
