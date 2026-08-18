@@ -7,17 +7,17 @@
 
 The approved / target backend is a single **Java 25 LTS** service (Spring Boot — see [07-Technology-choices.md](07-Technology-choices.md)) exposing HTTP and a WebSocket gateway. It **implements** the contract published in [`gym-buddy-openapi`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi); it does not own that contract.
 
-Today [`gym-buddy-service`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service) `develop` **is** that stack: `pom.xml` exists (ticket #11). Register / login / logout are **not** implemented on the service (service #5 still open). The UI has the matching pages (ui #3).
+Today [`gym-buddy-service`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service) `develop` **is** that stack: `pom.xml` exists (ticket #11). Register / login / refresh / logout **are** implemented on the service ([gym-buddy-service#5](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/5) / `e2ef2aa`): Argon2id, HS256 access JWT, refresh cookie, Redis denylist. The UI has the matching pages (ui #3). OpenAPI stub documents the same four paths (openapi #4). Ticket #12 is closed. Do not claim login is running on the VPS.
 
 ## Today versus target
 
 | | Today | Target |
 | --- | --- | --- |
 | Runtime | Java 25 LTS / Spring Boot (`pom.xml` on `develop`) | Java 25 LTS / Spring Boot modular monolith |
-| Contract | Service implements `GET /api/v1/healthz` and `GET /api/v1/readyz`. OpenAPI stub also documents `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` (openapi #4). Service has **not** implemented auth. Public contract is **not** `/actuator/health`. | Full `/api/v1`; health stays `healthz` / `readyz` |
-| Data plane | Local compose **proven on a laptop** (PostgreSQL 18.6, Redis, MinIO; [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md)). Flyway **V1 baseline** only. VPS data-plane **files** on `develop` ([gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e`); **apply is not done** | Same local compose; private data-plane compose **applied** on the VPS; full domain schema |
+| Contract | Service implements `GET /api/v1/healthz` and `GET /api/v1/readyz`, plus `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` (service #5 / `e2ef2aa`). OpenAPI stub documents the same four auth paths (openapi #4). Public contract is **not** `/actuator/health`. | Full `/api/v1`; health stays `healthz` / `readyz` |
+| Data plane | Local compose **proven on a laptop** (PostgreSQL 18.6, Redis, MinIO; [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md)). Flyway **V1** + **V2** (`users` + `profiles`). VPS data-plane **files** on `develop` ([gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e`); **apply is not done** | Same local compose; private data-plane compose **applied** on the VPS; full domain schema |
 
-Do not claim the service shipped register / login / logout, VPS apply, VPS `healthz` / `readyz` 200, or domain tables beyond Flyway V1. Local laptop compose is proven. VPS compose files exist.
+Do not claim VPS apply, VPS `healthz` / `readyz` 200, login on the VPS, or domain tables beyond Flyway V2. Local laptop compose is proven. Service auth is on `develop`. VPS compose files exist.
 
 ## Modules
 

@@ -9,7 +9,7 @@ The member frontend is the athlete-facing web app. **Approved stack:** **Angular
 
 Today `gym-buddy-ui` on `develop` (app version `0.1.0`, ui #3 / ticket #12) is Angular 22 + **TypeScript `~6.0.2`** + **`packageManager`: `npm@10.9.8`**. That is not the approved toolchain. Do not claim the UI already uses TypeScript 7 or pnpm. Implementation tickets will move the repo; today-rows stay on 6.0.2 / npm until they land.
 
-Today the app has `/register`, `/login`, and a log-out control that call `POST /api/v1/auth/register`, `/login`, `/logout`. Access JWT stays in memory. Refresh cookie credentials are sent (`path /api/v1/auth`). No friends / feed / events. The service has **not** implemented those endpoints, so end-to-end sign-up / sign-in is not done.
+Today the app has `/register`, `/login`, and a log-out control that call `POST /api/v1/auth/register`, `/login`, `/logout`. Access JWT stays in memory. Refresh cookie credentials are sent (`path /api/v1/auth`). No friends / feed / events. The service on `develop` implements those endpoints (service #5 / `e2ef2aa`). Ticket #12 is closed. Do not claim login is running on the VPS.
 
 ## Toolchain (today vs approved)
 

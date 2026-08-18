@@ -65,8 +65,8 @@ Do not publish `/actuator/health` as the contract. Actuator may exist internally
 
 | Surface | Path today | Notes |
 | --- | --- | --- |
-| `gym-buddy-service` on `develop` | `GET /api/v1/healthz` and `GET /api/v1/readyz` | Implemented (ticket #11). `readyz` is `200` or `503` with `details` for `postgres` / `objectStorage`. Auth is **not** implemented (service #5 still open). |
+| `gym-buddy-service` on `develop` | `GET /api/v1/healthz` and `GET /api/v1/readyz`; `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` | Health implemented (ticket #11). `readyz` is `200` or `503` with `details` for `postgres` / `objectStorage`. Auth implemented (service #5 / `e2ef2aa`): Argon2id, HS256 access JWT, refresh cookie, Redis denylist. Do not claim auth on the VPS. |
 | CI smoke | `GET /api/v1/healthz` only | The smoke image is built without Postgres/MinIO. Probe `GET /` is not today’s smoke. |
-| `gym-buddy-openapi` stub | `GET /api/v1/healthz` and `GET /api/v1/readyz`, plus `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` | Health agrees with the service (openapi #2 / ticket #11). Auth is documented only (openapi #4 / ticket #12). |
-| `gym-buddy-ui` on `develop` | `/register`, `/login`, log-out control | Calls `POST /api/v1/auth/register`, `/login`, `/logout` (ui #3). Access JWT in memory. Refresh cookie credentials (`path /api/v1/auth`). Locked user and invalid credentials are `403` `FORBIDDEN`. End-to-end auth is **not** done. |
+| `gym-buddy-openapi` stub | `GET /api/v1/healthz` and `GET /api/v1/readyz`, plus `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` | Health agrees with the service (openapi #2 / ticket #11). Auth is documented (openapi #4) and implemented on the service (service #5 / `e2ef2aa`). Ticket #12 is closed. |
+| `gym-buddy-ui` on `develop` | `/register`, `/login`, log-out control | Calls `POST /api/v1/auth/register`, `/login`, `/logout` (ui #3). Access JWT in memory. Refresh cookie credentials (`path /api/v1/auth`). Locked user and invalid credentials are `403` `FORBIDDEN`. Service implements those paths on `develop`. Do not claim the UI hits auth on the VPS. |
 | This page | `healthz` / `readyz` | Source of truth for the public health contract. Not `/actuator/health`. Auth flows: [02-JWT-authentication.md](02-JWT-authentication.md). |
