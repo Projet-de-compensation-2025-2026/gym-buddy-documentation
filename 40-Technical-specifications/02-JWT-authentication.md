@@ -18,7 +18,7 @@ All auth HTTP paths are under `/api/v1`.
 
 Both are signed with **HS256** at MVP (one secret, `JWT_ACCESS_SECRET`). RS256 is an improvement if a second service must verify.
 
-`SameSite=Lax` is enough for same-site operator/Caddy login. It will **not** ride a github.io → VPS credentialed XHR. Ticket **#31** is **Done / closed** for **only** production `apiBaseUrl` + CORS + live **v0.1.1** (`main-4WJYST2C.js`). Login-from-Pages is a **stronger** claim and is **not** proven. Do **not** write that signup/login from github.io works. The other named blocker is UFW 443 (Joaquim’s IPv6 prefix only; do not publish that prefix). Login-from-Pages is docs **#37**, board **Not Ready**. Do **not** Todo **#37**. Do **not** start Kernel. Joaquim can try from his home browser; that is **not** Done.
+`SameSite=Lax` is enough for same-site operator/Caddy login. It will **not** ride a github.io → VPS credentialed XHR. Ticket **#31** is **Done / closed** for **only** production `apiBaseUrl` + CORS + live **v0.1.1** (`main-4WJYST2C.js`). Login-from-Pages is a **stronger** claim and is **not** proven. Do **not** write that signup/login from github.io works. The other named blocker is UFW 443 (Joaquim’s IPv6 prefix only; do not publish that prefix). Login-from-Pages is docs **#37**, board **Not Ready**. Do **not** Todo **#37**. Do **not** start Kernel. Joaquim’s home-browser login is an operator-IPv6 try, not Done.
 
 ## Claims (access)
 

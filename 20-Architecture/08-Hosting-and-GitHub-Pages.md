@@ -66,16 +66,11 @@ If the first build fails on Mermaid or a plugin, use **GitHub Actions** (`action
 - UI `develop` **`7916fa8`** has that VPS `apiBaseUrl`.
 - Service `develop` **`aea1c56`** CORS is **proven from Joaquim’s PC**: Pages origin ACAO **200** + credentials; foreign/evil origin **403**.
 - Live bundle is `main-4WJYST2C.js`: embeds `https://vps-c39cdf03.vps.ovh.net/api/v1` (no `127.0.0.1`) and includes the password eye.
-- Ticket **#31** is **Done / closed** (Atlas) for **only** production `apiBaseUrl` + CORS + live **v0.1.1** (`main-4WJYST2C.js` embeds the VPS URL and the password eye).
-- Approved toolchain stays TypeScript **`~6.0.2`** + **pnpm**. Ticket **#34** stays Done (password eye on `develop` `75fbbce` and in the live **v0.1.1** bundle). Ticket **#24** stays cancelled.
-
-**Login-from-Pages honesty** (not ticket **#31** — that ticket is **Done / closed**):
-
-- Login-from-Pages is a **stronger** claim and is **not** proven. Do **not** write that signup/login from github.io works.
-- Blocker 1: UFW 443 is Joaquim’s IPv6 prefix only (do not publish that prefix).
-- Blocker 2: the refresh cookie is `SameSite=Lax`, so it will **not** ride a github.io → VPS credentialed XHR.
-- Login-from-Pages is docs **#37**, board **Not Ready**. Do **not** Todo **#37**. Do **not** start Kernel.
-- Joaquim can try from his home browser; that is **not** Done.
+- Ticket **#31** is **Done / closed** (apiBaseUrl + CORS + live v0.1.1 verified).
+- Password eye is on live **v0.1.1**. Ticket **#34** is **Done**.
+- VPS container is **aea1c56**.
+- Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven (UFW 443 IPv6-only; refresh cookie SameSite=Lax). Do **not** Todo **#37**. Do **not** claim login-from-Pages works. Joaquim’s home-browser login is an operator-IPv6 try, not Done.
+- Approved toolchain stays TypeScript **`~6.0.2`** + **pnpm**. Ticket **#24** stays cancelled.
 
 ## Backend and database (OVH VPS)
 
@@ -96,7 +91,7 @@ To inspect Java API / Postgres / Redis / MinIO logs: SSH, then `docker logs` —
 
 GitHub Actions is the only pipeline: CI on `develop`, a separate Release job onto `main`, then Deploy. Details: [../70-Engineering-practices/07-CI-CD.md](../70-Engineering-practices/07-CI-CD.md) and [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
 
-A tagged squash commit on `main` **is** the GHCR deploy path. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. Today’s VPS Java container on the host is `gym-buddy-service` `develop` **`aea1c56`** (`docker run`, not compose of the API) (not still `e2ef2aa`; CORS proof used that SHA). `replace.sh` skip-pull for local tags is on `develop` ([gym-buddy-service#8](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/8) / `fb1e618`). That is what is true about `replace.sh`. It is **not** a GHCR pull, a Release tag, or a successful replace-from-registry. Laptop compose remains the **local** story. Caddy is the public entry and is **proven from the operator network** (healthz **200**, register **201**, login **200** + JWT). Service `develop` **`aea1c56`** CORS is **proven from Joaquim’s PC** (Pages origin ACAO **200** + credentials; foreign/evil origin **403**). Caddy is **not** proven from the GitHub Pages origin. Login-from-Pages is **not** proven. UI `develop` **`7916fa8`** has production `apiBaseUrl` `https://vps-c39cdf03.vps.ovh.net/api/v1`. First tag **v0.1.0** pointed at localhost. Live Pages is **v0.1.1** and embeds `https://vps-c39cdf03.vps.ovh.net/api/v1`. Ticket **#31** is **Done / closed** for **only** `apiBaseUrl` + CORS + that live bundle. Do **not** write that signup/login from github.io works. Blockers: UFW 443 is Joaquim’s IPv6 prefix only (do not publish that prefix); refresh cookie is `SameSite=Lax` and will **not** ride a github.io → VPS credentialed XHR. Login-from-Pages is docs **#37**, board **Not Ready**. Do **not** Todo **#37**. Do **not** start Kernel. Joaquim’s home-browser try is **not** Done.
+A tagged squash commit on `main` **is** the GHCR deploy path. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. Today’s VPS Java container on the host is `gym-buddy-service` `develop` **`aea1c56`** (`docker run`, not compose of the API). `replace.sh` skip-pull for local tags is on `develop` ([gym-buddy-service#8](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/8) / `fb1e618`). That is what is true about `replace.sh`. It is **not** a GHCR pull, a Release tag, or a successful replace-from-registry. Laptop compose remains the **local** story. Caddy is the public entry and is **proven from the operator network** (healthz **200**, register **201**, login **200** + JWT). Service `develop` **`aea1c56`** CORS is **proven from Joaquim’s PC** (Pages origin ACAO **200** + credentials; foreign/evil origin **403**). Caddy is **not** proven from the GitHub Pages origin. Login-from-Pages is **not** proven. UI `develop` **`7916fa8`** has production `apiBaseUrl` `https://vps-c39cdf03.vps.ovh.net/api/v1`. First tag **v0.1.0** pointed at localhost. Live Pages is **v0.1.1** and embeds `https://vps-c39cdf03.vps.ovh.net/api/v1`. Ticket **#31** is **Done / closed** for **only** `apiBaseUrl` + CORS + that live bundle. Do **not** write that signup/login from github.io works. Blockers: UFW 443 is Joaquim’s IPv6 prefix only (do not publish that prefix); refresh cookie is `SameSite=Lax` and will **not** ride a github.io → VPS credentialed XHR. Login-from-Pages is docs **#37**, board **Not Ready**. Do **not** Todo **#37**. Do **not** start Kernel. Joaquim’s home-browser login is an operator-IPv6 try, not Done.
 
 ## Target topology
 
