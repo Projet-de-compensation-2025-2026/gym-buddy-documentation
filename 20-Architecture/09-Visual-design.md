@@ -11,36 +11,59 @@ The PNGs are **Stitch canvas captures** (1280×800, some Stitch chrome visible).
 
 ## Color palette
 
-Measured and transcribed from the Stitch style-guide board. Do not invent extra brand hues.
+Do not invent extra brand hues. Three tables: Stitch board chips, pixels sampled from the mockup chrome, and a derived dark mapping. Prefer **Measured on screenshots** for implementation, except the primary seed (see the 1-RGB webp note).
+
+### Stitch tokens
 
 ![Stitch style-guide board for Gym Buddy](mockups/00-style-guide.png)
 
-Stitch style-guide board (light mode). Each chip also shows a tint/shade ramp on this PNG. Those ramp hexes are **not** transcribed here.
-
-Light mode (Stitch style guide, transcribed exactly):
+Transcribed from the Stitch style-guide board. Each chip also shows a tint/shade ramp on this PNG. Those ramp hexes are **not** transcribed here.
 
 | Role | Hex | Notes |
 | --- | --- | --- |
 | Primary | `#006D77` | Seed / primary buttons |
 | Secondary | `#83C5BE` | Mint teal, supporting |
 | Tertiary | `#E29578` | Terracotta accent |
-| Neutral | `#111827` | Text / ink |
+| Neutral | `#111827` | Text / ink on the board (screens use a different ink — see next table) |
 
-### Dark mode (derived mapping)
+### Measured on screenshots
 
-Joaquim asked for light + dark without regenerating mockups. Map **roles only**. The dark column is a **derived mapping**, not sampled from a dark Stitch file.
+Pixel-sampled from the Stitch canvas captures. **Prefer this table for implementation.** Primary on the mockup chrome is `#006E78` (11188 px mode). That is a **1-RGB webp delta** from the board seed; the token to implement is still **`#006D77`**. Reject `#008D97` (distance 43.8 from the seed; white-on-it contrast 3.99, fails AA).
 
-| Role | Light | Dark |
+| Role | Measured | Implement | Notes |
+| --- | --- | --- | --- |
+| primary | `#006E78` | `#006D77` | Teal buttons; 1-RGB webp delta |
+| primary_hover | `#00545A` | `#00545A` | |
+| primary_soft / badge_bg | `#CDF2F1` | `#CDF2F1` | |
+| on_primary | `#FFFFFF` | `#FFFFFF` | |
+| accent_orange | `#E09577` | `#E29578` | Style-guide terracotta, lossy; board said `#E29578` |
+| surface_bg | `#F4F6F8` | `#F4F6F8` | |
+| surface_card / input | `#FFFFFF` | `#FFFFFF` | |
+| surface_muted | `#E8E8EC` | `#E8E8EC` | |
+| text_primary | `#212325` | `#212325` | Not `#111827` on the screens |
+| text_secondary | `#6E7174` | `#6E7174` | |
+| border | `#E5E7E9` | `#E5E7E9` | |
+| success | primary teal | `#006D77` | No separate green |
+| success_bg | `#F8FEF9` | `#F8FEF9` | |
+| warning / danger | `#8D302F` on `#FEDAD6` | `#8D302F` / `#FEDAD6` | Text on wash |
+
+Secondary `#83C5BE` is a Stitch board chip only. It was not a mode on the mockup chrome and is not an implement token here.
+
+### Dark mapping
+
+Joaquim asked for light + dark without regenerating mockups. **Derived mapping**, not sampled from a dark Stitch file. No new brand hues.
+
+| Role | Light (implement) | Dark |
 | --- | --- | --- |
-| Primary | `#006D77` | `#83C5BE` (lighter teal on dark surfaces so buttons still read) |
-| Secondary | `#83C5BE` | `#006D77` |
-| Tertiary | `#E29578` | `#E29578` (same accent) |
-| Neutral / text | `#111827` | `#F9FAFB` |
-| Surface / page | `#FFFFFF` | `#111827` |
-| Surface / card | `#F9FAFB` | `#1F2937` |
-| Danger (Close account / hide) | `#B91C1C` | `#FCA5A5` |
-
-`#FFFFFF`, `#F9FAFB`, `#1F2937`, and `#FCA5A5` are **derived for theme pairing**; they are not style-guide chips. `#B91C1C` is the **measured** Danger Zone red from [`mockups/16-settings-privacy-danger.png`](mockups/16-settings-privacy-danger.png) (Close Account / Danger Zone on the privacy Stitch capture).
+| filled button | `#006D77` (`#006E78` measured) | Keep `#006E78` / `#006D77` as **filled buttons only** (white text contrast 6.00) |
+| body text | `#212325` | `#FFFFFF` / `#E5E7E9`. Do **not** use teal as body text on dark (fails AA) |
+| surface_bg | `#F4F6F8` | `#212325` |
+| surface_card | `#FFFFFF` | `#26282A` |
+| input | `#FFFFFF` | `#232526` |
+| surface_muted | `#E8E8EC` | `#1F2123` |
+| border | `#E5E7E9` | `#6E7174` |
+| success / badge | `#CDF2F1` as badge background | Pale teal `#CDF2F1` for success / badge **text** on dark |
+| warning / danger | `#8D302F` on `#FEDAD6` | Invert: text `#FEDAD6` on `#8D302F` |
 
 ## Typography
 
