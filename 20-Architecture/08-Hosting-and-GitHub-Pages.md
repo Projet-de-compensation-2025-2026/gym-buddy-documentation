@@ -71,14 +71,14 @@ Rejected for the API (fine as notes, not the plan): Render, Fly.io, Railway as t
 | --- | --- |
 | Java API (probe today) | Docker on the VPS, bound to `127.0.0.1:8080` |
 | HTTPS | Caddy on the hostname → loopback `:8080`, Let’s Encrypt |
-| PostgreSQL 18 / Redis / MinIO | Local compose proven on a laptop (`docs/local-compose-proof.md`). On the VPS later (ticket #20): private Docker network, ports not published |
+| PostgreSQL 18 / Redis / MinIO | Local compose proven on a laptop (`docs/local-compose-proof.md`). VPS **files** on `develop` (`deploy/compose.yaml`, [gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e`): private network `gym-buddy-data`, no published ports. **Apply is not done** (ticket #20). Do not claim VPS `healthz` / `readyz` 200. |
 | Public `:8080` | Never. UFW denies it. |
 
 UFW: 22 open; 80 denied except during certificate HTTP-01; 443 allowed only from the operator IPv6 prefix configured on the server (the prefix is not written in this public wiki); 8080 denied.
 
 GitHub Actions is the only pipeline: CI on `develop`, a separate Release job onto `main`, then Deploy. Details: [../70-Engineering-practices/07-CI-CD.md](../70-Engineering-practices/07-CI-CD.md) and [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
 
-A tagged squash commit on `main` **is** the deploy. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. `gym-buddy-service` builds a Docker image to GHCR and `replace.sh` replaces the container on the VM. Compose remains the **local** story.
+A tagged squash commit on `main` **is** the deploy. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. `gym-buddy-service` builds a Docker image to GHCR and `replace.sh` replaces the API container on the VM (`docker run`, not compose of the API). Laptop compose remains the **local** story. VPS data-plane compose files exist on `develop`; **apply is not done**.
 
 ## Target topology
 
