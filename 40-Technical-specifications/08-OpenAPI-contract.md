@@ -9,7 +9,7 @@ The HTTP API is specified in a **dedicated repository**, not discovered from a r
 
 **Repository:** https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi (private, default branch `develop`)
 
-`gym-buddy-openapi` is the source of truth for **all** API: routes, operations, request/response contracts, and entities. `gym-buddy-service` and `gym-buddy-ui` **consume** that contract. They do **not** re-implement it. That is the locked target. **Today** both apps still hand-write the shapes. Do **not** claim codegen already landed. That is tickets **#41** (service) and **#42** (UI).
+`gym-buddy-openapi` is the source of truth for **all** API: routes, operations, request/response contracts, and entities. `gym-buddy-service` and `gym-buddy-ui` **consume** that contract. They do **not** re-implement it. That is the locked target. **Today** `gym-buddy-ui` generates the TypeScript client/types at build with **orval 8.22.0** from `gym-buddy-openapi@7fa5108` `openapi/bundled.yaml` (ui #10 / ticket **#42** Done; `develop` **`b8da6bf`**). Branch `feature/42-openapi-client` is gone. `AuthApi` is a thin wrapper; login / refresh / logout keep `withCredentials`. There is **no** `openapi.yaml` (or any YAML copy) in the UI tree. `gym-buddy-service` still has handwritten Java DTOs and controllers. **No** `openapi-generator` (or equivalent) at build. Do **not** claim service codegen landed. That is ticket **#41**.
 
 ## Source of truth
 
@@ -33,8 +33,8 @@ Do **not** treat Spring `springdoc` `/v3/api-docs` as the source of truth. If it
 | Health | `GET /api/v1/healthz` (`getHealthz`) and `GET /api/v1/readyz` (`getReadyz`) — spec **and** service | `GET /api/v1/healthz` and `GET /api/v1/readyz` |
 | Auth | Same four operations as before (`postAuthRegister`, `postAuthLogin`, `postAuthRefresh`, `postAuthLogout`; openapi #4 / ticket #12). UI on `develop` has `/register`, `/login`, and a log-out control that call register / login / logout (ui #3). Service on `develop` implements them (service #5 / `e2ef2aa`). Ticket #12 is closed. Refresh cookie stays `HttpOnly`+`Secure`+`SameSite=Lax`, path `/api/v1/auth`. | Same four operations, plus the rest of `/api/v1` |
 | `gym-buddy-service` | Handwritten Java DTOs and controllers. **No** `openapi-generator` (or equivalent) at build. `pom.xml` is not yet a consumer of the spec. Ticket **#41**. | Generates models + API interfaces from **`openapi/bundled.yaml`** at build. Controllers **implement** those generated interfaces. `pom.xml` is the consumer, **not** a second contract. Do **not** commit hand-edited generated sources. |
-| `gym-buddy-ui` | Handwritten `src/app/api/models.ts` + `auth-api.service.ts`. **No** orval / openapi-typescript (or equivalent) at build. Ticket **#42**. | Generates the TypeScript client/types from **`openapi/bundled.yaml`** at build (orval or openapi-typescript). Consume the OpenAPI **repo / tag / bundle**. Do **not** copy or vendor `openapi.yaml` into `gym-buddy-ui`. |
-| Codegen | **Not landed.** Do not write that the service or UI already generate from the spec. | Build-time generation in both consumers (tickets **#41** / **#42**). |
+| `gym-buddy-ui` | **Landed:** generates the TypeScript client/types at build with **orval 8.22.0** from `gym-buddy-openapi@7fa5108` `openapi/bundled.yaml` ([gym-buddy-ui#10](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-ui/pull/10) / ticket **#42** Done; `develop` **`b8da6bf`**). Branch `feature/42-openapi-client` is gone. `AuthApi` is a thin wrapper; login / refresh / logout keep `withCredentials`. **No** `openapi.yaml` (or any YAML copy) in the UI tree. App version stays **0.1.0**. TypeScript stays **`~6.0.2`**. | Generates the TypeScript client/types from **`openapi/bundled.yaml`** at build (orval). Consume the OpenAPI **repo / tag / bundle**. Do **not** copy or vendor `openapi.yaml` into `gym-buddy-ui`. |
+| Codegen | UI **landed** (orval 8.22.0 / ticket **#42** Done). Service **not** landed — handwritten Java DTOs / **no** `openapi-generator`. Do **not** claim service codegen landed. Ticket **#41**. | Build-time generation in both consumers. UI is done. Service is ticket **#41**. |
 
 Locked health paths: [01-API-conventions.md](01-API-conventions.md). The service implements `healthz` / `readyz` on `develop`. Public contract is not `/actuator/health`.
 
@@ -49,7 +49,7 @@ The six routes / operationIds on `develop` **`7fa5108`** (server prefix `/api/v1
 | `POST` | `/api/v1/auth/refresh` | `postAuthRefresh` | Cookie only → new access, rotated refresh `jti`. |
 | `POST` | `/api/v1/auth/logout` | `postAuthLogout` | Revokes refresh `jti` in Redis denylist; clears cookie. |
 
-This page is still the contract source of truth. The service on `develop` implements those four auth operations (service #5 / `e2ef2aa`). Ticket #12 is closed. Those operations run on the VPS container (`develop` **`aea1c56`**). Caddy register/login is **proven from the operator network**. Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven. Do **not** Todo **#37**. Refresh cookie stays `SameSite=Lax`. Ticket **#40** is **Done**. Tickets **#41** / **#42** have **not** landed.
+This page is still the contract source of truth. The service on `develop` implements those four auth operations (service #5 / `e2ef2aa`). Ticket #12 is closed. Those operations run on the VPS container (`develop` **`aea1c56`**). Caddy register/login is **proven from the operator network**. Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven. Do **not** Todo **#37**. Refresh cookie stays `SameSite=Lax`. Ticket **#40** is **Done**. Ticket **#42** is **Done**. Ticket **#41** is still in flight. Do **not** claim service codegen landed.
 
 ## Locked rules
 
@@ -58,8 +58,8 @@ This page is still the contract source of truth. The service on `develop` implem
 3. Do **not** copy or vendor `openapi.yaml` into `gym-buddy-ui`. Consume the OpenAPI repo, a tag, or **`openapi/bundled.yaml`**.
 4. **Today** the OpenAPI repo **is** a multi-file `$ref` tree (entities / requests / responses / paths) plus a **checked-in** consumer bundle. Editors edit the `$ref` tree. Consumers generate from **`openapi/bundled.yaml`**. Do **not** treat the bundle as the editing source.
 5. Target service: generate models + API interfaces at build from that bundle (ticket **#41**). Controllers implement the generated interfaces. `pom.xml` is the consumer, not a second contract. Do **not** commit hand-edited generated sources.
-6. Target UI: generate the TypeScript client/types at build from that bundle (ticket **#42**; orval or openapi-typescript). Same bundle / tag as the service.
-7. Documentation stays **`0.3.0`**. Application repos stay **`0.1.x`**. Ticket **#24** stays cancelled. Ticket **#37** stays **Not Ready**. Do **not** claim login-from-Pages. Ticket **#40** is **Done**. Do **not** reopen #36 / #38 / #39 / #43.
+6. **Today** the UI generates the TypeScript client/types at build from that bundle with **orval 8.22.0** (ticket **#42** Done; `gym-buddy-openapi@7fa5108` `openapi/bundled.yaml`; `develop` **`b8da6bf`**). `AuthApi` is a thin wrapper; login / refresh / logout keep `withCredentials`. Same bundle / tag as the service will use. Do **not** copy or vendor YAML into the UI.
+7. Documentation stays **`0.3.0`**. Application repos stay **`0.1.x`**. Ticket **#24** stays cancelled. Ticket **#37** stays **Not Ready**. Do **not** claim login-from-Pages. Ticket **#40** is **Done**. Ticket **#42** is **Done**. Ticket **#41** is still in flight. Do **not** reopen #36 / #38 / #39 / #43 / #44.
 
 ## Why not “just expose `/v3/api-docs`”
 
@@ -72,11 +72,11 @@ A separate repo makes the contract a first-class deliverable, hostable on GitHub
 
 ## Workflow
 
-This is the **target** order. Today step 2 (the `$ref` tree + checked-in bundle) **has landed**. Today step 3 is still handwritten consumption.
+This is the **target** order. Today step 2 (the `$ref` tree + checked-in bundle) **has landed**. Today step 3: UI **has landed** (orval 8.22.0 / ticket **#42** Done). Service consumption is still handwritten (ticket **#41**).
 
 1. Ticket on this documentation repo, linking the relevant FS/TS page
 2. Change the `$ref` tree in `gym-buddy-openapi` on a Gitflow `feature/#n-…` branch (`openapi/openapi.yaml` and the files it `$ref`s). Regenerate the checked-in **`openapi/bundled.yaml`**. Do not hand-edit the bundle as source.
-3. Consume **`openapi/bundled.yaml`** from backend (OpenAPI Generator → Java models + API interfaces) and frontend (orval or openapi-typescript). Controllers implement the generated interfaces. The UI does **not** vendor a copy of the YAML. **Not landed** — tickets **#41** / **#42**.
+3. Consume **`openapi/bundled.yaml`** from backend (OpenAPI Generator → Java models + API interfaces) and frontend (orval). Controllers implement the generated interfaces. The UI does **not** vendor a copy of the YAML. **UI landed** — ticket **#42** Done (`develop` **`b8da6bf`**). **Service not landed** — ticket **#41**.
 4. Implement
 
 Do not commit hand-edited generated sources.
