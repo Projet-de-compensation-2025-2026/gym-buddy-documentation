@@ -18,6 +18,8 @@ All auth HTTP paths are under `/api/v1`.
 
 Both are signed with **HS256** at MVP (one secret, `JWT_ACCESS_SECRET`). RS256 is an improvement if a second service must verify.
 
+Refresh cookie is `HttpOnly`+`Secure`+`SameSite=Lax`, path `/api/v1/auth`. `SameSite=Lax` will **not** ride a github.io → VPS credentialed XHR. Ticket **#31** is **Done / closed** (apiBaseUrl + CORS + live v0.1.1 verified). Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven (UFW 443 IPv6-only; that cookie). Do **not** Todo **#37**. Joaquim’s Pages login is operator-home only. Sentinel IPv4 `104.30.175.37` (US) → `https://vps-c39cdf03.vps.ovh.net/api/v1/healthz` TLS unexpected EOF. VPS container is **aea1c56**. Password eye is on live **v0.1.1**. Ticket **#34** is **Done**.
+
 ## Claims (access)
 
 ```json

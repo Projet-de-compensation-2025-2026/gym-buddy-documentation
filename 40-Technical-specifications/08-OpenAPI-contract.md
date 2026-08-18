@@ -38,7 +38,7 @@ Auth paths on the stub (server prefix `/api/v1`; [gym-buddy-openapi#4](https://g
 | `POST` | `/api/v1/auth/refresh` | Cookie only → new access, rotated refresh `jti`. |
 | `POST` | `/api/v1/auth/logout` | Revokes refresh `jti` in Redis denylist; clears cookie. |
 
-This page is still the contract source of truth. The service on `develop` implements those four operations (service #5 / `e2ef2aa`). Ticket #12 is closed. Do not claim they run on the VPS.
+This page is still the contract source of truth. The service on `develop` implements those four operations (service #5 / `e2ef2aa`). Ticket #12 is closed. Those operations run on the VPS container (`develop` **`aea1c56`**). Caddy register/login is **proven from the operator network**. Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven. Do **not** Todo **#37**.
 
 ## Why not “just expose `/v3/api-docs`”
 
