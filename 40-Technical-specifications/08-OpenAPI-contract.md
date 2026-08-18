@@ -19,7 +19,7 @@ The HTTP API is specified in a **dedicated repository**, not discovered from a r
 | `$ref` tree (`openapi/openapi.yaml` + paths / components) | **Edit source.** Editors change this tree, not a bundle. **Today:** both consumers generate from this tree. |
 | `openapi/bundled.yaml` | Ticket **#40** Done: checked-in file **still present**. **Not** a consumer input. It **can be omitted** / **can be deleted**. Dual maintenance of a second consumer document is no longer required. Do **not** claim the file is already deleted. Atlas will ticket the delete (OpenAPI file + any CI/scripts that still require the bundle) after this wiki is on `develop`. OpenAPI CI `test.sh` still requires the file today (exists, lints, matches a fresh `bundle.sh`). |
 | Versioned package / git tag | **Today:** git tag **v0.1.0** exists (ticket **#46** Done). The **service** pins it (ticket **#47** Done / **`3ffdef8`**). The **UI** pins it (ticket **#48** Done / **`47eac9c`**; lockfile **`9c7c123`**). |
-| Static Swagger UI / Redoc on GitHub Pages | Human-readable copy of a **tag** |
+| Static Swagger UI / Redoc on GitHub Pages | **Not** live. Release run [32155209479](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi/actions/runs/32155209479) created tag **v0.1.0**, then failed only on deploy/pages: “Failed to create deployment (status: 404)… Ensure GitHub Pages has been enabled.” Live https://projet-de-compensation-2025-2026.github.io/gym-buddy-openapi/ is HTTP **404**. The package/tag is **not** broken. Do **not** treat “enable OpenAPI Pages + re-run deploy” as remaining work to start. Joaquim has not asked for the spec site. Atlas will not Todo that ticket unless he wants it. Ticket **#37** stays **Not Ready** (UI login-from-Pages, a different thing) |
 | Backend | Implements the tagged spec; contract tests fail the build on drift |
 | Frontend | Generates a TypeScript client from the same tag |
 | Spring `springdoc` `/v3/api-docs` | Optional **dev** convenience only. Never the published contract. |
@@ -70,7 +70,7 @@ This page is still the contract source of truth. The service on `develop` implem
 - Accidental controller changes would silently rewrite the public API
 - The instructor cannot review a contract that lives only in memory
 
-A separate repo makes the contract a first-class deliverable, hostable on GitHub Pages next to this wiki.
+A separate repo makes the contract a first-class deliverable (git tag **v0.1.0**). `gym-buddy-openapi` GitHub Pages is **not** live (HTTP **404**). The package/tag is **not** broken. Do **not** treat “enable OpenAPI Pages + re-run deploy” as remaining work to start. Joaquim has not asked for the spec site. Atlas will not Todo that ticket unless he wants it. Ticket **#37** stays **Not Ready** (UI login-from-Pages, a different thing).
 
 ## Workflow
 

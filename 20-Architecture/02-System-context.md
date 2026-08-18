@@ -49,6 +49,6 @@ flowchart LR
 | Object storage | Yes | MinIO locally, S3-compatible in deploy. Production refuses to start without it. |
 | Geocoding | No | Members may type a free-text place + optional lat/lng |
 | Push notifications | No | In-app + websocket is enough for the defense |
-| GitHub Pages | Yes for static artifacts | Wiki; Angular member app at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**, ticket **#30** Done); later OpenAPI UI. Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven. Do **not** Todo **#37**. |
+| GitHub Pages | Yes for wiki + Angular | Wiki; Angular member app at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**, ticket **#30** Done). `gym-buddy-openapi` Pages is **not** live (HTTP **404**). Do **not** treat “enable OpenAPI Pages + re-run deploy” as remaining work. Joaquim has not asked for the spec site. Atlas will not Todo that ticket unless he wants it. Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven (UI login-from-Pages, a different thing). Do **not** Todo **#37**. |
 
 GitHub is part of the **academic** system, not the runtime.
