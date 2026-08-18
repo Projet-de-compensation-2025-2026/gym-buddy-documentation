@@ -75,7 +75,7 @@ Runs on `ubuntu-latest`. It never publishes.
 | --- | --- |
 | Format | CI **applies** `.github/scripts/ci/format.sh --write` in all four repos (`gym-buddy-documentation`, `gym-buddy-openapi`, `gym-buddy-service`, `gym-buddy-ui`). If the tree is dirty, `github-actions[bot]` commits and pushes. Test and smoke stay in the **same job** after apply (`GITHUB_TOKEN` pushes do not retrigger workflows). This wiki: Prettier on YAML / JSON / HTML. Markdown is **not** auto-reflowed (`*.md` stays in `.prettierignore` — tables and Mermaid). Application repos: Spotless / Prettier through the same script. `format.sh` itself is unchanged (`--check` / `--write`). Fork PRs cannot get a bot push (`GITHUB_TOKEN` cannot write a fork). Current PRs are same-repo. |
 | Test | Repo-specific tests. In this wiki: every content folder still has a `README.md`, required pipeline files exist. Later: JUnit, Angular unit tests, OpenAPI lint. |
-| Smoke | The **built** thing is started and answers HTTP. Compiling is not enough. This wiki: Jekyll writes `_site/`, a local static server is started, `curl` must get a page that contains “Gym Buddies”. Service **today** (Python probe): container starts and `GET /` returns 2xx. Service **target** (Spring): `GET /api/v1/healthz` and `GET /api/v1/readyz` return 2xx. Do not treat `/actuator/health` as the public smoke. |
+| Smoke | The **built** thing is started and answers HTTP. Compiling is not enough. This wiki: Jekyll writes `_site/`, a local static server is started, `curl` must get a page that contains “Gym Buddies”. Service **today** (Java 25 LTS / Spring, `pom.xml` on `develop`): container starts and **`GET /api/v1/healthz`** returns 2xx. `readyz` is implemented (`200` / `503` with `postgres` / `objectStorage`) but CI smoke does **not** hit it — the image is built without Postgres/MinIO. Do not treat `/actuator/health` as the public smoke. |
 
 Required check name on `develop`: **`ci`**.
 
@@ -192,7 +192,7 @@ Each repository owns four scripts. Workflows call them; they do not inline stack
 | `.github/scripts/ci/next_version.py` | no | yes |
 | `.github/scripts/ci/prepare_changelog.py` | no | yes |
 
-When application code appears, **change the scripts**, not the workflow names or triggers. The contract on this page stays. Service smoke moves from `GET /` to `/api/v1/healthz` + `/readyz` when `pom.xml` exists.
+When application code grows, **change the scripts**, not the workflow names or triggers. The contract on this page stays. Service CI smoke is `GET /api/v1/healthz` (`pom.xml` exists). Probe `GET /` is not today’s smoke.
 
 ## What to say at the defense
 

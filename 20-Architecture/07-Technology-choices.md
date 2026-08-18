@@ -11,7 +11,7 @@ The brief requires **justification** of languages, frameworks, and libraries. La
 
 | Concern | Choice | Why this, not the alternative |
 | --- | --- | --- |
-| Backend language | **Java 26** (latest GA; JDK 26.0.2) | Course-friendly, strong typing for algorithms and JWT, long toolchain. **Java 25** is the current LTS if a library does not yet run on 26. Java 27 is not released yet (expected September 2026). |
+| Backend language | **Java 25 LTS** | Course-friendly, strong typing for algorithms and JWT, long toolchain. Current LTS; Joaquim chose 25 LTS for stability. Java 27 is not released yet (expected September 2026). |
 | Backend framework | **Spring Boot** (latest stable that supports the chosen JDK) | Modules, Spring Security for JWT, JDBC/JPA, WebSocket, Actuator health. The HTTP contract is **not** owned by Spring’s `/v3/api-docs` endpoint — see OpenAPI below. |
 | Frontend language | **TypeScript 7.0** (native compiler rewritten in [Go](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)) | Latest TypeScript; 8–12× faster `tsc`. If Angular’s compiler lags a patch behind 7.0, use the newest TypeScript **Angular 22 supports** and record the gap in the changelog. |
 | Member UI | **Angular 22** (22.1.x as of August 2026) | Latest Angular; official TypeScript SPA; static `ng build` output can go to GitHub Pages. |
@@ -35,7 +35,7 @@ The brief requires **justification** of languages, frameworks, and libraries. La
 | Repository | Stack |
 | --- | --- |
 | `gym-buddy-documentation` | Markdown wiki (this repo), GitHub Pages |
-| `gym-buddy-service` | Java 26 + Spring Boot + PostgreSQL 18 |
+| `gym-buddy-service` | Java 25 LTS + Spring Boot + PostgreSQL 18 |
 | `gym-buddy-ui` | Angular 22 + TypeScript 7 |
 | `gym-buddy-openapi` | OpenAPI 3 documents + static reference UI |
 

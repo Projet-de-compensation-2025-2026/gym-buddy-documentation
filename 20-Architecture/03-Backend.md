@@ -5,17 +5,19 @@
 | Status | Approved |
 | Related | [01-Software-architecture.md](01-Software-architecture.md), [../40-Technical-specifications/01-API-conventions.md](../40-Technical-specifications/01-API-conventions.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
-The target backend is a single **Java 26** service (Spring Boot — see [07-Technology-choices.md](07-Technology-choices.md)) exposing HTTP and a WebSocket gateway. It **implements** the contract published in [`gym-buddy-openapi`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi); it does not own that contract.
+The approved / target backend is a single **Java 25 LTS** service (Spring Boot — see [07-Technology-choices.md](07-Technology-choices.md)) exposing HTTP and a WebSocket gateway. It **implements** the contract published in [`gym-buddy-openapi`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi); it does not own that contract.
+
+Today [`gym-buddy-service`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service) `develop` **is** that stack: `pom.xml` exists (ticket #11). Register / login / logout are not shipped.
 
 ## Today versus target
 
 | | Today | Target |
 | --- | --- | --- |
-| Runtime | Python 3.12 probe image, `GET /` HTML | Java 26 / Spring Boot |
-| Contract | OpenAPI stub `GET /api/v1/health` | Full `/api/v1`, health `healthz` / `readyz` |
-| Data plane | None on the VPS | PostgreSQL 18, Redis, MinIO (local compose first) |
+| Runtime | Java 25 LTS / Spring Boot (`pom.xml` on `develop`) | Java 25 LTS / Spring Boot modular monolith |
+| Contract | Service and OpenAPI stub: `GET /api/v1/healthz` and `GET /api/v1/readyz`. Public contract is **not** `/actuator/health`. | Full `/api/v1`; health stays `healthz` / `readyz` |
+| Data plane | Local compose (PostgreSQL 18, Redis, MinIO). Flyway **V1 baseline** only. None on the VPS | Same local compose; private data-plane compose on the VPS; full domain schema |
 
-Do not claim Spring is running until `pom.xml` exists in [`gym-buddy-service`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service).
+Do not claim register / login / logout, VPS compose, or domain tables beyond Flyway V1.
 
 ## Modules
 

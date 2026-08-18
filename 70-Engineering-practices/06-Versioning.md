@@ -34,14 +34,16 @@ Documentation and application artifacts may sit on different `0.y.z` numbers unt
 | `0.1.0` | Docs + service | Assignment text; pipeline probe |
 | `0.1.1` | Service | GHCR + VPS probe replace |
 | `0.2.0` | Docs (2026-08-14) | Wiki process, specs, Gitflow, CI/CD contract |
-| **`0.2.0` (application, planned)** | Service + UI + OpenAPI | PostgreSQL 18, Redis, MinIO, **Java 26 / Spring Boot service layer**, basic **sign-up / sign-in / log-out** pages. Local compose already specified. |
+| **`0.2.0` (application, planned)** | Service + UI + OpenAPI | PostgreSQL 18, Redis, MinIO, **Java 25 LTS / Spring Boot service layer**, basic **sign-up / sign-in / log-out** pages. Local compose already specified. |
 | `1.0.0` | All four repos, same day | Academic ship |
+
+On `develop` today (ticket #11, not yet a product tag): `gym-buddy-service` is already a Spring Boot app (Java 25 LTS) with Flyway **V1 baseline**, `GET /api/v1/healthz` and `GET /api/v1/readyz`. Register / login / logout are **not** shipped.
 
 Application `0.2.0` is done when all of these are true on `develop` and then tagged on `main` via Release:
 
-1. `gym-buddy-service` is a Spring Boot app (Java 26) with Flyway, `GET /api/v1/healthz` and `GET /api/v1/readyz`
+1. `gym-buddy-service` is a Spring Boot app (Java 25 LTS) with Flyway, `GET /api/v1/healthz` and `GET /api/v1/readyz` (this item is on `develop`)
 2. Local `compose.yaml` runs PostgreSQL 18, Redis, MinIO, and that API on `127.0.0.1`
-3. OpenAPI documents register / login / logout / refresh under `/api/v1/auth` (`healthz` / `readyz` replace the stub `/health`)
+3. OpenAPI documents register / login / logout / refresh under `/api/v1/auth` (`healthz` / `readyz` already on the stub)
 4. JWT access + refresh as in [../40-Technical-specifications/02-JWT-authentication.md](../40-Technical-specifications/02-JWT-authentication.md); logout denylists refresh `jti` in Redis
 5. `gym-buddy-ui` has a basic sign-up, sign-in, and log-out page that call that API
 6. Each repo changelog records the slice under `## [0.2.0]`

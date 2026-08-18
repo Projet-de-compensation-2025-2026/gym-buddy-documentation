@@ -11,7 +11,7 @@ Gym Buddies is documented **once** here and implemented in **three** other repos
 | --- | --- | --- | --- | --- |
 | `gym-buddy-documentation` (this repo) | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation | Public | Product, architecture, specs, practices, academic packaging, **tickets** | GitHub Pages (Markdown → Jekyll) |
 | `gym-buddy-openapi` | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi | Private | Versioned OpenAPI 3 contract + static Swagger/Redoc | GitHub Pages when the plan allows (static) |
-| `gym-buddy-service` | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service | Private | Java API, domain, jobs, WebSocket, fixtures (Python probe until Spring exists) | OVH VPS — see [04-Environment-and-pipeline.md](04-Environment-and-pipeline.md) |
+| `gym-buddy-service` | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service | Private | Java 25 LTS / Spring Boot API (`pom.xml` on `develop`), domain, jobs, WebSocket, fixtures | OVH VPS — see [04-Environment-and-pipeline.md](04-Environment-and-pipeline.md) |
 | `gym-buddy-ui` | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-ui | Private | Angular member app **and** Angular back-office | GitHub Pages (static `ng build`) |
 
 Default branch on every repository: **`develop`**. Feature work never targets `main`.
@@ -29,7 +29,7 @@ The contract is a **git artifact**, not a runtime accident:
 
 Spring may still expose `/v3/api-docs` in development as a convenience. That endpoint is **not** the source of truth. If it disagrees with `gym-buddy-openapi`, the repository wins.
 
-Today the OpenAPI repo is a stub (`GET /api/v1/health` only). Target health paths are `/api/v1/healthz` and `/api/v1/readyz` — [../40-Technical-specifications/01-API-conventions.md](../40-Technical-specifications/01-API-conventions.md).
+Today the OpenAPI stub **and** the service implement `GET /api/v1/healthz` and `GET /api/v1/readyz`. Those remain the public health paths — [../40-Technical-specifications/01-API-conventions.md](../40-Technical-specifications/01-API-conventions.md). The public contract is not `/actuator/health`.
 
 ## Rules for application repos
 
@@ -43,7 +43,7 @@ Today the OpenAPI repo is a stub (`GET /api/v1/health` only). Target health path
 ```
 gym-buddy-documentation/     ← you are here (wiki + GitHub Project)
 gym-buddy-openapi/           ← HTTP contract
-gym-buddy-service/           ← Java 26 + Spring Boot (probe image until then)
+gym-buddy-service/           ← Java 25 LTS + Spring Boot (`pom.xml` on develop)
 gym-buddy-ui/                ← Angular 22 (member + back-office)
 ```
 

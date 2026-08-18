@@ -30,7 +30,7 @@ If demo environments fail, slides 4–6 become the recorded video. Keep that fil
 
 ## Q&A (30 min) — likely questions
 
-- Why Java 26 / why not the 25 LTS? Why Angular rather than React?
+- Why Java 25 LTS? Why Angular rather than React?
 - How do you stop a stranger fetching an image key?
 - Complexity of suggestions on 3k users?
 - What happens when two accepts race?

@@ -9,35 +9,35 @@ How to run Gym Buddies locally, how a change is proven and released, and how the
 
 ## Today versus target
 
-Be honest at the defense. The pipeline, the VPS, and the **local data plane** exist. Spring Boot does **not**.
+Be honest at the defense. The pipeline, the VPS, the **local data plane**, and the **Java 25 LTS / Spring Boot** service exist on `develop` (`pom.xml`, ticket #11). Register / login / logout and a VPS compose do **not**.
 
 | Piece | Today (August 2026) | Target (locked) |
 | --- | --- | --- |
-| `gym-buddy-service` | Python 3.12 probe (`python:3.12-alpine`). Serves `probe/index.html` on port 8080. `compose.yaml` and `.env.example` are in the repo. No `pom.xml`. Latest released tag **v0.1.1**. | Java 26 / Spring Boot modular monolith |
+| `gym-buddy-service` | Java 25 LTS / Spring Boot (`pom.xml` on `develop`). Flyway `V1__baseline.sql`. `compose.yaml` and `.env.example` are in the repo. Latest released tag **v0.1.1**. | Java 25 LTS / Spring Boot modular monolith |
 | `gym-buddy-openapi` | OpenAPI 3.1.0 stub: `GET /healthz` and `GET /readyz` under `/api/v1` | Full contract; health stays `GET /api/v1/healthz` and `GET /api/v1/readyz` |
 | `gym-buddy-ui` | Static HTML probe | Angular 22 member app + back-office |
-| Health | Probe answers `GET /`. Smoke looks for the string `Gym Buddy`. | Unauthenticated `GET /api/v1/healthz` (liveness) and `GET /api/v1/readyz` (PostgreSQL + object storage reachable) |
-| Local data plane | `compose.yaml` in `gym-buddy-service`: Postgres 18, Redis, MinIO, probe API, optional MailHog. All binds `127.0.0.1`. | Same file; API service becomes the Spring image |
+| Health | Service implements unauthenticated `GET /api/v1/healthz` (liveness) and `GET /api/v1/readyz` (`200` or `503` with `details` for `postgres` / `objectStorage`). CI smoke hits **`GET /api/v1/healthz` only** — the smoke image is built without Postgres/MinIO. Probe `GET /` is not today’s service smoke. | Same public paths. Do not smoke `/actuator/health`. |
+| Local data plane | `compose.yaml` in `gym-buddy-service`: Postgres 18, Redis, MinIO, Spring API, optional MailHog. All binds `127.0.0.1`. | Same file |
 | VM | One API container, bound to `127.0.0.1:8080`. Caddy terminates TLS. No compose on the VM. | Same API replace, plus a **private** data-plane compose on the Docker network (5432 / 6379 / 9000 not published) |
-| Production object storage | Not applicable (probe has none) | API **refuses to start** in production if S3-compatible storage is missing |
+| Production object storage | `SPRING_PROFILES_ACTIVE=prod` **refuses to start** if S3-compatible storage is missing | Same |
 
-Do not claim Spring, Flyway, or Actuator exist until `pom.xml` is in `gym-buddy-service`. Smoke scripts change when that file appears.
+Public health is `healthz` / `readyz`, not `/actuator/health`.
 
 ## Ready-to-code checklist
 
-When Spring work starts, a laptop is ready when all of these are true:
+A laptop is ready when all of these are true:
 
-1. **JDK 26** installed (Java 25 LTS is the fallback if a library does not run on 26 — see [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md)).
+1. **JDK 25 LTS** installed (see [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md)).
 2. **Docker** and Compose v2 available.
 3. Clone the four repositories (URLs in [02-Related-repositories.md](02-Related-repositories.md)). Default branch is `develop` everywhere.
 4. `compose.yaml` and `.env.example` are in `gym-buddy-service` (ticket #7).
 5. Copy `.env.example` to `.env` locally. Fill secrets there. Never commit `.env`.
 6. `docker compose up -d` binds every published port to `127.0.0.1`.
-7. Flyway applies the schema from [../20-Architecture/06-Data-model.md](../20-Architecture/06-Data-model.md).
+7. Flyway **V1 baseline** is on `develop`. Full domain tables from [../20-Architecture/06-Data-model.md](../20-Architecture/06-Data-model.md) are later.
 8. The OpenAPI stub in `gym-buddy-openapi` is the HTTP source of truth. Expand it **before** implementing a new route.
 9. Point the UI at `http://localhost:8080/api/v1`.
 
-Until `pom.xml` exists, `docker compose up -d` starts the data plane plus the probe image. The probe does not use Postgres, Redis, or MinIO yet.
+`docker compose up -d` starts the data plane plus the Spring API. The API uses Postgres, Redis, and MinIO when those containers are up (`readyz`).
 
 ## Local Compose
 
@@ -52,7 +52,7 @@ docker compose --profile mail up -d
 
 | Service | Image role | Host bind | Port |
 | --- | --- | --- |
-| API | Spring Boot (today: the probe image) | `127.0.0.1` | `8080` |
+| API | Spring Boot (Java 25 LTS image) | `127.0.0.1` | `8080` |
 | PostgreSQL | **18** (not 19), image `postgres:18.6` | `127.0.0.1` | `5432` |
 | Redis | Cache / refresh denylist, image `redis:8-alpine` | `127.0.0.1` | `6379` |
 | MinIO | S3 API | `127.0.0.1` | `9000` |
@@ -100,7 +100,7 @@ These handles always exist after a local fixture seed. Passwords live in the loc
 | `demo.mod` | moderator |
 | `demo.admin` | admin |
 
-Flyway migrations implement [../20-Architecture/06-Data-model.md](../20-Architecture/06-Data-model.md). Fixture generation uses **Datafaker** with `FIXTURE_SEED=20260813` — [../40-Technical-specifications/07-Test-fixtures.md](../40-Technical-specifications/07-Test-fixtures.md).
+Flyway on `develop` is **V1 baseline** only. Later migrations will implement [../20-Architecture/06-Data-model.md](../20-Architecture/06-Data-model.md). Fixture generation uses **Datafaker** with `FIXTURE_SEED=20260813` — [../40-Technical-specifications/07-Test-fixtures.md](../40-Technical-specifications/07-Test-fixtures.md).
 
 ### Production refuse-without-S3
 
@@ -164,10 +164,11 @@ If the three SSH secrets are missing, Deploy still pushes the image and **skips*
 
 | When | What the smoke hits |
 | --- | --- |
-| Today (probe, no `pom.xml`) | `GET /` on the container. Body must contain `Gym Buddy`. |
-| Target (when `pom.xml` exists) | `GET /api/v1/healthz` and `GET /api/v1/readyz`, unauthenticated. |
+| Today (CI smoke) | `GET /api/v1/healthz` on the container. Body includes `"status"` and `"ok"`. The smoke image is built **without** Postgres/MinIO, so CI does **not** hit `readyz`. |
+| Today (implemented) | `GET /api/v1/readyz`: `200` when PostgreSQL and object storage are reachable, else `503` with `details` naming `postgres` and/or `objectStorage` (Testcontainers / local compose). |
+| Not today | Probe `GET /`. `/actuator/health` is not the public contract. |
 
-The OpenAPI stub now documents `GET /api/v1/healthz` and `GET /api/v1/readyz` (ticket #11 / [gym-buddy-openapi#2](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi/pull/2)). The probe still answers `GET /`. Switch the smoke script when `pom.xml` appears. Target smoke remains `healthz` / `readyz`.
+The OpenAPI stub **and** the service implement `GET /api/v1/healthz` and `GET /api/v1/readyz` (ticket #11 / [gym-buddy-openapi#2](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi/pull/2)).
 
 ## VPS
 
@@ -209,10 +210,9 @@ Let’s Encrypt **HTTP-01** needs port **80** reachable from the world for a few
 
 | Work | Where |
 | --- | --- |
-| Flyway, Spring Boot | `gym-buddy-service` |
-| Expand the OpenAPI contract past `healthz` / `readyz` | `gym-buddy-openapi` |
+| Expand the OpenAPI contract past `healthz` / `readyz` (auth and the rest of `/api/v1`) | `gym-buddy-openapi` |
 | Angular 22 apps | `gym-buddy-ui` |
-| Smoke script switch from `GET /` | `.github/scripts/ci/smoke.sh` in the service repo, when `pom.xml` appears |
+| Sign-up / sign-in / log-out | Later ticket — not shipped |
 | Private data-plane compose on the VPS | Operator work after the API needs a database |
 | Instructor cadrage minutes | [../00-Project-brief/01-Scope-and-modules.md](../00-Project-brief/01-Scope-and-modules.md) — still **Not done** |
 

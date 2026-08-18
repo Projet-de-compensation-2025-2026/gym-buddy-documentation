@@ -61,12 +61,11 @@ Locked public contract (unauthenticated):
 
 Do not publish `/actuator/health` as the contract. Actuator may exist internally.
 
-### Drift until Spring exists
+### Today
 
-| Surface | Path today | Action |
+| Surface | Path today | Notes |
 | --- | --- | --- |
-| Probe image in `gym-buddy-service` | `GET /` (HTML) | Keep until `pom.xml` exists; then smoke `/api/v1/healthz` |
-| `gym-buddy-openapi` stub | `GET /api/v1/healthz` and `GET /api/v1/readyz` | Already renamed (openapi #2 / ticket #11). The service does not implement them yet. |
-| This page | `healthz` / `readyz` | Source of truth for the health contract |
-
-CI smoke scripts change when the service stops being a probe.
+| `gym-buddy-service` on `develop` | `GET /api/v1/healthz` and `GET /api/v1/readyz` | Implemented (ticket #11). `readyz` is `200` or `503` with `details` for `postgres` / `objectStorage`. |
+| CI smoke | `GET /api/v1/healthz` only | The smoke image is built without Postgres/MinIO. Probe `GET /` is not today’s smoke. |
+| `gym-buddy-openapi` stub | `GET /api/v1/healthz` and `GET /api/v1/readyz` | Stub and service agree (openapi #2 / ticket #11). |
+| This page | `healthz` / `readyz` | Source of truth for the public health contract. Not `/actuator/health`. |
