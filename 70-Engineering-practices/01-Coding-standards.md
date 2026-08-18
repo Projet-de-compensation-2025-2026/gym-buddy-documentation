@@ -31,7 +31,7 @@ All Gym Buddies application repositories. This wiki uses Markdown rules in [04-D
 ## TypeScript / Angular (frontend)
 
 - **Approved:** TypeScript **7.0.0**, `strict` true. Install from the `typescript` npm package. `tsc` is the Go-native compiler (Project Corsa). Do not send work to `@typescript/native-preview` / `tsgo`.
-- **Today** (`gym-buddy-ui` `develop`, app `0.1.0`): TypeScript `~6.0.2`. Stay honest until the implementation tickets land. Do not claim the UI already uses TypeScript 7.
+- **Today** (`gym-buddy-ui` `develop`, app `0.1.0`): TypeScript `~6.0.2`. Ticket **#24** is the TypeScript **7.0.0** follow-up. Do **not** claim TypeScript 7.
 - Standalone components, typed forms
 - Do not store the access token in `localStorage` (XSS)
 - Empty, loading, and error states are mandatory for list pages
@@ -50,7 +50,7 @@ All Gym Buddies application repositories. This wiki uses Markdown rules in [04-D
    - **Do not invent a `package.json` field.** pnpm does not read this from `package.json`.
 4. Disable or tightly allow dependency lifecycle scripts (`onlyBuiltDependencies` and/or ignore-scripts). Required. Empty allow-list unless a native addon must build. Keep the allow-list in `pnpm-workspace.yaml` (or `.npmrc` for older pnpm), not a made-up `package.json` key.
 
-**Today** `gym-buddy-ui` still declares `packageManager`: `npm@10.9.8` and has no `pnpm-lock.yaml`. That is not the approved stack.
+**Today** `gym-buddy-ui` on `develop` is **`pnpm@11.22.0`** (ui #4 / `63bebed`): committed `pnpm-lock.yaml`, `minimumReleaseAge` **40320**. TypeScript is still `~6.0.2` until ticket **#24**. Do **not** claim TypeScript 7.
 
 Renovate / Dependabot cooldown must be at least as long as this floor (four weeks). The pipeline contract is [07-CI-CD.md](07-CI-CD.md).
 

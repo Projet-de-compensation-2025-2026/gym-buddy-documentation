@@ -198,11 +198,11 @@ When application code grows, **change the scripts**, not the workflow names or t
 
 ## Node toolchain (gym-buddy-ui and any Node work)
 
-Approved for implementation. **Today** the UI on `develop` still uses npm (`packageManager`: `npm@10.9.8`) and TypeScript `~6.0.2`. CI stays on that until the implementation tickets land, then this contract.
+**Today** the UI on `develop` uses **`pnpm@11.22.0`** (ui #4 / `63bebed`; committed `pnpm-lock.yaml`; `minimumReleaseAge` **40320**) and TypeScript `~6.0.2`. Ticket **#24** is the TypeScript **7.0.0** follow-up. Do **not** claim TypeScript 7. The pnpm contract below is what `develop` uses.
 
 | Rule | Required |
 | --- | --- |
-| Activating pnpm | **Corepack** reads the pinned `packageManager` (`pnpm@X.Y.Z`). `corepack enable`, then use that pin. |
+| Activating pnpm | **Corepack** reads the pinned `packageManager` (`pnpm@11.22.0` on `develop`, ui #4 / `63bebed`). `corepack enable`, then use that pin. |
 | Do not | Install `pnpm@latest`, `npm i -g pnpm`, or an unpinned pnpm. |
 | Lockfile | Commit `pnpm-lock.yaml`. Install with the frozen lockfile (`pnpm install --frozen-lockfile` or the script equivalent). |
 | Release-age floor | Same four weeks as the workspace: `minimumReleaseAge` **40320** minutes in `pnpm-workspace.yaml` (older pnpm: `.npmrc` `minimum-release-age=40320`). Not a `package.json` field. |

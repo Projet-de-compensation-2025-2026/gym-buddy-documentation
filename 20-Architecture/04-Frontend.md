@@ -7,7 +7,7 @@
 
 The member frontend is the athlete-facing web app. **Approved stack:** **Angular 22** + **TypeScript 7.0.0** + **pnpm** ([07-Technology-choices.md](07-Technology-choices.md), [../70-Engineering-practices/01-Coding-standards.md](../70-Engineering-practices/01-Coding-standards.md)). It talks to the backend through a client **generated from** [`gym-buddy-openapi`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi). The static build is eligible for GitHub Pages ([08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md)).
 
-Today `gym-buddy-ui` on `develop` (app version `0.1.0`, ui #3 / ticket #12) is Angular 22 + **TypeScript `~6.0.2`** + **`packageManager`: `npm@10.9.8`**. That is not the approved toolchain. Do not claim the UI already uses TypeScript 7 or pnpm. Implementation tickets will move the repo; today-rows stay on 6.0.2 / npm until they land.
+Today `gym-buddy-ui` on `develop` (app version `0.1.0`, ui #3 / ticket #12) is Angular 22 + **TypeScript `~6.0.2`** + **`packageManager`: `pnpm@11.22.0`** ([gym-buddy-ui#4](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-ui/pull/4) / `63bebed`): committed `pnpm-lock.yaml`, `minimumReleaseAge` **40320**. Do **not** claim TypeScript 7. Ticket **#24** is the TypeScript **7.0.0** follow-up.
 
 Today the app has `/register`, `/login`, and a log-out control that call `POST /api/v1/auth/register`, `/login`, `/logout`. Access JWT stays in memory. Refresh cookie credentials are sent (`path /api/v1/auth`). No friends / feed / events. The service on `develop` implements those endpoints (service #5 / `e2ef2aa`). Ticket #12 is closed. Do not claim login is running on the VPS.
 
@@ -17,8 +17,8 @@ Today the app has `/register`, `/login`, and a log-out control that call `POST /
 | --- | --- | --- |
 | Angular | 22 | 22 |
 | TypeScript | `~6.0.2` | **7.0.0** from the `typescript` npm package (`tsc` is the Go binary / Project Corsa). Not `@typescript/native-preview` / `tsgo`. |
-| Package manager | `npm@10.9.8` | **pnpm**, pinned in `packageManager`, activated with **Corepack**. Commit `pnpm-lock.yaml`. Do not install `latest`. |
-| Supply-chain floor | none | `minimumReleaseAge` **40320** minutes (four weeks). Canonical: `pnpm-workspace.yaml`. Older pnpm: `.npmrc` `minimum-release-age=40320`. **Not** a `package.json` field. |
+| Package manager | **`pnpm@11.22.0`** (ui #4 / `63bebed`) | **pnpm**, pinned in `packageManager`, activated with **Corepack**. Commit `pnpm-lock.yaml`. Do not install `latest`. |
+| Supply-chain floor | `minimumReleaseAge` **40320** (ui #4 / `63bebed`) | `minimumReleaseAge` **40320** minutes (four weeks). Canonical: `pnpm-workspace.yaml`. Older pnpm: `.npmrc` `minimum-release-age=40320`. **Not** a `package.json` field. |
 | Lifecycle scripts | npm defaults | Disable or tightly allow (`onlyBuiltDependencies` and/or ignore-scripts). Required. |
 
 ## API base URL
