@@ -119,7 +119,7 @@ A ticket becomes `Done` when **all** of these are true:
 
 1. The behaviour in the linked spec is implemented
 2. Tests required by that spec (and [80-Testing](../80-Testing/README.md)) exist and pass
-3. Format checks pass (CI `format` / [07-CI-CD.md](07-CI-CD.md))
+3. Format is applied in CI (`format.sh --write` — [07-CI-CD.md](07-CI-CD.md)); the tree must be clean after the bot commit and after the merge
 4. The PR is merged into **`develop`**
 
 Atlas sets `In Progress` → `Done` only after Sentinel (the tests/review agent) confirms the work was implemented and satisfies the functional requirements. Joaquim does not move this by hand.

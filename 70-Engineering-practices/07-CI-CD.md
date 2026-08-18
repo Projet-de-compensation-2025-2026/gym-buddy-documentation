@@ -73,7 +73,7 @@ Runs on `ubuntu-latest`. It never publishes.
 
 | Step | What “pass” means |
 | --- | --- |
-| Format | The tree matches the formatter. This wiki: Prettier on YAML / JSON / HTML (`prettier --check`). Markdown is **not** auto-reflowed (tables and Mermaid). Application repos: Spotless / Prettier. CI does **not** rewrite files. |
+| Format | CI **applies** `.github/scripts/ci/format.sh --write` in all four repos (`gym-buddy-documentation`, `gym-buddy-openapi`, `gym-buddy-service`, `gym-buddy-ui`). If the tree is dirty, `github-actions[bot]` commits and pushes. Test and smoke stay in the **same job** after apply (`GITHUB_TOKEN` pushes do not retrigger workflows). This wiki: Prettier on YAML / JSON / HTML. Markdown is **not** auto-reflowed (`*.md` stays in `.prettierignore` — tables and Mermaid). Application repos: Spotless / Prettier through the same script. `format.sh` itself is unchanged (`--check` / `--write`). Fork PRs cannot get a bot push (`GITHUB_TOKEN` cannot write a fork). Current PRs are same-repo. |
 | Test | Repo-specific tests. In this wiki: every content folder still has a `README.md`, required pipeline files exist. Later: JUnit, Angular unit tests, OpenAPI lint. |
 | Smoke | The **built** thing is started and answers HTTP. Compiling is not enough. This wiki: Jekyll writes `_site/`, a local static server is started, `curl` must get a page that contains “Gym Buddies”. Service **today** (Python probe): container starts and `GET /` returns 2xx. Service **target** (Spring): `GET /api/v1/healthz` and `GET /api/v1/readyz` return 2xx. Do not treat `/actuator/health` as the public smoke. |
 
@@ -186,7 +186,7 @@ Each repository owns four scripts. Workflows call them; they do not inline stack
 
 | Script | CI | Release |
 | --- | --- | --- |
-| `.github/scripts/ci/format.sh` | `--check` | `--write` |
+| `.github/scripts/ci/format.sh` | `--write` (apply; bot commit if dirty) | `--write` |
 | `.github/scripts/ci/test.sh` | yes | yes |
 | `.github/scripts/ci/smoke.sh` | yes (after build) | yes (after build) |
 | `.github/scripts/ci/next_version.py` | no | yes |

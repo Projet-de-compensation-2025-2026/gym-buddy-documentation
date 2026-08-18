@@ -15,8 +15,8 @@ All Gym Buddies application repositories. This wiki uses Markdown rules in [04-D
 3. No secrets in git. `.env.example` / `application-example.yml` list keys only.
 4. Fail closed: missing auth → 401; missing ACL → 404.
 5. Functions that implement FS/TS IDs mention those IDs in the test name.
-6. Format on commit (Spotless / Palantir for Java, Prettier + Angular ESLint for the frontend).
-7. Lint must pass in CI.
+6. Format with the repo tools (Spotless / Palantir for Java, Prettier + Angular ESLint for the frontend). CI **applies** `format.sh --write`; `github-actions[bot]` commits if the tree is dirty. A format-on-commit hook is not required.
+7. The tree must be clean after that bot commit (and after merge). Test and smoke still run in the same CI job.
 8. HTTP shapes come from `gym-buddy-openapi`, not from ad-hoc DTOs that drift.
 
 ## Java (backend)
