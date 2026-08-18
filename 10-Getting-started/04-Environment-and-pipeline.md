@@ -14,7 +14,7 @@ Be honest at the defense. The pipeline, the VPS, and the **local data plane** ex
 | Piece | Today (August 2026) | Target (locked) |
 | --- | --- | --- |
 | `gym-buddy-service` | Python 3.12 probe (`python:3.12-alpine`). Serves `probe/index.html` on port 8080. `compose.yaml` and `.env.example` are in the repo. No `pom.xml`. Latest released tag **v0.1.1**. | Java 26 / Spring Boot modular monolith |
-| `gym-buddy-openapi` | OpenAPI 3.1.0 stub: `GET /health` under `/api/v1` | Full contract; health becomes `GET /api/v1/healthz` and `GET /api/v1/readyz` |
+| `gym-buddy-openapi` | OpenAPI 3.1.0 stub: `GET /healthz` and `GET /readyz` under `/api/v1` | Full contract; health stays `GET /api/v1/healthz` and `GET /api/v1/readyz` |
 | `gym-buddy-ui` | Static HTML probe | Angular 22 member app + back-office |
 | Health | Probe answers `GET /`. Smoke looks for the string `Gym Buddy`. | Unauthenticated `GET /api/v1/healthz` (liveness) and `GET /api/v1/readyz` (PostgreSQL + object storage reachable) |
 | Local data plane | `compose.yaml` in `gym-buddy-service`: Postgres 18, Redis, MinIO, probe API, optional MailHog. All binds `127.0.0.1`. | Same file; API service becomes the Spring image |
@@ -165,9 +165,9 @@ If the three SSH secrets are missing, Deploy still pushes the image and **skips*
 | When | What the smoke hits |
 | --- | --- |
 | Today (probe, no `pom.xml`) | `GET /` on the container. Body must contain `Gym Buddy`. |
-| Target (Spring + contract update) | `GET /api/v1/healthz` and `GET /api/v1/readyz`, unauthenticated. |
+| Target (when `pom.xml` exists) | `GET /api/v1/healthz` and `GET /api/v1/readyz`, unauthenticated. |
 
-The OpenAPI stub still documents `GET /api/v1/health`. That is a known disagreement. The locked decision is `healthz` / `readyz`. Change the stub and the smoke script in the same ticket that adds Spring.
+The OpenAPI stub now documents `GET /api/v1/healthz` and `GET /api/v1/readyz` (ticket #11 / [gym-buddy-openapi#2](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi/pull/2)). The probe still answers `GET /`. Switch the smoke script when `pom.xml` appears. Target smoke remains `healthz` / `readyz`.
 
 ## VPS
 
@@ -210,7 +210,7 @@ Let’s Encrypt **HTTP-01** needs port **80** reachable from the world for a few
 | Work | Where |
 | --- | --- |
 | Flyway, Spring Boot | `gym-buddy-service` |
-| Expand OpenAPI past `GET /health`; rename health to `healthz` / `readyz` | `gym-buddy-openapi` |
+| Expand the OpenAPI contract past `healthz` / `readyz` | `gym-buddy-openapi` |
 | Angular 22 apps | `gym-buddy-ui` |
 | Smoke script switch from `GET /` | `.github/scripts/ci/smoke.sh` in the service repo, when `pom.xml` appears |
 | Private data-plane compose on the VPS | Operator work after the API needs a database |
