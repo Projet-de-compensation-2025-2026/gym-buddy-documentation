@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Status | Proposed |
-| Related | [../30-Functional-specifications/11-Admin-and-moderation.md](../30-Functional-specifications/11-Admin-and-moderation.md), [../30-Functional-specifications/01-Accounts-and-administration.md](../30-Functional-specifications/01-Accounts-and-administration.md) |
+| Related | [09-Visual-design.md](09-Visual-design.md), [../30-Functional-specifications/11-Admin-and-moderation.md](../30-Functional-specifications/11-Admin-and-moderation.md), [../30-Functional-specifications/01-Accounts-and-administration.md](../30-Functional-specifications/01-Accounts-and-administration.md) |
 
 The back-office is a **separate Angular application** (or a clearly isolated `/admin` configuration with its own bundle) **inside `gym-buddy-ui`**. It is not a fourth repository. Members must not receive staff UI in the member JavaScript bundle.
 
@@ -15,6 +15,10 @@ The back-office is a **separate Angular application** (or a clearly isolated `/a
 | Admin | Everything a moderator can, plus roles, lock/unlock accounts, trigger fixtures, view audit log |
 
 JWT access tokens for staff include `role ∈ {moderator, admin}`. The API enforces this; the UI only hides buttons.
+
+## Visual design
+
+Staff-console visual tokens and Stitch mockups for Users, Content, Reports, Media, Fixtures, and Audit: [09-Visual-design.md](09-Visual-design.md). Those PNGs are Stitch canvas captures, not a live back-office.
 
 ## Surfaces
 

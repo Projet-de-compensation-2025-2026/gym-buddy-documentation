@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Status | Approved |
-| Related | [01-Software-architecture.md](01-Software-architecture.md), [08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md), [../91-Critical-analysis/01-Current-analysis.md](../91-Critical-analysis/01-Current-analysis.md) |
+| Related | [01-Software-architecture.md](01-Software-architecture.md), [08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md), [09-Visual-design.md](09-Visual-design.md), [../91-Critical-analysis/01-Current-analysis.md](../91-Critical-analysis/01-Current-analysis.md) |
 
 The brief requires **justification** of languages, frameworks, and libraries. Language and client/server split below are **decided**. Library versions are the latest stable as of 13 August 2026; pin exact builds in each application repo.
 
@@ -30,6 +30,15 @@ The brief requires **justification** of languages, frameworks, and libraries. La
 | Images | Thumbnailator / ImageIO in a worker | Variants without keeping originals on the API disk |
 | Recurrence | `org.dmfs:lib-recur` or ical4j (RRULE) | Recurring events |
 | Logging | SLF4J + Logback | Spring default, structured JSON in deploy |
+
+## UI visual
+
+Does not change Java, Angular, TypeScript, or pnpm. Tokens and mockups: [09-Visual-design.md](09-Visual-design.md).
+
+| Concern | Choice | Why this, not the alternative |
+| --- | --- | --- |
+| Typeface | **Inter** | Stitch theme panel: Headline, Body, and Label are all Inter. Load from Google Fonts or fontsource in `gym-buddy-ui`. Weights 400 (body), 500 (label), 600/700 (headline). Do not add a second family. |
+| Icons | **Material Symbols Outlined** (recommended) | Stitch did **not** name an icon library. One set only (`material-symbols-outlined`, or `@angular/material` + Material Symbols). Do not add Font Awesome or Lucide unless a later wiki change says so. |
 
 ## Repositories (decided)
 

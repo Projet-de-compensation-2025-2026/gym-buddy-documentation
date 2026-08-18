@@ -57,32 +57,30 @@ Also in scope because the brief requires them as *work*, not only as features:
 - Public social graph export
 - Multi-tenant white-label
 
-Record any change to this list after the instructor scoping discussion.
+Record any change to this list in this wiki. There will be **no** instructor scoping meeting (see cadrage below).
 
 ## Instructor cadence
 
 | Step from the brief | Status | Notes |
 | --- | --- | --- |
-| Discuss and scope the project with the instructor | Not done | No minutes yet — see below |
-| Write functional and technical specifications | Written (Draft until cadrage) | This wiki |
+| Discuss and scope the project with the instructor | Will not happen (instructor on holiday) | Joaquim, 2026-08-19 — see below |
+| Write functional and technical specifications | Written | This wiki. Not blocked on a cadrage meeting |
 | Provide UML diagrams | Written (Draft) | [../60-UML-diagrams](../60-UML-diagrams/README.md) |
 | Design and write algorithms | Written (Draft) | [../50-Algorithms](../50-Algorithms/README.md) |
-| Implement backend, frontend, back-office | Probe only | Python probe + CI/CD + VPS. Spring / Angular not started |
+| Implement backend, frontend, back-office | In progress on `develop` | Angular 22 + Spring exist on `develop` (auth + health only) |
 | Test plan and unit tests | Strategy written | [../80-Testing](../80-Testing/README.md) — no application test sources yet |
 | Critical analysis | Written (pre-implementation) | [../91-Critical-analysis](../91-Critical-analysis/README.md) |
 | Justify library choices | Approved | [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md) |
 
-## How to record the instructor cadrage
+## Instructor cadrage (2026-08-19)
 
-When the meeting happens, do **not** invent content beforehand. Add a subsection here with:
+Joaquim recorded on **2026-08-19** that there will be **no** instructor cadrage. The instructor is on holiday.
 
-1. Date and attendees
-2. Decisions that change this page (in-scope / out-of-scope)
-3. Decisions that change [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md)
-4. Anything the instructor asked to see at the defense
-5. Link to the ticket or mail thread if one exists
+The ISEP brief only says “Discuter et cadrer le projet avec l'enseignant” / “Discuss and scope the project with the instructor” ([ProjetDeCompensation2526.fr.md](ProjetDeCompensation2526.fr.md), [ProjetDeCompensation2526.en.md](ProjetDeCompensation2526.en.md)). It does **not** say wiki pages stay **Draft** until that meeting.
 
-Until that subsection exists, product pages stay **Draft**. Technical choices stay **Approved** for implementation unless the meeting overturns them.
+Product functional-specification pages are **not** blocked on a meeting. Existing FS `Status` fields are not mass-rewritten here. Implementation still goes wiki → OpenAPI tag → implement ([../70-Engineering-practices/08-Feature-implementation.md](../70-Engineering-practices/08-Feature-implementation.md)).
+
+Do not invent minutes for a meeting that will not happen. Technical choices stay **Approved** unless a later wiki change overturns them.
 
 ## Non-goals for this wiki
 

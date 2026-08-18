@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Status | Approved |
-| Related | [05-Back-office.md](05-Back-office.md), [../30-Functional-specifications](../30-Functional-specifications/README.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
+| Related | [05-Back-office.md](05-Back-office.md), [09-Visual-design.md](09-Visual-design.md), [../30-Functional-specifications](../30-Functional-specifications/README.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
 The member frontend is the athlete-facing web app. **Approved stack:** **Angular 22** + **TypeScript 6** (`~6.0.2`) + **pnpm** ([07-Technology-choices.md](07-Technology-choices.md), [../70-Engineering-practices/01-Coding-standards.md](../70-Engineering-practices/01-Coding-standards.md)). **Today** it generates the TypeScript client/types at build from `github:Projet-de-compensation-2025-2026/gym-buddy-openapi#v0.1.0` ([gym-buddy-ui#11](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-ui/pull/11) / ticket **#48** Done; `develop` **`47eac9c`**). Branch `feature/48-openapi-package` is gone. Only `develop` + `main` remain. Lockfile resolves to **`9c7c123`**. orval reads `node_modules/gym-buddy-openapi/openapi/openapi.yaml`. No `bundled.yaml` GET. Ticket **#42** stays **Done** as history (`b8da6bf` from `openapi/bundled.yaml`). `AuthApi` is a thin wrapper; login / refresh / logout keep `withCredentials`. There is **no** vendored YAML in the UI tree. TypeScript stays **`~6.0.2`**. App version stays **0.1.0**. Do **not** copy or vendor `openapi.yaml` into `gym-buddy-ui`. The static build is hosted on GitHub Pages at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ ([08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md)).
 
@@ -31,6 +31,10 @@ Today the app has `/register`, `/login`, and a log-out control that call `POST /
 | Local | `http://127.0.0.1:8080/api/v1` (`environment.ts`; `ng serve` proxies `/api`) |
 | GitHub Pages (today) | Live tag is **v0.1.1**. Bundle `main-4WJYST2C.js` embeds `https://vps-c39cdf03.vps.ovh.net/api/v1` (no `127.0.0.1`) and includes the password eye. UI `develop` **`7916fa8`** has that VPS `apiBaseUrl`. First tag **v0.1.0** pointed at localhost. Ticket **#31** is **Done / closed** for **only** `apiBaseUrl` + CORS + that live bundle. Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven. Do **not** Todo **#37**. Joaquim’s Pages login is operator-home only. Sentinel IPv4 `104.30.175.37` (US) → `https://vps-c39cdf03.vps.ovh.net/api/v1/healthz` TLS unexpected EOF. Cookie `HttpOnly`+`Secure`+`SameSite=Lax`, path `/api/v1/auth`. `SameSite=Lax` will **not** ride a github.io → VPS credentialed XHR. Do **not** start Kernel. |
 | Live API (operator network) | `https://vps-c39cdf03.vps.ovh.net/api/v1` — VPS Java container on the host is `develop` **`aea1c56`**. Caddy is **proven from the operator network** (Sentinel, from his PC): `GET /api/v1/healthz` → **200**; `POST /api/v1/auth/register` (email + handle + password + displayName) → **201**; `POST /api/v1/auth/login` → **200** + access JWT. The API is not the bug. Loopback `GET /api/v1/healthz` and `GET /api/v1/readyz` also **200**. Service `develop` **`aea1c56`** CORS is **proven from Joaquim’s PC**: Pages origin ACAO **200** + credentials; foreign/evil origin **403**. **Not** a GHCR pull. Caddy is **not** proven from the GitHub Pages origin. Ticket **#31** is **Done / closed** for **only** `apiBaseUrl` + CORS + live **v0.1.1**. Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven. Do **not** Todo **#37**. Joaquim’s Pages login is operator-home only. |
+
+## Visual design
+
+Palette, Inter, icon recommendation, and Stitch mockups for every route below: [09-Visual-design.md](09-Visual-design.md). Those PNGs are Stitch canvas captures, not live Angular screenshots.
 
 ## Surfaces
 
