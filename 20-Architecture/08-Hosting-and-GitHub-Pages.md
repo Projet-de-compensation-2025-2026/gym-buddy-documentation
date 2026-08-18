@@ -69,16 +69,16 @@ Rejected for the API (fine as notes, not the plan): Render, Fly.io, Railway as t
 
 | Need | Where |
 | --- | --- |
-| Java API | Docker on the VPS, bound to `127.0.0.1:8080`. Today: **`gym-buddy-service:local`**. `healthz` / `readyz` 200 on loopback. **Not** a GHCR / Release |
+| Java API | Docker on the VPS, bound to `127.0.0.1:8080`. Today: `gym-buddy-service` `develop` **`e2ef2aa`**. Loopback `GET /actuator/health/healthz` and `GET /actuator/health/readyz` **200**. **Not** a GHCR pull / Release / replace-from-registry |
 | HTTPS | Caddy on the hostname → loopback `:8080`, Let’s Encrypt |
-| PostgreSQL 18 / Redis / MinIO | Local compose proven on a laptop (`docs/local-compose-proof.md`). VPS apply **done** (ticket #20 **Done**; [gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e`): `gym-buddy-data`, ports unpublished |
+| PostgreSQL 18 / Redis / MinIO | Local compose proven on a laptop (`docs/local-compose-proof.md`). VPS apply **done** (ticket **#20** **Done / closed**; [gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e`): `gym-buddy-data`, ports unpublished |
 | Public `:8080` | Never. UFW denies it. |
 
 UFW: 22 open; 80 denied except during certificate HTTP-01; 443 allowed only from the operator IPv6 prefix configured on the server (the prefix is not written in this public wiki); 8080 denied.
 
 GitHub Actions is the only pipeline: CI on `develop`, a separate Release job onto `main`, then Deploy. Details: [../70-Engineering-practices/07-CI-CD.md](../70-Engineering-practices/07-CI-CD.md) and [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
 
-A tagged squash commit on `main` **is** the GHCR deploy path. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. Today’s VPS image is **`gym-buddy-service:local`** (`docker run`, not compose of the API), **not** a GHCR / Release. Kernel is rebuilding from develop for `e2ef2aa` auth. Laptop compose remains the **local** story. Caddy is the intended public entry; it is **not** proven in this confirm.
+A tagged squash commit on `main` **is** the GHCR deploy path. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. Today’s VPS container is `gym-buddy-service` `develop` **`e2ef2aa`** (`docker run`, not compose of the API), **not** a pre-auth snapshot and **not** a GHCR pull, a Release tag, or a successful replace-from-registry. Laptop compose remains the **local** story. Caddy is the intended public entry; it is **not** proven in this confirm. Do **not** write a completed register/login on the VPS.
 
 ## Target topology
 
