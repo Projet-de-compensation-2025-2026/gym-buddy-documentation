@@ -198,7 +198,7 @@ When application code grows, **change the scripts**, not the workflow names or t
 
 ## Node toolchain (gym-buddy-ui and any Node work)
 
-**Today** the UI on `develop` uses **`pnpm@11.22.0`** (ui #4 / `63bebed`; committed `pnpm-lock.yaml`; `minimumReleaseAge` **40320**) and TypeScript `~6.0.2`. Ticket **#24** is the TypeScript **7.0.0** follow-up. Do **not** claim TypeScript 7. The pnpm contract below is what `develop` uses.
+**Today and approved** the UI on `develop` uses **`pnpm@11.22.0`** (ui #4 / `63bebed`; ticket **#23** Done; committed `pnpm-lock.yaml`; `minimumReleaseAge` **40320**) and TypeScript **6** (`~6.0.2`). Angular 22 includes `@angular/compiler-cli` **22.1.2**, peer `>=6.0 <6.1`. Stay on TypeScript `~6.0.2` until Angular actually supports 7. Joaquim cancelled the TypeScript 6→7 migration (ticket #24 cancelled/closed). Do **not** claim TypeScript 7 landed. The pnpm contract below is what `develop` uses.
 
 | Rule | Required |
 | --- | --- |

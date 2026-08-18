@@ -20,7 +20,7 @@ This page is updated after implementation. It already records **design-level** s
 
 ## Weaknesses
 
-- TypeScript 7.0 is new (Go native compiler, July 2026). Angular 22 may trail it by a patch; that gap is a tooling risk, not a product one.
+- Joaquim cancelled the TypeScript 6→7 migration (ticket #24 cancelled/closed). Approved and today is TypeScript **6** (`~6.0.2`). Angular 22 includes `@angular/compiler-cli` **22.1.2**, peer `>=6.0 <6.1`. Stay on TypeScript `~6.0.2` until Angular actually supports 7. `typescript@7.0.0` is 404 and **7.0.2** cannot land (`ts.readConfigFile is not a function`). That is why the slice was dropped, not a deferred target. Do **not** claim TypeScript 7 landed.
 - GitHub Pages cannot host the Java API or PostgreSQL. The API runs on the OVH VPS; 443 is limited to the operator network, so a stranger cannot open the demo URL without that prefix on UFW.
 - JWT HS256 + Redis denylist is not an identity platform (no step-up auth, no device list).
 - Nested comments capped at depth 4 and stored `depth` will need a migration if the cap changes.

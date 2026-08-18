@@ -8,7 +8,7 @@ How we write, review, and ship code and documentation across **every** Gym Buddi
 
 | Document | Description |
 | --- | --- |
-| [01-Coding-standards.md](01-Coding-standards.md) | Language-agnostic rules plus Java, Angular/TypeScript 7.0.0, and pnpm supply-chain defaults |
+| [01-Coding-standards.md](01-Coding-standards.md) | Language-agnostic rules plus Java, Angular/TypeScript **6**, and pnpm supply-chain defaults |
 | [02-Git-workflow.md](02-Git-workflow.md) | [Gitflow (Atlassian)](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) + [Conventional Commits](https://www.conventionalcommits.org/) |
 | [03-Review-process.md](03-Review-process.md) | What a review must check (including “does it match the wiki?”) |
 | [04-Documentation-conventions.md](04-Documentation-conventions.md) | Numbering, page template, linking, changelog entries |
