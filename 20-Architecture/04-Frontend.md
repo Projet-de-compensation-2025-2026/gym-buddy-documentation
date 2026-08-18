@@ -22,7 +22,7 @@ Today the app has `/register`, `/login`, and a log-out control that call `POST /
 | Package manager | **`pnpm@11.22.0`** (ui #4 / `63bebed`) | **pnpm**, pinned in `packageManager`, activated with **Corepack**. Commit `pnpm-lock.yaml`. Do not install `latest`. |
 | Supply-chain floor | `minimumReleaseAge` **40320** (ui #4 / `63bebed`) | `minimumReleaseAge` **40320** minutes (four weeks). Canonical: `pnpm-workspace.yaml`. Older pnpm: `.npmrc` `minimum-release-age=40320`. **Not** a `package.json` field. |
 | Lifecycle scripts | npm defaults | Disable or tightly allow (`onlyBuiltDependencies` and/or ignore-scripts). Required. |
-| HTTP client | **Landed:** **orval 8.22.0** generates the TypeScript client/types at build from `gym-buddy-openapi@7fa5108` `openapi/bundled.yaml` (ui #10 / ticket **#42** Done; `develop` **`b8da6bf`**). `AuthApi` is a thin wrapper; login / refresh / logout keep `withCredentials`. **No** `openapi.yaml` (or any YAML copy) in the tree. | Generate TS client/types from the `gym-buddy-openapi` repo / tag / bundle (orval). Consume that bundle. Do **not** copy the YAML into this repo. |
+| HTTP client | **Landed:** **orval 8.22.0** generates the TypeScript client/types at build from `gym-buddy-openapi@7fa5108` `openapi/bundled.yaml` (ui #10 / ticket **#42** Done; `develop` **`b8da6bf`**). `AuthApi` is a thin wrapper; login / refresh / logout keep `withCredentials`. **No** `openapi.yaml` (or any YAML copy) in the tree. | Depend on the versioned `gym-buddy-openapi` **package / tag**. Generate TS client/types from the `$ref` tree (`openapi/openapi.yaml`) at build (orval). Pin a tag/version, not a raw develop SHA GET. Do **not** copy the YAML into this repo. |
 
 ## API base URL
 
