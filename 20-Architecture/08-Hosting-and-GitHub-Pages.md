@@ -85,6 +85,8 @@ Rejected for the API (fine as notes, not the plan): Render, Fly.io, Railway as t
 
 UFW: 22 open; 80 denied except during certificate HTTP-01; 443 allowed only from the operator IPv6 prefix configured on the server (the prefix is not written in this public wiki); 8080 denied.
 
+To inspect Java API / Postgres / Redis / MinIO logs: SSH, then `docker logs` — [Inspecting container logs](../10-Getting-started/04-Environment-and-pipeline.md#inspecting-container-logs).
+
 GitHub Actions is the only pipeline: CI on `develop`, a separate Release job onto `main`, then Deploy. Details: [../70-Engineering-practices/07-CI-CD.md](../70-Engineering-practices/07-CI-CD.md) and [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
 
 A tagged squash commit on `main` **is** the GHCR deploy path. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. Today’s VPS container is `gym-buddy-service` `develop` **`e2ef2aa`** (`docker run`, not compose of the API), Kernel rebuilt from develop **`e2ef2aa`** after apply (not still only `:local`). `replace.sh` skip-pull for local tags is on `develop` ([gym-buddy-service#8](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/8) / `fb1e618`). That is what is true about `replace.sh`. It is **not** a GHCR pull, a Release tag, or a successful replace-from-registry. Laptop compose remains the **local** story. Caddy is the intended public entry; it is **not** proven in this confirm. Do **not** write a completed register/login on the VPS.

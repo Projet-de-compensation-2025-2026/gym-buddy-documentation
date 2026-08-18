@@ -20,6 +20,7 @@ Until the first application release, versions refer to the **documentation contr
 - Ticket form requires [`70-Engineering-practices`](../70-Engineering-practices/README.md) on every issue (code style, git, PRs, CI/CD) so every repo and every agent follows the same workflow
 - Local data plane is now in `gym-buddy-service` (`compose.yaml`, `.env.example`); MailHog stays behind the `mail` profile
 - Application service layer on `gym-buddy-service` `develop` (ticket #11): Java 25 LTS / Spring Boot (`pom.xml`), Flyway `V1` baseline, `GET /api/v1/healthz` and `GET /api/v1/readyz`
+- Environment page: SSH + `docker logs` inspect runbook for the VPS API (`gym-buddy-service`) and data-plane `postgres` / `redis` / `minio`. There is no Grafana / Loki / OpenShift / Argo log UI.
 
 ### Changed
 
