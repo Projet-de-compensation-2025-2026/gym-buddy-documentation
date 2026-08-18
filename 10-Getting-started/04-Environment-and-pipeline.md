@@ -219,6 +219,40 @@ The API container reaches Postgres / Redis / MinIO by Docker DNS (`postgres`, `r
 
 Local compose (laptop `compose.yaml`) and VPS data-plane compose (`deploy/compose.yaml`) are different files. The laptop may bind those ports to `127.0.0.1` for `psql` / Redis Insight / the MinIO console. The VM must not.
 
+### Inspecting container logs
+
+There is no Grafana, Loki, OpenShift, or Argo log UI. Inspect is SSH plus Docker logs. Do not put those on the 8 GB VPS.
+
+SSH to `vps-c39cdf03.vps.ovh.net` (port 22, open worldwide). Do not publish the operator username or the operator IPv6 prefix.
+
+API container `gym-buddy-service` (`DEPLOY_CONTAINER_NAME`; `docker run`, not compose of the API; bound to `127.0.0.1:8080`; today `develop` **`e2ef2aa`**):
+
+```bash
+docker logs gym-buddy-service
+docker logs --tail 200 -f gym-buddy-service
+```
+
+Data-plane logs from a `gym-buddy-service` checkout on the VPS (`deploy/compose.yaml`, project `gym-buddy-vps`, network `gym-buddy-data`; Postgres 18.6, Redis, MinIO; no published `5432` / `6379` / `9000` / `9001`; host env `/etc/gym-buddy/vps.env`):
+
+```bash
+docker compose --env-file /etc/gym-buddy/vps.env -f deploy/compose.yaml logs postgres
+docker compose --env-file /etc/gym-buddy/vps.env -f deploy/compose.yaml logs redis
+docker compose --env-file /etc/gym-buddy/vps.env -f deploy/compose.yaml logs minio
+```
+
+`docker ps` lists running names if you prefer `docker logs <name>`. Laptop `compose.yaml` is a different file (published `127.0.0.1` ports). It is **not** the VPS.
+
+Loopback `GET /api/v1/healthz` and `GET /api/v1/readyz` are the pulse, not a substitute for logs:
+
+```bash
+curl -sS -D- http://127.0.0.1:8080/api/v1/healthz
+curl -sS -D- http://127.0.0.1:8080/api/v1/readyz
+```
+
+Apply / replace stays in the service operator runbook: [`docs/vps-data-plane.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/vps-data-plane.md). Do not duplicate it here.
+
+A later log UI would need a wiki page first (loopback or the existing IPv6 lock, never public) and a Todo card before anyone implements. Not this page.
+
 ### Certificate renewal
 
 Let’s Encrypt **HTTP-01** needs port **80** reachable from the world for a few seconds during issuance or renewal. Do **not** leave 80 open in UFW after the challenge.
