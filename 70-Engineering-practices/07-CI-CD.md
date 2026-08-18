@@ -146,7 +146,9 @@ Service deploy on the VM (secrets are set):
 4. `replace.sh` runs `docker login ghcr.io` with `GITHUB_TOKEN` and `github.actor` (private image).
 5. Pull the new tag, stop the previous container, `docker run` the new one bound to `${DEPLOY_BIND:-127.0.0.1}:${PORT:-8080}:8080`.
 
-This is **not** `docker compose up -d` on the VM. Compose is the **local** (and later private data-plane) story. The public HTTP entry is Caddy on the hostname, proxying to loopback `:8080`.
+That GHCR pull path is the tagged Release story. Today on `develop`, `replace.sh` **skip-pulls local tags** ([gym-buddy-service#8](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/8) / `fb1e618`). That is what is true about `replace.sh`. It is **not** a GHCR pull, a Release, or a successful replace-from-registry. Today’s VPS container is `develop` **`e2ef2aa`**.
+
+This is **not** `docker compose up -d` on the VM. Compose is the **local** (and later private data-plane) story. The public HTTP entry is Caddy on the hostname, proxying to loopback `:8080`. Caddy is **not** proven in this confirm.
 
 ## Repository rules (so `main` stays clean)
 
@@ -196,11 +198,11 @@ When application code grows, **change the scripts**, not the workflow names or t
 
 ## Node toolchain (gym-buddy-ui and any Node work)
 
-Approved for implementation. **Today** the UI on `develop` still uses npm (`packageManager`: `npm@10.9.8`) and TypeScript `~6.0.2`. CI stays on that until the implementation tickets land, then this contract.
+**Today** the UI on `develop` uses **`pnpm@11.22.0`** (ui #4 / `63bebed`; committed `pnpm-lock.yaml`; `minimumReleaseAge` **40320**) and TypeScript `~6.0.2`. Ticket **#24** is the TypeScript **7.0.0** follow-up. Do **not** claim TypeScript 7. The pnpm contract below is what `develop` uses.
 
 | Rule | Required |
 | --- | --- |
-| Activating pnpm | **Corepack** reads the pinned `packageManager` (`pnpm@X.Y.Z`). `corepack enable`, then use that pin. |
+| Activating pnpm | **Corepack** reads the pinned `packageManager` (`pnpm@11.22.0` on `develop`, ui #4 / `63bebed`). `corepack enable`, then use that pin. |
 | Do not | Install `pnpm@latest`, `npm i -g pnpm`, or an unpinned pnpm. |
 | Lockfile | Commit `pnpm-lock.yaml`. Install with the frozen lockfile (`pnpm install --frozen-lockfile` or the script equivalent). |
 | Release-age floor | Same four weeks as the workspace: `minimumReleaseAge` **40320** minutes in `pnpm-workspace.yaml` (older pnpm: `.npmrc` `minimum-release-age=40320`). Not a `package.json` field. |
