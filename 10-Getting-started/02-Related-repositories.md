@@ -23,11 +23,13 @@ The instructor account [maurras.togbe@isep.fr](mailto:maurras.togbe@isep.fr) mus
 The contract is a **git artifact**, not a runtime accident:
 
 - Reviewers (and the instructor) read the spec without booting Java
-- Frontend generates a TypeScript client from a tagged spec (`v0.3.0`), not from whatever a local server emitted today
-- Backend is checked **against** that spec (contract tests / generated interfaces)
+- Frontend generates a TypeScript client from a tagged spec, not from whatever a local server emitted today (**target**; not landed)
+- Backend is checked **against** that spec (contract tests / generated interfaces) (**target**; not landed)
 - The same YAML is published on Pages as human-readable API docs
 
 Spring may still expose `/v3/api-docs` in development as a convenience. That endpoint is **not** the source of truth. If it disagrees with `gym-buddy-openapi`, the repository wins.
+
+**Today:** `gym-buddy-service` still hand-writes Java DTOs and controllers (**no** `openapi-generator` at build). `gym-buddy-ui` still hand-writes `src/app/api/models.ts` + `auth-api.service.ts` (**no** orval / openapi-typescript at build). Do **not** vendor `openapi.yaml` into `gym-buddy-ui`. Canonical rules: [../40-Technical-specifications/08-OpenAPI-contract.md](../40-Technical-specifications/08-OpenAPI-contract.md).
 
 Today the OpenAPI stub **and** the service implement `GET /api/v1/healthz` and `GET /api/v1/readyz`. Those remain the public health paths — [../40-Technical-specifications/01-API-conventions.md](../40-Technical-specifications/01-API-conventions.md). The public contract is not `/actuator/health`. The same stub documents `POST /api/v1/auth/register`, `/login`, `/refresh`, and `/logout` (openapi #4 / ticket #12). The UI on `develop` has a basic sign-up page, sign-in page, and log-out control that call register / login / logout (ui #3). The service on `develop` implements those operations ([gym-buddy-service#5](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/5) / `e2ef2aa`): Argon2id, HS256 access JWT, refresh cookie, Redis denylist. Ticket #12 is closed. Caddy register/login is **proven from the operator network**. Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven. Do **not** Todo **#37**.
 
