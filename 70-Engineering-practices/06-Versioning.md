@@ -47,7 +47,7 @@ Documentation `0.3.0` is done when all of these are true on `develop` and then t
 3. **Sign-up and sign-in** — **done** on `develop` (ticket #12 **closed**; openapi #4, ui #3, [gym-buddy-service#5](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/5) / `e2ef2aa`). `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout`: Argon2id, HS256 access JWT, refresh cookie, Redis denylist. **Not** claimed on the VPS.
 4. **Developers and coding agents can work** on `gym-buddy-service`, `gym-buddy-ui`, and `gym-buddy-openapi`, push to `develop`, and when a version is stable, update the remote machines via the existing Release → Deploy path.
 
-Do not invent extra product features for this slice: no friends, feed, events, search, chat, or admin UI. `gym-buddy-ui` on `develop` stays TypeScript **6** (`~6.0.2`, app `0.1.0`) + **`pnpm@11.22.0`**. Joaquim cancelled the TypeScript 6→7 migration (ticket #24 cancelled/closed). Cancelling that slice does not bump documentation `0.3.0` or application `0.1.x`.
+Do not invent extra product features for this slice: no friends, feed, events, search, chat, or admin UI. `gym-buddy-ui` on `develop` stays TypeScript **6** (`~6.0.2`, app `0.1.0`) + **`pnpm@11.22.0`**. Angular 22 includes `@angular/compiler-cli` **22.1.2**, peer `>=6.0 <6.1`. Stay on TypeScript `~6.0.2` until Angular actually supports 7. Joaquim cancelled the TypeScript 6→7 migration (ticket #24 cancelled/closed). Cancelling that slice does not bump documentation `0.3.0` or application `0.1.x`. Do **not** claim TypeScript 7 landed.
 
 ## Who picks the number
 

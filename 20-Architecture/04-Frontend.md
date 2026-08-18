@@ -7,7 +7,7 @@
 
 The member frontend is the athlete-facing web app. **Approved stack:** **Angular 22** + **TypeScript 6** (`~6.0.2`) + **pnpm** ([07-Technology-choices.md](07-Technology-choices.md), [../70-Engineering-practices/01-Coding-standards.md](../70-Engineering-practices/01-Coding-standards.md)). It talks to the backend through a client **generated from** [`gym-buddy-openapi`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi). The static build is eligible for GitHub Pages ([08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md)).
 
-Today `gym-buddy-ui` on `develop` (app version `0.1.0`, ui #3 / ticket #12) is Angular 22 + **TypeScript `~6.0.2`** + **`packageManager`: `pnpm@11.22.0`** ([gym-buddy-ui#4](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-ui/pull/4) / `63bebed`): committed `pnpm-lock.yaml`, `minimumReleaseAge` **40320**. Ticket **#23** (pnpm) is **Done**. Joaquim cancelled the TypeScript 6→7 migration (ticket #24 cancelled/closed). Do **not** claim TypeScript 7 shipped. Do **not** treat 7.0.0 or 7.0.2 as the next compiler.
+Today `gym-buddy-ui` on `develop` (app version `0.1.0`, ui #3 / ticket #12) is Angular 22 + **TypeScript `~6.0.2`** + **`packageManager`: `pnpm@11.22.0`** ([gym-buddy-ui#4](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-ui/pull/4) / `63bebed`): committed `pnpm-lock.yaml`, `minimumReleaseAge` **40320**. Ticket **#23** (pnpm) is **Done**. Angular 22 includes `@angular/compiler-cli` **22.1.2**, peer `>=6.0 <6.1`. Stay on TypeScript `~6.0.2` until Angular actually supports 7. Joaquim cancelled the TypeScript 6→7 migration (ticket #24 cancelled/closed). Do **not** claim TypeScript 7 landed. Do **not** treat 7.0.0 or 7.0.2 as the next compiler.
 
 Today the app has `/register`, `/login`, and a log-out control that call `POST /api/v1/auth/register`, `/login`, `/logout`. Access JWT stays in memory. Refresh cookie credentials are sent (`path /api/v1/auth`). No friends / feed / events. The service on `develop` implements those endpoints (service #5 / `e2ef2aa`). Ticket #12 is closed. Do not claim login is running on the VPS.
 
@@ -16,7 +16,7 @@ Today the app has `/register`, `/login`, and a log-out control that call `POST /
 | Piece | Today (`develop`, app `0.1.0`) | Approved target |
 | --- | --- | --- |
 | Angular | 22 | 22 |
-| TypeScript | `~6.0.2` | **TypeScript 6** (`~6.0.2`). Angular 22 `@angular/compiler-cli` **22.1.2** peers `>=6.0 <6.1`. Ticket #24 cancelled. |
+| TypeScript | `~6.0.2` | **TypeScript 6** (`~6.0.2`). Angular 22 includes `@angular/compiler-cli` **22.1.2**, peer `>=6.0 <6.1`. Stay on `~6.0.2` until Angular actually supports 7. Ticket #24 cancelled. |
 | Package manager | **`pnpm@11.22.0`** (ui #4 / `63bebed`) | **pnpm**, pinned in `packageManager`, activated with **Corepack**. Commit `pnpm-lock.yaml`. Do not install `latest`. |
 | Supply-chain floor | `minimumReleaseAge` **40320** (ui #4 / `63bebed`) | `minimumReleaseAge` **40320** minutes (four weeks). Canonical: `pnpm-workspace.yaml`. Older pnpm: `.npmrc` `minimum-release-age=40320`. **Not** a `package.json` field. |
 | Lifecycle scripts | npm defaults | Disable or tightly allow (`onlyBuiltDependencies` and/or ignore-scripts). Required. |
