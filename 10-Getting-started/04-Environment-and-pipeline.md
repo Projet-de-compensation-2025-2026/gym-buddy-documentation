@@ -9,7 +9,7 @@ How to run Gym Buddies locally, how a change is proven and released, and how the
 
 ## Today versus target
 
-Be honest at the defense. The pipeline, the VPS API replace, the **local data-plane files**, and the **Java 25 LTS / Spring Boot** service exist on `develop` (`pom.xml`, ticket #11). The OpenAPI stub documents auth, and the UI has sign-up / sign-in / log-out pages. End-to-end register / login / logout is **not** done (service #5 still open). PostgreSQL on the VPS and a **proven** local compose boot also do **not**. That remaining work is the **documentation `0.3.0` technical foundation** ([../70-Engineering-practices/06-Versioning.md](../70-Engineering-practices/06-Versioning.md)). There is no planned application `0.2.0` next slice.
+Be honest at the defense. The pipeline, the VPS API replace, the **local data-plane files**, and the **Java 25 LTS / Spring Boot** service exist on `develop` (`pom.xml`, ticket #11). Local compose runtime is **proven on a laptop** ([gym-buddy-service#6](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/6) / `025a351`; evidence: [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md)). The OpenAPI stub documents auth, and the UI has sign-up / sign-in / log-out pages. End-to-end register / login / logout is **not** done (service #5 still open). PostgreSQL on the VPS does **not** run today (ticket #20). That remaining work is the **documentation `0.3.0` technical foundation** ([../70-Engineering-practices/06-Versioning.md](../70-Engineering-practices/06-Versioning.md)). There is no planned application `0.2.0` next slice.
 
 | Piece | Today (August 2026) | Target (locked) |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ Be honest at the defense. The pipeline, the VPS API replace, the **local data-pl
 | `gym-buddy-openapi` | OpenAPI 3.1.0 stub (`info.version` `0.1.0`): `GET /healthz` and `GET /readyz` under `/api/v1`, plus `POST /auth/register`, `/login`, `/refresh`, `/logout` (openapi #4 / ticket #12). The UI calls those auth endpoints; the service has **not** implemented them. | Full contract; health stays `GET /api/v1/healthz` and `GET /api/v1/readyz` |
 | `gym-buddy-ui` | Angular 22 (app version `0.1.0`): `/register`, `/login`, and a log-out control that call `POST /api/v1/auth/register`, `/login`, `/logout` (ui #3). Access JWT in memory. Refresh cookie credentials sent (`path /api/v1/auth`). No friends / feed / events. End-to-end auth waits on the service. | Angular 22 member app + back-office |
 | Health | Service implements unauthenticated `GET /api/v1/healthz` (liveness) and `GET /api/v1/readyz` (`200` or `503` with `details` for `postgres` / `objectStorage`). CI smoke hits **`GET /api/v1/healthz` only** — the smoke image is built without Postgres/MinIO. Probe `GET /` is not today’s service smoke. | Same public paths. Do not smoke `/actuator/health`. |
-| Local data plane | `compose.yaml` in `gym-buddy-service`: Postgres 18, Redis, MinIO, Spring API, optional MailHog. All binds `127.0.0.1`. Files exist (ticket #7). **Runtime boot is not claimed** (documentation `0.3.0`). | Same file |
+| Local data plane | Laptop compose **proven** ([gym-buddy-service#6](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/6) / `025a351`, 2026-08-18 10:40:55Z): `cp .env.example .env && docker compose up -d --build`. Postgres 18.6, Redis 8.10.0, MinIO `RELEASE.2025-09-07T16-13-09Z`, Java 25.0.3 Temurin / Spring Boot 4.1.0. Binds `127.0.0.1` only (`8080`, `5432`, `6379`, `9000`, `9001`). `GET /api/v1/healthz` → 200 `{"status":"ok"}`. `GET /api/v1/readyz` → 200 `{"status":"ok"}`. Evidence: [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md). `.env` stays gitignored; only `.env.example` is in git. **Not** the VPS. | Same file |
 | VM | One API container, bound to `127.0.0.1:8080`. Caddy terminates TLS. No compose on the VM. | Same API replace, plus a **private** data-plane compose on the Docker network (5432 / 6379 / 9000 not published) |
 | Production object storage | `SPRING_PROFILES_ACTIVE=prod` **refuses to start** if S3-compatible storage is missing | Same |
 
@@ -32,12 +32,12 @@ A laptop is ready when all of these are true:
 3. Clone the four repositories (URLs in [02-Related-repositories.md](02-Related-repositories.md)). Default branch is `develop` everywhere.
 4. `compose.yaml` and `.env.example` are in `gym-buddy-service` (ticket #7).
 5. Copy `.env.example` to `.env` locally. Fill secrets there. Never commit `.env`.
-6. `docker compose up -d` binds every published port to `127.0.0.1`.
+6. `docker compose up -d --build` binds every published port to `127.0.0.1`.
 7. Flyway **V1 baseline** is on `develop`. Full domain tables from [../20-Architecture/06-Data-model.md](../20-Architecture/06-Data-model.md) are later.
 8. The OpenAPI stub in `gym-buddy-openapi` is the HTTP source of truth. Expand it **before** implementing a new route.
 9. Point the UI at `http://localhost:8080/api/v1`.
 
-`docker compose up -d` is how a laptop starts the data plane plus the Spring API. That boot is **not** claimed today (documentation `0.3.0`). When it is proven, the API uses Postgres, Redis, and MinIO (`readyz`).
+`docker compose up -d --build` is how a laptop starts the data plane plus the Spring API. That boot is **proven** on a laptop ([gym-buddy-service#6](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/6) / `025a351`; [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md)). The API uses Postgres, Redis, and MinIO (`readyz` 200). This is **not** how the VPS runs.
 
 ## Local Compose
 
@@ -45,10 +45,12 @@ Compose is the **local** story. It is not how the VPS runs. File: `compose.yaml`
 
 ```bash
 cp .env.example .env
-docker compose up -d
+docker compose up -d --build
 # optional SMTP catcher
 docker compose --profile mail up -d
 ```
+
+Recorded laptop run (2026-08-18 12:40 PT / 10:40:55Z): `GET /api/v1/healthz` and `GET /api/v1/readyz` both 200 `{"status":"ok"}`. Published ports were `127.0.0.1` only. Write-up: [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md) on `gym-buddy-service` `develop`. Do not paste secrets. `.env` stays gitignored.
 
 | Service | Image role | Host bind | Port |
 | --- | --- | --- |
@@ -210,18 +212,17 @@ Let’s Encrypt **HTTP-01** needs port **80** reachable from the world for a few
 
 ## What still has to be implemented
 
-The next slice is **documentation `0.3.0`** (technical foundation). None of the foundation items below are done.
+The next slice is **documentation `0.3.0`** (technical foundation). Local compose runtime is **done** on a laptop (ticket #19 / service #6 / `025a351`). The items below are still open.
 
 | Work | Where |
 | --- | --- |
-| Prove local compose at runtime: `docker compose up -d` on a laptop; Postgres 18, Redis, MinIO, Java 25 LTS Spring service; binds `127.0.0.1`; `GET /api/v1/healthz` 200 and `GET /api/v1/readyz` 200. Files exist (tickets #7 / #11); boot is not claimed. | Laptop + `gym-buddy-service` |
-| PostgreSQL and the Java service on the OVH VPS (`vps-c39cdf03.vps.ovh.net`). Private data-plane on the Docker network; do not publish `5432` / `6379` / `9000`. Public story stays Caddy → `127.0.0.1:8080`. Today: one `docker run` API container (tag **v0.1.1**). | Operator + `gym-buddy-service` |
+| PostgreSQL and the Java service on the OVH VPS (`vps-c39cdf03.vps.ovh.net`). Private data-plane on the Docker network; do not publish `5432` / `6379` / `9000`. Public story stays Caddy → `127.0.0.1:8080`. Today: one `docker run` API container (tag **v0.1.1**). No VPS compose. | Ticket #20 — operator + `gym-buddy-service` |
 | Sign-up and sign-in (log-out stays in the same ticket) | Ticket #12 — OpenAPI stub and UI pages are on `develop`; service #5 is still open. Product slice is **not** done |
 | Expand the OpenAPI contract past health + the four auth operations (rest of `/api/v1`) | `gym-buddy-openapi` |
 | Remaining Angular surfaces (friends / feed / events / back-office) | `gym-buddy-ui` |
 | Instructor cadrage minutes | [../00-Project-brief/01-Scope-and-modules.md](../00-Project-brief/01-Scope-and-modules.md) — still **Not done** |
 
-`compose.yaml` and `.env.example` landed in `gym-buddy-service` with ticket #7.
+`compose.yaml` and `.env.example` landed in `gym-buddy-service` with ticket #7. Runtime proof is [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md) on `gym-buddy-service` `develop` (service #6 / `025a351`).
 
 ## Feature workflow
 

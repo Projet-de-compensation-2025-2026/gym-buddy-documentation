@@ -15,9 +15,9 @@ Today [`gym-buddy-service`](https://github.com/Projet-de-compensation-2025-2026/
 | --- | --- | --- |
 | Runtime | Java 25 LTS / Spring Boot (`pom.xml` on `develop`) | Java 25 LTS / Spring Boot modular monolith |
 | Contract | Service implements `GET /api/v1/healthz` and `GET /api/v1/readyz`. OpenAPI stub also documents `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` (openapi #4). Service has **not** implemented auth. Public contract is **not** `/actuator/health`. | Full `/api/v1`; health stays `healthz` / `readyz` |
-| Data plane | Local compose (PostgreSQL 18, Redis, MinIO). Flyway **V1 baseline** only. None on the VPS | Same local compose; private data-plane compose on the VPS; full domain schema |
+| Data plane | Local compose **proven on a laptop** (PostgreSQL 18.6, Redis, MinIO; [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md)). Flyway **V1 baseline** only. None on the VPS | Same local compose; private data-plane compose on the VPS; full domain schema |
 
-Do not claim the service shipped register / login / logout, VPS compose, or domain tables beyond Flyway V1.
+Do not claim the service shipped register / login / logout, VPS compose, or domain tables beyond Flyway V1. Local laptop compose is proven.
 
 ## Modules
 
