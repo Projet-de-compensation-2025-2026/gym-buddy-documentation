@@ -26,7 +26,7 @@ Today the app has `/register`, `/login`, and a log-out control that call `POST /
 | Environment | `apiBaseUrl` |
 | --- | --- |
 | Local | `http://127.0.0.1:8080/api/v1` (`environment.ts`; `ng serve` proxies `/api`) |
-| Live (operator network) | `https://vps-c39cdf03.vps.ovh.net/api/v1` — VPS runs develop **`e2ef2aa`** on loopback (`healthz` / `readyz` 200). Caddy is **not** proven. Do not claim login on the VPS |
+| Live (operator network) | `https://vps-c39cdf03.vps.ovh.net/api/v1` — VPS image is **`gym-buddy-service:local`** (`healthz` / `readyz` 200 on loopback). Caddy is **not** proven. Kernel is rebuilding from develop for `e2ef2aa` auth. Do not claim login on the VPS |
 
 ## Surfaces
 
