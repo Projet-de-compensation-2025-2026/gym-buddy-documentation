@@ -77,12 +77,14 @@ If there is no ticket, **do not** put a ticket number in the commit scope. Use a
 
 Exactly four. These replace any older Backlog / Ready / In review layout.
 
-| Status | Meaning |
-| --- | --- |
-| `Not Ready` | Default at creation. Specs and template are filled; Joaquim has not green-lit implementation |
-| `Todo` | Joaquim Kéloglanian has read, reviewed, and explicitly approved the ticket |
-| `In Progress` | Implementation of this ticket has started |
-| `Done` | Implemented, tested, formatted, and merged into `develop` |
+Atlas alone sets `Not Ready` → `Todo`. Atlas sets `In Progress` → `Done` only after Sentinel confirms the work was implemented and satisfies the functional requirements. No other transitions.
+
+| Status | Meaning | Who sets it |
+| --- | --- | --- |
+| `Not Ready` | Default at creation. Specs and template are filled; not yet set to `Todo` | Default at creation |
+| `Todo` | The ticket and linked specs are complete enough to implement | Atlas alone (`Not Ready` → `Todo`) |
+| `In Progress` | Implementation of this ticket has started | Whoever starts the work |
+| `Done` | Implemented, tested, formatted, and merged into `develop` | Atlas (`In Progress` → `Done`), only after Sentinel confirms |
 
 Rules and the full feature sequence: [08-Feature-implementation.md](08-Feature-implementation.md).
 

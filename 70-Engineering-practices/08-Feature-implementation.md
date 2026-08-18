@@ -7,7 +7,14 @@
 
 How a feature goes from an idea in the assignment (or a later request) to a merge on `develop`. This page is the process. Ticket fields live in [05-Tickets-and-GitHub-projects.md](05-Tickets-and-GitHub-projects.md). Git and CI rules stay on their own pages.
 
-The product owner is **Joaquim Kéloglanian**. No ticket moves to `Todo`, and no implementation starts, without his explicit green light.
+The product owner is **Joaquim Kéloglanian**. He owns consult and scope (step 1). He does not move tickets `Not Ready` → `Todo` or `In Progress` → `Done` by hand.
+
+**Who moves the board:**
+
+- **Atlas alone** sets `Not Ready` → `Todo`.
+- **Atlas** sets `In Progress` → `Done` only after **Sentinel** confirms the work was implemented and satisfies the functional requirements.
+
+No other transitions. `Todo` → `In Progress` is still whoever starts the work.
 
 ## Sequence
 
@@ -18,12 +25,12 @@ flowchart TD
   specs[3. Update functional and technical specifications]
   ticket[4. Open a ticket from the template]
   notReady[Status: Not Ready]
-  review[Joaquim reads, reviews, green-lights]
+  review[Atlas sets Todo]
   todo[Status: Todo]
   start[5. Implementation starts]
   inProgress[Status: In Progress]
   land[6. Implemented, tested, formatted, merged to develop]
-  done[Status: Done]
+  done[Status: Done — Atlas after Sentinel confirms]
 
   consult --> mature --> specs --> ticket --> notReady
   notReady --> review --> todo --> start --> inProgress --> land --> done
@@ -85,22 +92,20 @@ Newly created tickets default to **`Not Ready`**.
 
 There are exactly four. They are the Status field on **Gym Buddy Project**. Do not invent extra columns (`Backlog`, `Ready`, `In review`, …).
 
+Atlas alone sets `Not Ready` → `Todo`. Atlas sets `In Progress` → `Done` only after Sentinel confirms the work was implemented and satisfies the functional requirements. No other transitions.
+
 | Status | Meaning | Who may set it |
 | --- | --- | --- |
 | `Not Ready` | Ticket exists, every template field is filled, it is on **Gym Buddy Project**, and it points at wiki pages. It is **not** approved for implementation. | Default at creation |
-| `Todo` | Joaquim Kéloglanian has **explicitly** read the ticket, reviewed the linked specs, and given the green light | **Only** Joaquim, after that review |
+| `Todo` | The ticket and linked specs are complete enough to implement | Atlas alone (`Not Ready` → `Todo`) |
 | `In Progress` | Implementation of this ticket has started (branch, first commit, or first draft PR) | Whoever starts the work, **as soon as** it starts |
-| `Done` | The change is implemented, tested, formatted, and **merged into `develop`** | After the merge to `develop` (CI green — see [07-CI-CD.md](07-CI-CD.md)) |
+| `Done` | The change is implemented, tested, formatted, and **merged into `develop`** | Atlas (`In Progress` → `Done`), only after Sentinel confirms |
 
 ### `Not Ready` → `Todo`
 
-Filling the template is not a green light. `Todo` is set **only** when Joaquim has:
+Atlas alone sets `Not Ready` → `Todo`. Atlas (the non-coding ops agent) does this when the ticket and linked specs are complete enough to implement. Joaquim does not move this by hand.
 
-1. Read the ticket
-2. Reviewed the linked documentation
-3. Said explicitly that implementation may start
-
-Nobody else promotes a ticket to `Todo`. A verbal “looks fine, go” in the consult (step 1) does **not** skip this review: that consult happens *before* the specs and the ticket exist.
+Sentinel does not gate this move: nothing is implemented yet. A verbal “looks fine, go” in the consult (step 1) is not this board change; that consult happens *before* the specs and the ticket exist.
 
 ### `Todo` → `In Progress`
 
@@ -116,6 +121,8 @@ A ticket becomes `Done` when **all** of these are true:
 2. Tests required by that spec (and [80-Testing](../80-Testing/README.md)) exist and pass
 3. Format checks pass (CI `format` / [07-CI-CD.md](07-CI-CD.md))
 4. The PR is merged into **`develop`**
+
+Atlas sets `In Progress` → `Done` only after Sentinel (the tests/review agent) confirms the work was implemented and satisfies the functional requirements. Joaquim does not move this by hand.
 
 A green CI run on an open PR is not `Done`. A squash onto `main` (a Release) is not what closes the ticket. Tickets close on `develop`; Release packages whatever is already there.
 
