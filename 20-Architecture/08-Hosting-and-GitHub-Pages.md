@@ -61,7 +61,7 @@ If the first build fails on Mermaid or a plugin, use **GitHub Actions** (`action
 - Live URL: https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/
 - Root returns **HTTP 200** and serves the Angular app with production `baseHref` `/gym-buddy-ui/`. Root 200 is the acceptance.
 - Direct `/register` (and other client routes) return **HTTP 404** with the same SPA `index.html` body (`404.html` copied by Deploy). That is GitHub Pages’ static fallback, **not** a broken app and **not** a working auth route.
-- Production `apiBaseUrl` is still `http://127.0.0.1:8080/api/v1`. Ticket **#31** (`apiBaseUrl` / CORS / login-from-Pages) is **Not Ready**. Do **not** claim the Pages app talks to the VPS. Do **not** claim login-from-Pages.
+- Production `apiBaseUrl` is still `http://127.0.0.1:8080/api/v1`. Ticket **#31** is **Todo** (production `apiBaseUrl` still `http://127.0.0.1:8080/api/v1`; Kernel implementing). Do **not** claim the Pages app talks to the VPS. Do **not** claim login-from-Pages.
 - Approved toolchain stays TypeScript **`~6.0.2`** + **pnpm**. First UI tag is **v0.1.0**.
 
 Target (ticket **#31**, not this confirm):
@@ -79,7 +79,7 @@ Rejected for the API (fine as notes, not the plan): Render, Fly.io, Railway as t
 | Need | Where |
 | --- | --- |
 | Java API | Docker on the VPS, bound to `127.0.0.1:8080`. Today: `gym-buddy-service` `develop` **`e2ef2aa`**. Loopback `GET /api/v1/healthz` and `GET /api/v1/readyz` **200**. `replace.sh` skip-pull for local tags is on `develop` (service #8 / `fb1e618`). **Not** a GHCR pull / Release / replace-from-registry |
-| HTTPS | Caddy on the hostname → loopback `:8080`, Let’s Encrypt |
+| HTTPS | Caddy on the hostname → loopback `:8080`, Let’s Encrypt. **Proven from the operator network** (Sentinel, from his PC): `GET /api/v1/healthz` → **200**; `POST /api/v1/auth/register` (email + handle + password + displayName) → **201**; `POST /api/v1/auth/login` → **200** + access JWT. The API is not the bug. **Not** proven from the GitHub Pages origin. UFW 443 is the operator IPv6 prefix only (not world-readable) |
 | PostgreSQL 18 / Redis / MinIO | Local compose proven on a laptop (`docs/local-compose-proof.md`). VPS apply **done** (ticket **#20** **Done / closed**; [gym-buddy-service#7](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/7) / `a07e21e`): `gym-buddy-data`, ports unpublished |
 | Public `:8080` | Never. UFW denies it. |
 
@@ -89,7 +89,7 @@ To inspect Java API / Postgres / Redis / MinIO logs: SSH, then `docker logs` —
 
 GitHub Actions is the only pipeline: CI on `develop`, a separate Release job onto `main`, then Deploy. Details: [../70-Engineering-practices/07-CI-CD.md](../70-Engineering-practices/07-CI-CD.md) and [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
 
-A tagged squash commit on `main` **is** the GHCR deploy path. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. Today’s VPS container is `gym-buddy-service` `develop` **`e2ef2aa`** (`docker run`, not compose of the API), Kernel rebuilt from develop **`e2ef2aa`** after apply (not still only `:local`). `replace.sh` skip-pull for local tags is on `develop` ([gym-buddy-service#8](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/8) / `fb1e618`). That is what is true about `replace.sh`. It is **not** a GHCR pull, a Release tag, or a successful replace-from-registry. Laptop compose remains the **local** story. Caddy is the intended public entry; it is **not** proven in this confirm. Do **not** write a completed register/login on the VPS.
+A tagged squash commit on `main` **is** the GHCR deploy path. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. Today’s VPS container is `gym-buddy-service` `develop` **`e2ef2aa`** (`docker run`, not compose of the API), Kernel rebuilt from develop **`e2ef2aa`** after apply (not still only `:local`). `replace.sh` skip-pull for local tags is on `develop` ([gym-buddy-service#8](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/8) / `fb1e618`). That is what is true about `replace.sh`. It is **not** a GHCR pull, a Release tag, or a successful replace-from-registry. Laptop compose remains the **local** story. Caddy is the public entry and is **proven from the operator network** (healthz **200**, register **201**, login **200** + JWT). Caddy is **not** proven from the GitHub Pages origin. Login-from-Pages is **not** done. Ticket **#31** is the remaining work (production `apiBaseUrl` still `http://127.0.0.1:8080/api/v1`). Do **not** claim the Pages app talks to the VPS. Do **not** claim login-from-Pages.
 
 ## Target topology
 

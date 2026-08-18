@@ -134,7 +134,7 @@ Triggered by the `v*` tag (and always invoked by Release, because a push made wi
 | Repository | Artifact | Where it goes |
 | --- | --- | --- |
 | `gym-buddy-documentation` | Jekyll `_site/` | GitHub Pages |
-| `gym-buddy-ui` | `ng build` static files | GitHub Pages — https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**; first tag **v0.1.0**; ticket **#30** Done). Direct `/register` is HTTP **404** with the SPA index body (`404.html`). Ticket **#31** Not Ready; do **not** claim login-from-Pages |
+| `gym-buddy-ui` | `ng build` static files | GitHub Pages — https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**; first tag **v0.1.0**; ticket **#30** Done). Direct `/register` is HTTP **404** with the SPA index body (`404.html`). Ticket **#31** is **Todo** (production `apiBaseUrl` still `http://127.0.0.1:8080/api/v1`; Kernel implementing). Do **not** claim login-from-Pages |
 | `gym-buddy-openapi` | Spec + Swagger/Redoc | GitHub Pages (when the repo can publish Pages) |
 | `gym-buddy-service` | Docker image | `ghcr.io/projet-de-compensation-2025-2026/gym-buddy-service:vX.Y.Z` **and** SSH `replace.sh` on the VPS |
 
@@ -148,7 +148,7 @@ Service deploy on the VM (secrets are set):
 
 That GHCR pull path is the tagged Release story. Today on `develop`, `replace.sh` **skip-pulls local tags** ([gym-buddy-service#8](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/8) / `fb1e618`). That is what is true about `replace.sh`. It is **not** a GHCR pull, a Release, or a successful replace-from-registry. Today’s VPS container is `develop` **`e2ef2aa`**.
 
-This is **not** `docker compose up -d` on the VM. Compose is the **local** (and later private data-plane) story. The public HTTP entry is Caddy on the hostname, proxying to loopback `:8080`. Caddy is **not** proven in this confirm.
+This is **not** `docker compose up -d` on the VM. Compose is the **local** (and later private data-plane) story. The public HTTP entry is Caddy on the hostname, proxying to loopback `:8080`. Caddy is **proven from the operator network** (healthz **200**, register **201**, login **200** + JWT). Caddy is **not** proven from the GitHub Pages origin. Login-from-Pages is **not** done.
 
 ## Repository rules (so `main` stays clean)
 
