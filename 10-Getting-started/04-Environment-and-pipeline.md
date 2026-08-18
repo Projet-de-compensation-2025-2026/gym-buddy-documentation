@@ -15,7 +15,7 @@ Be honest at the defense. The pipeline, the VPS API replace, the **local data-pl
 | --- | --- | --- |
 | `gym-buddy-service` | Java 25 LTS / Spring Boot (`pom.xml` on `develop`). Flyway `V1__baseline.sql`. `compose.yaml` and `.env.example` are in the repo. Latest released tag **v0.1.1**. | Java 25 LTS / Spring Boot modular monolith |
 | `gym-buddy-openapi` | OpenAPI 3.1.0 stub (`info.version` `0.1.0`): `GET /healthz` and `GET /readyz` under `/api/v1`, plus `POST /auth/register`, `/login`, `/refresh`, `/logout` (openapi #4 / ticket #12). The UI calls those auth endpoints; the service has **not** implemented them. | Full contract; health stays `GET /api/v1/healthz` and `GET /api/v1/readyz` |
-| `gym-buddy-ui` | Angular 22 (app version `0.1.0`): `/register`, `/login`, and a log-out control that call `POST /api/v1/auth/register`, `/login`, `/logout` (ui #3). Access JWT in memory. Refresh cookie credentials sent (`path /api/v1/auth`). No friends / feed / events. End-to-end auth waits on the service. | Angular 22 member app + back-office |
+| `gym-buddy-ui` | Angular 22 (app version `0.1.0`), **TypeScript `~6.0.2`**, **`packageManager`: `npm@10.9.8`**: `/register`, `/login`, and a log-out control that call `POST /api/v1/auth/register`, `/login`, `/logout` (ui #3). Access JWT in memory. Refresh cookie credentials sent (`path /api/v1/auth`). No friends / feed / events. End-to-end auth waits on the service. Do not claim TypeScript 7 or pnpm already landed. | Angular 22 + **TypeScript 7.0.0** + **pnpm** (Corepack pin, committed `pnpm-lock.yaml`, `minimumReleaseAge` **40320** minutes, `onlyBuiltDependencies` and/or ignore-scripts) member app + back-office |
 | Health | Service implements unauthenticated `GET /api/v1/healthz` (liveness) and `GET /api/v1/readyz` (`200` or `503` with `details` for `postgres` / `objectStorage`). CI smoke hits **`GET /api/v1/healthz` only** — the smoke image is built without Postgres/MinIO. Probe `GET /` is not today’s service smoke. | Same public paths. Do not smoke `/actuator/health`. |
 | Local data plane | Laptop compose **proven** ([gym-buddy-service#6](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/6) / `025a351`, 2026-08-18 10:40:55Z): `cp .env.example .env && docker compose up -d --build`. Postgres 18.6, Redis 8.10.0, MinIO `RELEASE.2025-09-07T16-13-09Z`, Java 25.0.3 Temurin / Spring Boot 4.1.0. Binds `127.0.0.1` only (`8080`, `5432`, `6379`, `9000`, `9001`). `GET /api/v1/healthz` → 200 `{"status":"ok"}`. `GET /api/v1/readyz` → 200 `{"status":"ok"}`. Evidence: [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md). `.env` stays gitignored; only `.env.example` is in git. **Not** the VPS. | Same file |
 | VM | One API container, bound to `127.0.0.1:8080`. Caddy terminates TLS. No compose on the VM. | Same API replace, plus a **private** data-plane compose on the Docker network (5432 / 6379 / 9000 not published) |
@@ -29,13 +29,14 @@ A laptop is ready when all of these are true:
 
 1. **JDK 25 LTS** installed (see [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md)).
 2. **Docker** and Compose v2 available.
-3. Clone the four repositories (URLs in [02-Related-repositories.md](02-Related-repositories.md)). Default branch is `develop` everywhere.
-4. `compose.yaml` and `.env.example` are in `gym-buddy-service` (ticket #7).
-5. Copy `.env.example` to `.env` locally. Fill secrets there. Never commit `.env`.
-6. `docker compose up -d --build` binds every published port to `127.0.0.1`.
-7. Flyway **V1 baseline** is on `develop`. Full domain tables from [../20-Architecture/06-Data-model.md](../20-Architecture/06-Data-model.md) are later.
-8. The OpenAPI stub in `gym-buddy-openapi` is the HTTP source of truth. Expand it **before** implementing a new route.
-9. Point the UI at `http://localhost:8080/api/v1`.
+3. **Node** matching `gym-buddy-ui` `engines`. **Approved:** Corepack + the pinned `packageManager` (`pnpm@X.Y.Z`), then `pnpm install` from `pnpm-lock.yaml`. **Today** the UI still uses npm (`npm@10.9.8`, TypeScript `~6.0.2`) until those tickets land. Do not treat `npm install` as the approved workflow. Do not install `pnpm@latest`.
+4. Clone the four repositories (URLs in [02-Related-repositories.md](02-Related-repositories.md)). Default branch is `develop` everywhere.
+5. `compose.yaml` and `.env.example` are in `gym-buddy-service` (ticket #7).
+6. Copy `.env.example` to `.env` locally. Fill secrets there. Never commit `.env`.
+7. `docker compose up -d --build` binds every published port to `127.0.0.1`.
+8. Flyway **V1 baseline** is on `develop`. Full domain tables from [../20-Architecture/06-Data-model.md](../20-Architecture/06-Data-model.md) are later.
+9. The OpenAPI stub in `gym-buddy-openapi` is the HTTP source of truth. Expand it **before** implementing a new route.
+10. Point the UI at `http://localhost:8080/api/v1`.
 
 `docker compose up -d --build` is how a laptop starts the data plane plus the Spring API. That boot is **proven** on a laptop ([gym-buddy-service#6](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/6) / `025a351`; [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md)). The API uses Postgres, Redis, and MinIO (`readyz` 200). This is **not** how the VPS runs.
 

@@ -194,6 +194,22 @@ Each repository owns four scripts. Workflows call them; they do not inline stack
 
 When application code grows, **change the scripts**, not the workflow names or triggers. The contract on this page stays. Service CI smoke is `GET /api/v1/healthz` (`pom.xml` exists). Probe `GET /` is not today’s smoke.
 
+## Node toolchain (gym-buddy-ui and any Node work)
+
+Approved for implementation. **Today** the UI on `develop` still uses npm (`packageManager`: `npm@10.9.8`) and TypeScript `~6.0.2`. CI stays on that until the implementation tickets land, then this contract.
+
+| Rule | Required |
+| --- | --- |
+| Activating pnpm | **Corepack** reads the pinned `packageManager` (`pnpm@X.Y.Z`). `corepack enable`, then use that pin. |
+| Do not | Install `pnpm@latest`, `npm i -g pnpm`, or an unpinned pnpm. |
+| Lockfile | Commit `pnpm-lock.yaml`. Install with the frozen lockfile (`pnpm install --frozen-lockfile` or the script equivalent). |
+| Release-age floor | Same four weeks as the workspace: `minimumReleaseAge` **40320** minutes in `pnpm-workspace.yaml` (older pnpm: `.npmrc` `minimum-release-age=40320`). Not a `package.json` field. |
+| Lifecycle scripts | `onlyBuiltDependencies` and/or ignore-scripts. Required. |
+| Renovate | `minimumReleaseAge` at least **28 days** (four weeks). Use `internalChecksFilter: strict` so PRs are not opened early. |
+| Dependabot | `cooldown.default-days` at least **28**. Do not use a shorter cooldown than the age floor. |
+
+The updater cooldown must be **at least as long as the age floor**. Dependabot’s 3-day default is not enough.
+
 ## What to say at the defense
 
 We use GitHub Actions as the only CI/CD runner. Pull requests onto `develop` always run format, tests, and a live smoke. A separate Release workflow is the only way onto `main`: it squash-merges, tags SemVer (automatic or typed in), and that tag is the deploy. The API image is pulled on an OVH VPS, bound to localhost, and served by Caddy.

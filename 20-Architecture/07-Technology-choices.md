@@ -13,7 +13,8 @@ The brief requires **justification** of languages, frameworks, and libraries. La
 | --- | --- | --- |
 | Backend language | **Java 25 LTS** | Course-friendly, strong typing for algorithms and JWT, long toolchain. Current LTS; Joaquim chose 25 LTS for stability. Java 27 is not released yet (expected September 2026). |
 | Backend framework | **Spring Boot** (latest stable that supports the chosen JDK) | Modules, Spring Security for JWT, JDBC/JPA, WebSocket, Actuator health. The HTTP contract is **not** owned by Spring’s `/v3/api-docs` endpoint — see OpenAPI below. |
-| Frontend language | **TypeScript 7.0** (native compiler rewritten in [Go](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)) | Latest TypeScript; 8–12× faster `tsc`. If Angular’s compiler lags a patch behind 7.0, use the newest TypeScript **Angular 22 supports** and record the gap in the changelog. |
+| Frontend language | **TypeScript 7.0.0** (July 2026 Go-native compiler / Project Corsa; [announcement](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)) | Approved. Install from the `typescript` npm package — `tsc` is the Go binary. Do **not** install `@typescript/native-preview` or treat `tsgo` as the project compiler. Today `gym-buddy-ui` `develop` is still TypeScript `~6.0.2`; that is not the target. |
+| Node package manager | **pnpm** (Corepack pin, not `latest`) | Required for `gym-buddy-ui` and any Node work. Stop using npm as the project package manager. Four-week release-age floor: `minimumReleaseAge: 40320` (**minutes**) in `pnpm-workspace.yaml`. Older pnpm fallback: `.npmrc` `minimum-release-age=40320`. Do **not** invent a `package.json` field — pnpm does not read the floor from there. Commit `pnpm-lock.yaml`. Disable or tightly allow lifecycle scripts (`onlyBuiltDependencies` and/or ignore-scripts). Today the UI still has `packageManager`: `npm@10.9.8`. |
 | Member UI | **Angular 22** (22.1.x as of August 2026) | Latest Angular; official TypeScript SPA; static `ng build` output can go to GitHub Pages. |
 | Back-office | **Angular 22**, second app (or `/admin`) **in the frontend repo** | Same stack as the member app. Not a fourth repository. Staff JS stays in a separate bundle. |
 | HTTP contract | **OpenAPI 3** in its **own repository** (`gym-buddy-openapi`) | Source of truth is a versioned spec, not a live endpoint the backend happens to expose. Backend *implements* the spec; frontend *generates* a client from it. |
@@ -36,7 +37,7 @@ The brief requires **justification** of languages, frameworks, and libraries. La
 | --- | --- |
 | `gym-buddy-documentation` | Markdown wiki (this repo), GitHub Pages |
 | `gym-buddy-service` | Java 25 LTS + Spring Boot + PostgreSQL 18 |
-| `gym-buddy-ui` | Angular 22 + TypeScript 7 |
+| `gym-buddy-ui` | **Approved:** Angular 22 + TypeScript 7.0.0 + pnpm. **Today on `develop`:** Angular 22 + TypeScript `~6.0.2` + `npm@10.9.8` |
 | `gym-buddy-openapi` | OpenAPI 3 documents + static reference UI |
 
 There is no separate back-office repository and no “the spec is whatever the running server prints”.
