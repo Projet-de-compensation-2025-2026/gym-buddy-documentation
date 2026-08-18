@@ -65,14 +65,13 @@ If the first build fails on Mermaid or a plugin, use **GitHub Actions** (`action
 - Live Pages is **v0.1.1** and embeds `https://vps-c39cdf03.vps.ovh.net/api/v1`.
 - UI `develop` **`7916fa8`** has that VPS `apiBaseUrl`.
 - Service `develop` **`aea1c56`** CORS is **proven from Joaquim’s PC**: Pages origin ACAO **200** + credentials; foreign/evil origin **403**.
-- Ticket **#31** stays **open / In Progress** and is **not Done**. Do **not** claim login-from-Pages. Sentinel still has to confirm login-from-Pages.
-- Approved toolchain stays TypeScript **`~6.0.2`** + **pnpm**. Ticket **#34** stays Done (password eye on `develop` `75fbbce`; do **not** claim the eye is on Pages). Ticket **#24** stays cancelled.
+- Live bundle is `main-4WJYST2C.js`: embeds `https://vps-c39cdf03.vps.ovh.net/api/v1` (no `127.0.0.1`) and includes the password eye.
+- Ticket **#31** is **Done / closed** (Atlas). Do **not** claim login-from-Pages. UFW IPv6 lock + SameSite=Lax are **not** browser-proven.
+- Approved toolchain stays TypeScript **`~6.0.2`** + **pnpm**. Ticket **#34** stays Done (password eye on `develop` `75fbbce` and in the live **v0.1.1** bundle). Ticket **#24** stays cancelled.
 
-Target (ticket **#31**, not this confirm):
+Remaining (not ticket **#31** — that ticket is **Done / closed**):
 
-- Ticket **#31** stays **open / In Progress**. Live Pages is **v0.1.1** with the VPS `apiBaseUrl`. Sentinel still has to confirm login-from-Pages. Do **not** claim login-from-Pages.
-- CORS on service `develop` **`aea1c56`** is **already proven** from Joaquim’s PC (Pages origin ACAO **200** + credentials; foreign/evil origin **403**)
-- Cookies (`SameSite`, `Secure`) must match HTTPS Pages
+- Login-from-Pages is **not** browser-proven. UFW IPv6 lock + SameSite=Lax are **not** browser-proven. Do **not** claim login-from-Pages.
 
 ## Backend and database (OVH VPS)
 
@@ -93,7 +92,7 @@ To inspect Java API / Postgres / Redis / MinIO logs: SSH, then `docker logs` —
 
 GitHub Actions is the only pipeline: CI on `develop`, a separate Release job onto `main`, then Deploy. Details: [../70-Engineering-practices/07-CI-CD.md](../70-Engineering-practices/07-CI-CD.md) and [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
 
-A tagged squash commit on `main` **is** the GHCR deploy path. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. Today’s VPS container is `gym-buddy-service` `develop` **`e2ef2aa`** (`docker run`, not compose of the API), Kernel rebuilt from develop **`e2ef2aa`** after apply (not still only `:local`). `replace.sh` skip-pull for local tags is on `develop` ([gym-buddy-service#8](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/8) / `fb1e618`). That is what is true about `replace.sh`. It is **not** a GHCR pull, a Release tag, or a successful replace-from-registry. Laptop compose remains the **local** story. Caddy is the public entry and is **proven from the operator network** (healthz **200**, register **201**, login **200** + JWT). Service `develop` **`aea1c56`** CORS is **proven from Joaquim’s PC** (Pages origin ACAO **200** + credentials; foreign/evil origin **403**). Caddy is **not** proven from the GitHub Pages origin. Login-from-Pages is **not** done. Ticket **#31** stays **open / In Progress**. UI `develop` **`7916fa8`** has production `apiBaseUrl` `https://vps-c39cdf03.vps.ovh.net/api/v1`. First tag **v0.1.0** pointed at localhost. Live Pages is **v0.1.1** and embeds `https://vps-c39cdf03.vps.ovh.net/api/v1`. Ticket **#31** is **not Done**. Do **not** claim login-from-Pages.
+A tagged squash commit on `main` **is** the GHCR deploy path. Static repos (this wiki, Angular, OpenAPI UI) go to GitHub Pages. Today’s VPS container is `gym-buddy-service` `develop` **`e2ef2aa`** (`docker run`, not compose of the API), Kernel rebuilt from develop **`e2ef2aa`** after apply (not still only `:local`). `replace.sh` skip-pull for local tags is on `develop` ([gym-buddy-service#8](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/pull/8) / `fb1e618`). That is what is true about `replace.sh`. It is **not** a GHCR pull, a Release tag, or a successful replace-from-registry. Laptop compose remains the **local** story. Caddy is the public entry and is **proven from the operator network** (healthz **200**, register **201**, login **200** + JWT). Service `develop` **`aea1c56`** CORS is **proven from Joaquim’s PC** (Pages origin ACAO **200** + credentials; foreign/evil origin **403**). Caddy is **not** proven from the GitHub Pages origin. Login-from-Pages is **not** done. UI `develop` **`7916fa8`** has production `apiBaseUrl` `https://vps-c39cdf03.vps.ovh.net/api/v1`. First tag **v0.1.0** pointed at localhost. Live Pages is **v0.1.1** and embeds `https://vps-c39cdf03.vps.ovh.net/api/v1`. Ticket **#31** is **Done / closed**. Do **not** claim login-from-Pages.
 
 ## Target topology
 
