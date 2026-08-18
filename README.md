@@ -73,7 +73,7 @@ Pages use a short status table:
 | `Approved` | Locked for implementation |
 | `Deprecated` | Kept for history only |
 
-Until the instructor meeting in [00-Project-brief/01-Scope-and-modules.md](00-Project-brief/01-Scope-and-modules.md) is recorded, treat **product** pages as **Draft**. Stack, hosting, CI/CD, and the environment runbook are **Approved** for implementation unless that meeting overturns them.
+Instructor cadrage will **not** happen (Joaquim, 2026-08-19; instructor on holiday). See [00-Project-brief/01-Scope-and-modules.md](00-Project-brief/01-Scope-and-modules.md). Product pages are not blocked on a meeting. Stack, hosting, CI/CD, and the environment runbook stay **Approved** for implementation unless a later wiki change overturns them.
 
 ## Contributing
 
