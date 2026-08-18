@@ -55,14 +55,14 @@ You do not need Jenkins, a second CI product, or to click through GitHub’s UI 
 **GitHub Free limits on private repos** (this org today):
 
 - Repository **rulesets** and classic **branch protection** require GitHub Pro (or a public repo). Workflows still run; they are not blocked. The public `gym-buddy-documentation` repo *does* have rulesets (`ci` required on `develop`, linear history on `main`).
-- **GitHub Pages** on a private repo also needs Pro (or the [Student Developer Pack](https://education.github.com/pack)). Public repos can publish Pages. `gym-buddy-ui` is **public** and its project site is live (ticket **#30** Done): https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ returns HTTP **200**. OpenAPI Pages jobs still fail closed while that repo is private. Service deploy is GHCR + SSH.
+- **GitHub Pages** on a private repo also needs Pro (or the [Student Developer Pack](https://education.github.com/pack)). Public repos can publish Pages. `gym-buddy-ui` is **public** and its project site is live (ticket **#30** Done): https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ returns HTTP **200**. `gym-buddy-openapi` GitHub Pages is **not** live. Release run [32155209479](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi/actions/runs/32155209479) created tag **v0.1.0**, then failed only on deploy/pages: “Failed to create deployment (status: 404)… Ensure GitHub Pages has been enabled.” Live https://projet-de-compensation-2025-2026.github.io/gym-buddy-openapi/ is HTTP **404**. The package/tag is **not** broken. Do **not** treat “enable OpenAPI Pages + re-run deploy” as remaining work to start. Joaquim has not asked for the spec site. Atlas will not Todo that ticket unless he wants it. Ticket **#37** stays **Not Ready** (UI login-from-Pages, a different thing). Service deploy is GHCR + SSH.
 
 ## Success criteria (this page’s contract)
 
 1. **Every pull request targeting `develop` starts the CI workflow.** A push directly to `develop` does too.
 2. **`main` only moves via the Release workflow.** The result is a **squash** commit whose message is `release: vX.Y.Z` and an annotated tag `vX.Y.Z` on that commit.
 3. Release **fails closed**: if format, tests, or the smoke run fail, there is **no** commit on `main` and **no** tag.
-4. Versioning is **automatic** from Conventional Commits and the previous tag. You may **override** the number when you start the workflow.
+4. Versioning is **automatic** from Conventional Commits and the previous tag. You may **override** the number when you start the workflow. **Locked target:** that number is written into UI `package.json` and service `pom.xml` (and any matching lock / changelog Release already touches). **Today** UI/service Release do **not** write those files. OpenAPI Release already syncs `package.json`. New application versions stay **0.1.x** unless [06-Versioning.md](06-Versioning.md) says otherwise.
 5. A successful tag on `main` **is** the deploy: Pages for static repos, Docker image + VM replace for `gym-buddy-service`.
 
 ## The three jobs in detail
@@ -125,6 +125,10 @@ Release then, in order:
 
 If any of 2–4 fail, steps 7–10 do not run.
 
+**Locked target (Joaquim):** Release writes the new SemVer into UI `package.json` and service `pom.xml` (and any matching lock / changelog the existing Release already touches), then commits and tags. Humans do not hand-edit those versions. New application versions stay **0.1.x** unless [06-Versioning.md](06-Versioning.md) says otherwise. Do **not** invent **1.0.0**.
+
+**Today** (read from each repo’s `develop` `release.yml` via the GitHub API): UI and service Release do **not** bump those files. They compute SemVer, run `prepare_changelog.py`, commit if the changelog is dirty, squash, and tag. OpenAPI Release already runs `sync_package_version.py` (`package.json` + `info.version`). That is OpenAPI-only, not UI/service. Service `pom.xml` is **0.2.0-SNAPSHOT** today (the file, not a new 0.2.0 product release). UI `package.json` is **0.1.0**. Live UI is **v0.1.1**. That UI/service file bump is **not landed**.
+
 On `gym-buddy-service` this is how **v0.1.1** was cut.
 
 ### Deploy — distribution
@@ -135,7 +139,7 @@ Triggered by the `v*` tag (and always invoked by Release, because a push made wi
 | --- | --- | --- |
 | `gym-buddy-documentation` | Jekyll `_site/` | GitHub Pages |
 | `gym-buddy-ui` | `ng build` static files | GitHub Pages — https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**; first tag **v0.1.0**; ticket **#30** Done). Direct `/register` is HTTP **404** with the SPA index body (`404.html`). UI `develop` **`7916fa8`** has production `apiBaseUrl` `https://vps-c39cdf03.vps.ovh.net/api/v1`. Service `develop` **`aea1c56`** CORS is **proven from Joaquim’s PC** (Pages origin ACAO **200** + credentials; foreign/evil origin **403**). First tag **v0.1.0** pointed at localhost. Live Pages is **v0.1.1** and embeds `https://vps-c39cdf03.vps.ovh.net/api/v1`. Ticket **#31** is **Done / closed**. Login-from-Pages is ticket **#37**, **Not Ready**, **not** proven. Do **not** Todo **#37**. Joaquim’s Pages login is operator-home only. Sentinel IPv4 `104.30.175.37` (US) → `https://vps-c39cdf03.vps.ovh.net/api/v1/healthz` TLS unexpected EOF. Cookie `HttpOnly`+`Secure`+`SameSite=Lax`, path `/api/v1/auth` |
-| `gym-buddy-openapi` | Spec + Swagger/Redoc | GitHub Pages (when the repo can publish Pages) |
+| `gym-buddy-openapi` | Spec + Swagger/Redoc | GitHub Pages is **not** live. Release run [32155209479](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi/actions/runs/32155209479) created tag **v0.1.0**, then failed only on deploy/pages: “Failed to create deployment (status: 404)… Ensure GitHub Pages has been enabled.” Live https://projet-de-compensation-2025-2026.github.io/gym-buddy-openapi/ is HTTP **404**. The package/tag is **not** broken. Do **not** treat “enable OpenAPI Pages + re-run deploy” as remaining work to start. Joaquim has not asked for the spec site. Atlas will not Todo that ticket unless he wants it. Ticket **#37** stays **Not Ready** (UI login-from-Pages, a different thing) |
 | `gym-buddy-service` | Docker image | `ghcr.io/projet-de-compensation-2025-2026/gym-buddy-service:vX.Y.Z` **and** SSH `replace.sh` on the VPS |
 
 Service deploy on the VM (secrets are set):

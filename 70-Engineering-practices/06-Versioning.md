@@ -66,6 +66,21 @@ For the documentation `0.3.0` wiki tag, pin the number on this repository when t
 
 The number is written as an annotated git tag `vX.Y.Z` on the squash commit on `main`.
 
+## Release writes the version into the files
+
+**Locked target (Joaquim):** a Release (`workflow_dispatch` / tag) writes the new SemVer into UI `package.json` and service `pom.xml` (and any matching lock / changelog the existing Release already touches), commits, and tags. Humans do not hand-edit those version numbers. New application versions stay **0.1.x** unless this wiki says otherwise. Do **not** invent **1.0.0**. `1.0.0` remains the academic ship in the table above; it is never chosen automatically.
+
+**Today** (read from each repo’s `develop` `.github/workflows/release.yml` via the GitHub API; no app-repo clone):
+
+| Repo | What Release already does | File bump |
+| --- | --- | --- |
+| `gym-buddy-ui` | Compute SemVer, `prepare_changelog.py`, commit prep, squash-merge onto `main`, annotated tag, sync `develop` | Does **not** write `package.json`. That bump is **not landed**. `package.json` is **0.1.0**. Live Pages is **v0.1.1**. |
+| `gym-buddy-service` | Same changelog + squash + tag path | Does **not** write `pom.xml`. That bump is **not landed**. `pom.xml` is **0.2.0-SNAPSHOT** today (the file on `develop`; not a new 0.2.0 product release). |
+| `gym-buddy-openapi` | Same path **plus** `sync_package_version.py` writes `package.json` and OpenAPI `info.version` | OpenAPI-only. Not UI/service. |
+| this wiki | Changelog + squash + tag | Docs stay **0.3.0** [Unreleased]. The only docs git tag is still **v0.2.0**. |
+
+That UI/service auto-bump is the target. It is **not landed**.
+
 ## What each number means (after 1.0.0)
 
 From [semver.org](https://semver.org/):
