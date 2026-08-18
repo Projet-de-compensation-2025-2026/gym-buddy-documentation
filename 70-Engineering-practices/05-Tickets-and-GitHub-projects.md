@@ -69,6 +69,10 @@ A ticket that exists only in the repo issues list, and not on [Gym Buddy Project
 
 A ticket may produce many commits (spec tweak, OpenAPI, backend, tests, frontend). All of them keep the same scope `(#42)` as long as they are for that ticket.
 
+## Ticket and branch
+
+GitHub does not show a branch on the project ticket until the issue and the branch are associated. Create each implementation branch from the issue’s **Development → Create a branch** action, or link the PR/branch there, so the project item exposes it. Several branches or PRs can be linked to one ticket. The ticket form cannot auto-create or auto-link a future branch. The feature sequence is in [08-Feature-implementation.md](08-Feature-implementation.md).
+
 ## Commits without a ticket
 
 If there is no ticket, **do not** put a ticket number in the commit scope. Use a topical scope (`wiki`, `ci`, `deps`). Do not create dummy issues after the fact just to decorate a typo-fix unless you want the board to show it.
@@ -78,6 +82,8 @@ If there is no ticket, **do not** put a ticket number in the commit scope. Use a
 Exactly four. These replace any older Backlog / Ready / In review layout.
 
 Atlas alone sets `Not Ready` → `Todo`. Atlas sets `In Progress` → `Done` only after Sentinel confirms the work was implemented and satisfies the functional requirements. No other transitions.
+
+Create each implementation branch from the issue’s **Development → Create a branch** action, or link the PR/branch there, so the project item exposes it.
 
 | Status | Meaning | Who sets it |
 | --- | --- | --- |

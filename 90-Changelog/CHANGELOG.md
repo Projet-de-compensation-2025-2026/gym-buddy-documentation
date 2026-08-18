@@ -23,6 +23,8 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Changed
 
+- CI applies `format.sh --write` in all four repos; `github-actions[bot]` commits if the tree is dirty. Test and smoke stay in the same job. Docs Prettier still ignores `*.md`
+- Implementation branches are created or linked from the ticket’s Development panel so the project item shows the branch. The ticket form cannot auto-link a future branch
 - Related-repository table now uses the four real GitHub URLs
 - CI/CD: VM replace is `replace.sh` + `docker run` on `127.0.0.1`, not `docker compose up -d`; GHCR login on the VM; probe smoke is `GET /`, target is `/api/v1/healthz` and `/readyz`
 - Hosting: backend is the OVH VPS `vps-c39cdf03.vps.ovh.net`, not a generic PaaS

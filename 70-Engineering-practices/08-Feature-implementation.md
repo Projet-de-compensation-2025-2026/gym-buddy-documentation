@@ -94,6 +94,8 @@ There are exactly four. They are the Status field on **Gym Buddy Project**. Do n
 
 Atlas alone sets `Not Ready` → `Todo`. Atlas sets `In Progress` → `Done` only after Sentinel confirms the work was implemented and satisfies the functional requirements. No other transitions.
 
+Create each implementation branch from the issue’s **Development → Create a branch** action, or link the PR/branch there afterwards.
+
 | Status | Meaning | Who may set it |
 | --- | --- | --- |
 | `Not Ready` | Ticket exists, every template field is filled, it is on **Gym Buddy Project**, and it points at wiki pages. It is **not** approved for implementation. | Default at creation |
@@ -111,6 +113,8 @@ Sentinel does not gate this move: nothing is implemented yet. A verbal “looks 
 
 Set `In Progress` the moment work on the ticket begins. Do not leave a live `feature/<id>-…` branch on `Todo`.
 
+Create each implementation branch from the issue’s **Development → Create a branch** action, or link the PR/branch there afterwards. That is how GitHub records the association and how the project item shows the branch. The ticket form cannot create or auto-link a future branch. Several branches or PRs can be linked to one ticket.
+
 Implementation still follows [02-Git-workflow.md](02-Git-workflow.md): branch from `develop`, PR back to `develop`, commit scope `(#<id>)`, `Refs: Projet-de-compensation-2025-2026/gym-buddy-documentation#<id>`.
 
 ### `In Progress` → `Done`
@@ -119,7 +123,7 @@ A ticket becomes `Done` when **all** of these are true:
 
 1. The behaviour in the linked spec is implemented
 2. Tests required by that spec (and [80-Testing](../80-Testing/README.md)) exist and pass
-3. Format checks pass (CI `format` / [07-CI-CD.md](07-CI-CD.md))
+3. Format is applied in CI (`format.sh --write` — [07-CI-CD.md](07-CI-CD.md)); the tree must be clean after the bot commit and after the merge
 4. The PR is merged into **`develop`**
 
 Atlas sets `In Progress` → `Done` only after Sentinel (the tests/review agent) confirms the work was implemented and satisfies the functional requirements. Joaquim does not move this by hand.
