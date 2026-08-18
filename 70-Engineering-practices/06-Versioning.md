@@ -27,28 +27,27 @@ Gitflow: only commits on `main` are tagged, and only by the Release workflow ([0
 
 ## Planned slices (0.y.z)
 
-Documentation and application artifacts may sit on different `0.y.z` numbers until `1.0.0`. This wiki already tagged **documentation** `0.2.0` on 2026-08-14 (process + specs). The **application** `0.2.0` is the next feature slice on `gym-buddy-service`, `gym-buddy-ui`, and `gym-buddy-openapi`.
+Documentation and application artifacts may sit on different `0.y.z` numbers until `1.0.0`. This wiki already tagged **documentation** `0.2.0` on 2026-08-14 (process + specs). That tag stays. The next slice is **documentation `0.3.0`**: the technical-foundation contract. Application repos (`gym-buddy-service`, `gym-buddy-ui`, `gym-buddy-openapi`) stay on **`0.1.x`** until that foundation is actually done on `develop` and then tagged. There is no planned application `0.2.0` next slice.
 
 | Tag | Artifact | Meaning |
 | --- | --- | --- |
 | `0.1.0` | Docs + service | Assignment text; pipeline probe |
 | `0.1.1` | Service | GHCR + VPS probe replace |
 | `0.2.0` | Docs (2026-08-14) | Wiki process, specs, Gitflow, CI/CD contract |
-| **`0.2.0` (application, planned)** | Service + UI + OpenAPI | PostgreSQL 18, Redis, MinIO, **Java 25 LTS / Spring Boot service layer**, basic **sign-up / sign-in / log-out** pages. Local compose already specified. |
+| **`0.3.0` (documentation, planned)** | Docs | Technical-foundation contract |
+| `0.1.x` | Service / UI / OpenAPI (current) | Stay here until the documentation `0.3.0` foundation is done on `develop` and then tagged |
 | `1.0.0` | All four repos, same day | Academic ship |
 
-On `develop` today (ticket #11, not yet a product tag): `gym-buddy-service` is already a Spring Boot app (Java 25 LTS) with Flyway **V1 baseline**, `GET /api/v1/healthz` and `GET /api/v1/readyz`. Register / login / logout are **not** shipped.
+On `develop` today (ticket #11, not yet a product tag): `gym-buddy-service` is already a Spring Boot app (Java 25 LTS) with Flyway **V1 baseline**, `GET /api/v1/healthz` and `GET /api/v1/readyz`. Register / login / logout are **not** shipped. Local `compose.yaml` and `.env.example` exist (ticket #7). Runtime boot of that compose is **not** claimed. The VPS is still one `docker run` API container (tag **v0.1.1**). PostgreSQL does **not** run on the VPS today.
 
-Application `0.2.0` is done when all of these are true on `develop` and then tagged on `main` via Release:
+Documentation `0.3.0` is done when all of these are true on `develop` and then tagged on `main` via Release (coding agents can then work from this point):
 
-1. `gym-buddy-service` is a Spring Boot app (Java 25 LTS) with Flyway, `GET /api/v1/healthz` and `GET /api/v1/readyz` (this item is on `develop`)
-2. Local `compose.yaml` runs PostgreSQL 18, Redis, MinIO, and that API on `127.0.0.1`
-3. OpenAPI documents register / login / logout / refresh under `/api/v1/auth` (`healthz` / `readyz` already on the stub)
-4. JWT access + refresh as in [../40-Technical-specifications/02-JWT-authentication.md](../40-Technical-specifications/02-JWT-authentication.md); logout denylists refresh `jti` in Redis
-5. `gym-buddy-ui` has a basic sign-up, sign-in, and log-out page that call that API
-6. Each repo changelog records the slice under `## [0.2.0]`
+1. **Local compose proven at runtime** — not just files in git. `docker compose up -d` on a laptop has been booted: PostgreSQL 18, Redis, MinIO, Java 25 LTS Spring service, binds `127.0.0.1`. `GET /api/v1/healthz` returns 200 and `GET /api/v1/readyz` returns 200. Today those files exist (tickets #7 / #11); **runtime boot is not yet claimed**.
+2. **PostgreSQL and the Java service run on the existing OVH VPS** (`vps-c39cdf03.vps.ovh.net`). Not laptop-only compose. Private data-plane on the Docker network; do not publish `5432` / `6379` / `9000`. Public story stays Caddy → `127.0.0.1:8080`. Today the VM is still one `docker run` API container (tag **v0.1.1** probe/replace).
+3. **Sign-up and sign-in** (existing ticket #12; log-out stays in that ticket because it is already specified). **Not shipped today**.
+4. **Developers and coding agents can work** on `gym-buddy-service`, `gym-buddy-ui`, and `gym-buddy-openapi`, push to `develop`, and when a version is stable, update the remote machines via the existing Release → Deploy path.
 
-Out of scope for application `0.2.0`: friends, feed, events, search, chat, admin lock/role UI, production data-plane on the VPS.
+Do not invent extra product features for this slice: no friends, feed, events, search, chat, or admin UI.
 
 ## Who picks the number
 
@@ -61,7 +60,7 @@ The Release workflow computes the next version unless you type one.
 | `gh workflow run Release -f version=0.4.0` | Use **exactly** `0.4.0` (must be greater than the latest tag) |
 | `gh workflow run Release -f version=1.0.0` | Academic ship. **`1.0.0` is never chosen automatically** |
 
-For the application slice, pin the number: `gh workflow run Release -f version=0.2.0` on each of service, UI, and OpenAPI when that slice is on `develop`.
+For the documentation `0.3.0` wiki tag, pin the number on this repository when that contract is on `develop`: `gh workflow run Release -f version=0.3.0`. Application repos stay on `0.1.x` until the foundation is done; pin their numbers on those repos when they are tagged. Do not assume they become `0.3.0`.
 
 The number is written as an annotated git tag `vX.Y.Z` on the squash commit on `main`.
 
@@ -82,7 +81,7 @@ Before `1.0.0`, anything may change; we still record those changes in the change
 | OpenAPI contract (`gym-buddy-openapi`) | Yes | This **is** the public API number |
 | Backend | Yes | Implements a given contract version |
 | Frontend | Yes | Consumes a given contract version |
-| This documentation wiki | Yes | Same scheme; `0.1.0` and `0.2.0` already used for the wiki contract |
+| This documentation wiki | Yes | Same scheme; `0.1.0` and `0.2.0` already used for the wiki contract; `0.3.0` is the planned foundation contract |
 
 At `1.0.0`, tag **all four** repositories `v1.0.0` on the same day so the report can cite one number.
 
@@ -94,4 +93,4 @@ Each repository keeps a `CHANGELOG.md` in [Keep a Changelog](https://keepachange
 
 Move bullets from `Unreleased` to a dated `## [0.y.z]` section when the Release workflow squash-merges to `main`. The workflow does this itself (`prepare_changelog.py`).
 
-Planned application `0.2.0` work stays under `Unreleased` in this wiki until that slice is tagged on the application repos; then add a dated note here that the product slice shipped.
+Documentation `0.3.0` foundation work stays under `Unreleased` in this wiki until that contract is tagged on `main`. Application repos stay on `0.1.x` until the foundation is done on `develop` and then tagged; then add a dated note here that the foundation shipped.

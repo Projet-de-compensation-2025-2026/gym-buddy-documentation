@@ -9,7 +9,7 @@ How to run Gym Buddies locally, how a change is proven and released, and how the
 
 ## Today versus target
 
-Be honest at the defense. The pipeline, the VPS, the **local data plane**, and the **Java 25 LTS / Spring Boot** service exist on `develop` (`pom.xml`, ticket #11). Register / login / logout and a VPS compose do **not**.
+Be honest at the defense. The pipeline, the VPS API replace, the **local data-plane files**, and the **Java 25 LTS / Spring Boot** service exist on `develop` (`pom.xml`, ticket #11). Register / login / logout, PostgreSQL on the VPS, and a **proven** local compose boot do **not**. That remaining work is the **documentation `0.3.0` technical foundation** ([../70-Engineering-practices/06-Versioning.md](../70-Engineering-practices/06-Versioning.md)). There is no planned application `0.2.0` next slice.
 
 | Piece | Today (August 2026) | Target (locked) |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ Be honest at the defense. The pipeline, the VPS, the **local data plane**, and t
 | `gym-buddy-openapi` | OpenAPI 3.1.0 stub: `GET /healthz` and `GET /readyz` under `/api/v1` | Full contract; health stays `GET /api/v1/healthz` and `GET /api/v1/readyz` |
 | `gym-buddy-ui` | Static HTML probe | Angular 22 member app + back-office |
 | Health | Service implements unauthenticated `GET /api/v1/healthz` (liveness) and `GET /api/v1/readyz` (`200` or `503` with `details` for `postgres` / `objectStorage`). CI smoke hits **`GET /api/v1/healthz` only** — the smoke image is built without Postgres/MinIO. Probe `GET /` is not today’s service smoke. | Same public paths. Do not smoke `/actuator/health`. |
-| Local data plane | `compose.yaml` in `gym-buddy-service`: Postgres 18, Redis, MinIO, Spring API, optional MailHog. All binds `127.0.0.1`. | Same file |
+| Local data plane | `compose.yaml` in `gym-buddy-service`: Postgres 18, Redis, MinIO, Spring API, optional MailHog. All binds `127.0.0.1`. Files exist (ticket #7). **Runtime boot is not claimed** (documentation `0.3.0`). | Same file |
 | VM | One API container, bound to `127.0.0.1:8080`. Caddy terminates TLS. No compose on the VM. | Same API replace, plus a **private** data-plane compose on the Docker network (5432 / 6379 / 9000 not published) |
 | Production object storage | `SPRING_PROFILES_ACTIVE=prod` **refuses to start** if S3-compatible storage is missing | Same |
 
@@ -37,7 +37,7 @@ A laptop is ready when all of these are true:
 8. The OpenAPI stub in `gym-buddy-openapi` is the HTTP source of truth. Expand it **before** implementing a new route.
 9. Point the UI at `http://localhost:8080/api/v1`.
 
-`docker compose up -d` starts the data plane plus the Spring API. The API uses Postgres, Redis, and MinIO when those containers are up (`readyz`).
+`docker compose up -d` is how a laptop starts the data plane plus the Spring API. That boot is **not** claimed today (documentation `0.3.0`). When it is proven, the API uses Postgres, Redis, and MinIO (`readyz`).
 
 ## Local Compose
 
@@ -194,7 +194,9 @@ Caddy reverse-proxies the hostname to `127.0.0.1:8080` and obtains a Let’s Enc
 
 Do not publish the operator prefix in this public wiki.
 
-### Adding data services later
+### Adding data services (documentation `0.3.0` foundation)
+
+PostgreSQL and the Java service on the VPS are part of the documentation `0.3.0` foundation. They are **not** running on the VM today.
 
 When PostgreSQL, Redis, and MinIO move onto the VM, run them on the Docker network next to the API. Do **not** publish `5432`, `6379`, or `9000` on the host. The API container reaches them by Compose/Docker DNS. The public story stays: Caddy → `127.0.0.1:8080`.
 
@@ -208,12 +210,15 @@ Let’s Encrypt **HTTP-01** needs port **80** reachable from the world for a few
 
 ## What still has to be implemented
 
+The next slice is **documentation `0.3.0`** (technical foundation). None of the foundation items below are done.
+
 | Work | Where |
 | --- | --- |
+| Prove local compose at runtime: `docker compose up -d` on a laptop; Postgres 18, Redis, MinIO, Java 25 LTS Spring service; binds `127.0.0.1`; `GET /api/v1/healthz` 200 and `GET /api/v1/readyz` 200. Files exist (tickets #7 / #11); boot is not claimed. | Laptop + `gym-buddy-service` |
+| PostgreSQL and the Java service on the OVH VPS (`vps-c39cdf03.vps.ovh.net`). Private data-plane on the Docker network; do not publish `5432` / `6379` / `9000`. Public story stays Caddy → `127.0.0.1:8080`. Today: one `docker run` API container (tag **v0.1.1**). | Operator + `gym-buddy-service` |
+| Sign-up and sign-in (log-out stays in the same ticket) | Ticket #12 — not shipped |
 | Expand the OpenAPI contract past `healthz` / `readyz` (auth and the rest of `/api/v1`) | `gym-buddy-openapi` |
 | Angular 22 apps | `gym-buddy-ui` |
-| Sign-up / sign-in / log-out | Later ticket — not shipped |
-| Private data-plane compose on the VPS | Operator work after the API needs a database |
 | Instructor cadrage minutes | [../00-Project-brief/01-Scope-and-modules.md](../00-Project-brief/01-Scope-and-modules.md) — still **Not done** |
 
 `compose.yaml` and `.env.example` landed in `gym-buddy-service` with ticket #7.
