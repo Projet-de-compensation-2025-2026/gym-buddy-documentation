@@ -27,7 +27,7 @@ This page is updated after implementation. It already records **design-level** s
 - Search quality on messy city strings will be poor without geocoding.
 - Instant messaging is not E2E encrypted; staff can read plaintext in the DB.
 - Large fixtures with shared image keys make the demo look repetitive.
-- Angular is not started. Register / login / logout are not shipped. The VPS still runs one API container (no data-plane compose). Flyway on `develop` is V1 baseline only.
+- Angular 22 auth pages exist on `develop` (ui #3). Register / login / logout is not a done product slice: the service has not implemented those operations (service #5 still open). The VPS still runs one API container (no data-plane compose). Flyway on `develop` is V1 baseline only.
 
 ## Risks
 

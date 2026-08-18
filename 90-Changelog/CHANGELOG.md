@@ -37,6 +37,7 @@ Until the first application release, versions refer to the **documentation contr
 - Runbook today-vs-target: local compose and Java 25 LTS / Spring Boot (`pom.xml`, Flyway V1) are on `gym-buddy-service` `develop`
 - Tickets: Atlas (ops agent) owns `Not Ready` → `Todo` and `In Progress` → `Done`; Done requires Sentinel confirmation against functional requirements in this wiki. Joaquim remains product owner for consult / scope and no longer makes those two board moves by hand.
 - OpenAPI stub **and** the service implement `GET /api/v1/healthz` and `GET /api/v1/readyz` (ticket #11); CI smoke hits `healthz` only (smoke image has no Postgres/MinIO). Probe `GET /` is not today’s service smoke
+- OpenAPI stub on `develop` documents `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout` (openapi #4 / ticket #12). `gym-buddy-ui` `develop` (app version `0.1.0`, ui #3) has `/register`, `/login`, and a log-out control that call register / login / logout; access JWT stays in memory; refresh cookie credentials are sent. The service has not implemented auth (service #5 still open). Ticket #12 stays open.
 - Approved backend stack is **Java 25 LTS** (stack rewrite, not a pin). The ~18s `setup-java` deaths were a Maven cache permission denied under `contents:read`, not Temurin 26 failing to install (same failure on 25 and 26).
 
 ## [0.2.0] — 2026-08-14
