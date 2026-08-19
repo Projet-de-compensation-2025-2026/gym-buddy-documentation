@@ -18,7 +18,7 @@ JWT access tokens for staff include `role ∈ {moderator, admin}`. The API enfor
 
 ## Visual design
 
-Staff-console visual tokens and Stitch mockups for Users, Content, Reports, Media, Fixtures, and Audit: [09-Visual-design.md](09-Visual-design.md). Those PNGs are Stitch canvas captures, not a live back-office.
+Staff-console visual tokens and mockups for Users, Content, Reports, Media, Fixtures, and Audit: [09-Visual-design.md](09-Visual-design.md). Those JPGs are Joaquim’s mockup screens, not a live back-office.
 
 ## Surfaces
 
