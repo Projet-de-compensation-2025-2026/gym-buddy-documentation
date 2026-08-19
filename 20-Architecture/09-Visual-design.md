@@ -91,34 +91,34 @@ Dropped from this pass (no replacement file): `03-feed-lower`, `04-post-detail`,
 
 | Route | Spec | Mockup | Caption |
 | --- | --- | --- | --- |
-| `/register` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Register](mockups/01-register.jpg) | High-quality mockup of the member register screen. |
-| `/login` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Login](mockups/02-login.jpg) | High-quality mockup of the member login screen. |
-| `/` (feed) | [FS feed](../30-Functional-specifications/04-News-feed.md) | ![Feed](mockups/03-feed.jpg) | High-quality mockup of the friends news feed. |
-| `/posts/:id` (comments) | [FS comments](../30-Functional-specifications/06-Nested-comments.md) | ![Post comments](mockups/04-post-comments.jpg) | High-quality mockup of the nested comment thread on a post. |
-| `/u/:handle` (public) | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Public profile](mockups/05-public-profile.jpg) | High-quality mockup of a public profile visible to any member. |
-| `/u/:handle` (public, partial) | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Public profile partially hidden](mockups/05-public-profile-partially-hidden.jpg) | High-quality mockup of a public profile with some fields hidden. |
-| `/u/:handle` (private stub) | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Private profile](mockups/06-private-profile.jpg) | High-quality mockup of the private-profile stub a stranger sees. |
-| `/friends` | [FS friends](../30-Functional-specifications/03-Friends.md) | ![Friends](mockups/07-friends.jpg) | High-quality mockup of the friends list with search and Unfriend / Block. |
-| `/friends/suggestions` | [FS suggestions](../30-Functional-specifications/09-Friend-suggestions.md) | ![Friend suggestions](mockups/08-suggestions.jpg) | High-quality mockup of friend suggestions with Add Friend / Dismiss. |
-| `/events` | [FS events](../30-Functional-specifications/07-Events.md) | ![Events](mockups/09-events.jpg) | High-quality mockup of Upcoming Sessions with Instant / Recurring filters. |
-| `/events/new` | [FS events](../30-Functional-specifications/07-Events.md) | ![Create event](mockups/10-new-event.jpg) | High-quality mockup of the Create Event form. |
-| `/events/:id` | [FS events](../30-Functional-specifications/07-Events.md) | ![Event detail](mockups/11-event-detail.jpg) | High-quality mockup of event detail with Apply to Join and occurrence list. |
-| `/search` | [FS search](../30-Functional-specifications/08-Advanced-search.md) | ![Search](mockups/12-search.jpg) | High-quality mockup of people/events search with filters. |
-| `/messages` | [FS messaging](../30-Functional-specifications/10-Instant-messaging.md) | ![Inbox](mockups/13-inbox.jpg) | High-quality mockup of the inbox thread list. |
-| `/messages/:id` | [FS messaging](../30-Functional-specifications/10-Instant-messaging.md) | ![Chat](mockups/14-chat.jpg) | High-quality mockup of a chat thread. |
-| `/settings/profile` | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Edit profile](mockups/15-settings-profile.jpg) | High-quality mockup of Edit Profile. |
-| `/settings/privacy` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Privacy](mockups/16-settings-privacy.jpg) | High-quality mockup of profile visibility and password fields. |
+| `/register` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Register](mockups/01-register.jpg) | the member register screen. |
+| `/login` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Login](mockups/02-login.jpg) | the member login screen. |
+| `/` (feed) | [FS feed](../30-Functional-specifications/04-News-feed.md) | ![Feed](mockups/03-feed.jpg) | the friends news feed. |
+| `/posts/:id` (comments) | [FS comments](../30-Functional-specifications/06-Nested-comments.md) | ![Post comments](mockups/04-post-comments.jpg) | the nested comment thread on a post. |
+| `/u/:handle` (public) | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Public profile](mockups/05-public-profile.jpg) | a public profile visible to any member. |
+| `/u/:handle` (public, partial) | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Public profile partially hidden](mockups/05-public-profile-partially-hidden.jpg) | a public profile with some fields hidden. |
+| `/u/:handle` (private stub) | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Private profile](mockups/06-private-profile.jpg) | the private-profile stub a stranger sees. |
+| `/friends` | [FS friends](../30-Functional-specifications/03-Friends.md) | ![Friends](mockups/07-friends.jpg) | the friends list with search and Unfriend / Block. |
+| `/friends/suggestions` | [FS suggestions](../30-Functional-specifications/09-Friend-suggestions.md) | ![Friend suggestions](mockups/08-suggestions.jpg) | friend suggestions with Add Friend / Dismiss. |
+| `/events` | [FS events](../30-Functional-specifications/07-Events.md) | ![Events](mockups/09-events.jpg) | Upcoming Sessions with Instant / Recurring filters. |
+| `/events/new` | [FS events](../30-Functional-specifications/07-Events.md) | ![Create event](mockups/10-new-event.jpg) | the Create Event form. |
+| `/events/:id` | [FS events](../30-Functional-specifications/07-Events.md) | ![Event detail](mockups/11-event-detail.jpg) | event detail with Apply to Join and occurrence list. |
+| `/search` | [FS search](../30-Functional-specifications/08-Advanced-search.md) | ![Search](mockups/12-search.jpg) | people/events search with filters. |
+| `/messages` | [FS messaging](../30-Functional-specifications/10-Instant-messaging.md) | ![Inbox](mockups/13-inbox.jpg) | the inbox thread list. |
+| `/messages/:id` | [FS messaging](../30-Functional-specifications/10-Instant-messaging.md) | ![Chat](mockups/14-chat.jpg) | a chat thread. |
+| `/settings/profile` | [FS profiles](../30-Functional-specifications/02-User-profiles.md) | ![Edit profile](mockups/15-settings-profile.jpg) | Edit Profile. |
+| `/settings/privacy` | [FS accounts](../30-Functional-specifications/01-Accounts-and-administration.md) | ![Privacy](mockups/16-settings-privacy.jpg) | profile visibility and password fields. |
 
 ### Back-office
 
 | Surface | Spec | Mockup | Caption |
 | --- | --- | --- | --- |
-| Users | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin users](mockups/17-admin-users.jpg) | High-quality mockup of User Management. |
-| Content | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin content](mockups/18-admin-content.jpg) | High-quality mockup of Content Moderation. |
-| Reports | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin reports](mockups/19-admin-reports.jpg) | High-quality mockup of the Reports Queue. |
-| Media | [FS media](../30-Functional-specifications/12-Media-and-files.md) | ![Admin media](mockups/20-admin-media.jpg) | High-quality mockup of Media Management. |
-| Fixtures | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin fixtures](mockups/21-admin-fixtures.jpg) | High-quality mockup of Database Fixtures generate/reset. |
-| Audit | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin audit](mockups/22-admin-audit.jpg) | High-quality mockup of the append-only Audit Log. |
+| Users | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin users](mockups/17-admin-users.jpg) | User Management. |
+| Content | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin content](mockups/18-admin-content.jpg) | Content Moderation. |
+| Reports | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin reports](mockups/19-admin-reports.jpg) | the Reports Queue. |
+| Media | [FS media](../30-Functional-specifications/12-Media-and-files.md) | ![Admin media](mockups/20-admin-media.jpg) | Media Management. |
+| Fixtures | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin fixtures](mockups/21-admin-fixtures.jpg) | Database Fixtures generate/reset. |
+| Audit | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin audit](mockups/22-admin-audit.jpg) | the append-only Audit Log. |
 
 ## What these are not
 
