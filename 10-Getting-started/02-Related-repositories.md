@@ -8,7 +8,7 @@
 Gym Buddies is documented **once** here and implemented in **three** other repositories.
 
 | Repository | URL | Visibility | Responsibility | Hosted on |
-| --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | `gym-buddy-documentation` (this repo) | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation | Public | Product, architecture, specs, practices, academic packaging, **tickets** | GitHub Pages (Markdown → Jekyll) |
 | `gym-buddy-openapi` | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi | Private | Versioned OpenAPI 3 contract + static Swagger/Redoc | GitHub Pages is **not** live. Release run [32155209479](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi/actions/runs/32155209479) created tag **v0.1.0**, then failed only on deploy/pages: “Failed to create deployment (status: 404)… Ensure GitHub Pages has been enabled.” Live https://projet-de-compensation-2025-2026.github.io/gym-buddy-openapi/ is HTTP **404**. The package/tag is **not** broken. Do **not** treat “enable OpenAPI Pages + re-run deploy” as remaining work to start. Joaquim has not asked for the spec site. Atlas will not Todo that ticket unless he wants it. Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** claim login-from-Pages. Do **not** Todo **#37** |
 | `gym-buddy-service` | https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service | Private | Java 25 LTS / Spring Boot API (`pom.xml` on `develop`), domain, jobs, WebSocket, fixtures | OVH VPS — see [04-Environment-and-pipeline.md](04-Environment-and-pipeline.md) |
