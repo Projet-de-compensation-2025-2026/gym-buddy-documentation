@@ -13,6 +13,7 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Added
 
+- Admin / back-office implementation ticket #69: OpenAPI documents `/admin/*` and member `POST /reports`; service implements staff lock/role/hide/reports/audit/fixtures stub; isolated Angular admin bundle. Members hitting `/admin/*` get `NOT_FOUND`.
 - Remaining product specs are implementable: every FS page has intent, actors, FS IDs, business rules, acceptance, errors, target HTTP, mockup links, and leftover-chrome exclusions. New inventory [09-Target-HTTP-surface.md](../40-Technical-specifications/09-Target-HTTP-surface.md). FS-EVT-13 + FS-MATCH-01..03. Algorithms, UML, test plan, and data model promoted to Approved. Consumers pin a new 0.1.x OpenAPI tag after each contract land (no 1.0.0).
 - Visual design page ([09-Visual-design.md](../20-Architecture/09-Visual-design.md)): Stitch light-mode tokens, derived dark-mode role mapping, Inter, Material Symbols Outlined recommendation, and mockup table embedding JPGs under `20-Architecture/mockups/`
 - Environment and pipeline runbook: local compose plan (PostgreSQL 18, Redis, MinIO, API, optional MailHog), env key catalog, CI/Release/Deploy as built, OVH VPS + Caddy + UFW
