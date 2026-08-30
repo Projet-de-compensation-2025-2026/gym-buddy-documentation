@@ -11,6 +11,7 @@ Assembled for ticket **#71**: [Gym-Buddies-report.pdf](Gym-Buddies-report.pdf) a
 | [01-Report-outline.md](01-Report-outline.md) | Report: GitHub links, screenshots, architecture, data model, UML, justifications, specs | PDF assembled (`Gym-Buddies-report.pdf`) |
 | [02-Presentation.md](02-Presentation.md) | PowerPoint structure for the 20 min + 30 min Q&A defense | Deck assembled (`Gym-Buddies-defense.pptx`) |
 | [03-Screenshots.md](03-Screenshots.md) | Checklist of major features to capture | Checklist complete — live images after Release |
+| [qa-v1.0.0-public.md](qa-v1.0.0-public.md) | Live Pages public / auth crawl (v1.0.0) | Recorded 2026-08-30; shots under `screenshots/qa-v1.0.0/public/` |
 
 Submission reminder: email [maurras.togbe@isep.fr](mailto:maurras.togbe@isep.fr) no later than **31 August 2026**, and add that account to GitHub.
 
