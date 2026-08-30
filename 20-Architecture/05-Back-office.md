@@ -38,3 +38,11 @@ Staff-console visual tokens and mockups for Users, Content, Reports, Media, Fixt
 3. Smaller member bundle, clearer authorization story at the defense.
 
 Staff authentication still uses the same JWT issuer as the member app.
+
+## Hosting
+
+The back-office is the isolated `gym-buddy-admin` bundle **inside** `gym-buddy-ui`, live at `/gym-buddy-ui/admin/`. It is not a fourth repository.
+
+**Live tag v1.0.0:** `/admin/` is HTTP 200. Other staff client paths (`/admin/login`, `/admin/users`, …) are HTTP 404 and boot the **member** SPA because Pages has one site-root `404.html`.
+
+**Unreleased** ticket **#75:** Deploy copies admin `index.html` onto those known staff routes (`<admin-root>`, title Gym Buddy Admin, `base href="/gym-buddy-ui/admin/"`) so they never fall through the member `404.html`. Unknown `/admin/*` paths still receive the member fallback. Details: [08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md).
