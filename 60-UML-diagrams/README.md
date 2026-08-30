@@ -1,6 +1,6 @@
 # 60 — UML diagrams
 
-Required diagram set from the brief. Diagrams are written in [Mermaid](https://mermaid.js.org/) so they render on GitHub and stay in version control.
+Required diagram set from the brief. Diagrams are written in [Mermaid](https://mermaid.js.org/) so they render on GitHub and stay in version control. Pages are **Approved**: use case, activity (including comment depth and greedy matching), sequence (including suggestions), class.
 
 ## Contents
 

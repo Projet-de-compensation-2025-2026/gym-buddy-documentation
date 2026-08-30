@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft |
+| Status | Approved |
 
 ## Friend request
 
@@ -48,4 +48,28 @@ flowchart TD
   W -->|bad| RJ[rejected + delete object]
   W -->|ok| V[Write variants, status ready]
   V --> ATT[Client attaches mediaId to post / message / avatar]
+```
+
+## Nested comment
+
+```mermaid
+flowchart TD
+  C[Member replies] --> V{Can view parent?}
+  V -->|no| X[NOT_FOUND]
+  V -->|yes| D{parent.depth + 1 <= 4?}
+  D -->|no| E[VALIDATION]
+  D -->|yes| S[Store depth on row]
+```
+
+## Weekly matching (greedy)
+
+```mermaid
+flowchart TD
+  O[Opt-in set U] --> G[Build weighted edges]
+  G --> S[Sort weight descending]
+  S --> A{Both endpoints free?}
+  A -->|yes| M[Add pair, draft instant event]
+  A -->|no| N[Skip]
+  M --> N
+  N --> T[Next edge until exhausted]
 ```

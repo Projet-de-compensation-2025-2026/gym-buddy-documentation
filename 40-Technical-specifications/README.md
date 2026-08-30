@@ -14,6 +14,7 @@ How the product is implemented. Functional pages describe *what*; these pages de
 | [06-Search-implementation.md](06-Search-implementation.md) | Implementing parameterized search |
 | [07-Test-fixtures.md](07-Test-fixtures.md) | Creating thousands of test fixtures |
 | [08-OpenAPI-contract.md](08-OpenAPI-contract.md) | Dedicated OpenAPI repository as the HTTP source of truth |
+| [09-Target-HTTP-surface.md](09-Target-HTTP-surface.md) | Remaining `/api/v1` operations Kernel must add to the `$ref` tree |
 
 Companion pages:
 

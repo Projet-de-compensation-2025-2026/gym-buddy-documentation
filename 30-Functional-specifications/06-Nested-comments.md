@@ -2,10 +2,16 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft |
+| Status | Approved |
 | Related | [05-Posts-and-engagement.md](05-Posts-and-engagement.md) |
 
-Comments exist on posts and nest over **several levels**.
+## Intent
+
+Comments exist on posts and nest over **several levels** (cap 4). Deleted comments tombstone; children stay.
+
+## Actors
+
+Member who can view the parent post; author; staff.
 
 ## Requirements
 
@@ -20,10 +26,47 @@ Comments exist on posts and nest over **several levels**.
 | FS-CMT-07 | Likes on comments follow FS-POST-07. |
 | FS-CMT-08 | Staff can hide a comment (tombstone + `hidden`). |
 
+## Business rules
+
+- `depth` is stored on the row (`parent.depth + 1`, root `0`) so writes do not recurse.
+- Hidden/deleted parent: children still load; parent body is the tombstone string. Do not leak the original body.
+- Page roots with `before` cursor; `GET /comments/{id}/replies` returns children (not unbounded). Mockup 04 “Load 3 more replies” is this expand.
+- Cannot comment on a post the caller cannot view (`NOT_FOUND`).
+
+## Target HTTP
+
+| Method | Path | IDs |
+| --- | --- | --- |
+| `GET` | `/api/v1/posts/{id}/comments` | FS-CMT-06 |
+| `POST` | `/api/v1/posts/{id}/comments` | FS-CMT-01, FS-CMT-02 |
+| `GET` | `/api/v1/comments/{id}/replies` | FS-CMT-06 |
+| `DELETE` | `/api/v1/comments/{id}` | FS-CMT-05 |
+| `PUT` | `/api/v1/comments/{id}/like` | FS-CMT-07 |
+| `DELETE` | `/api/v1/comments/{id}/like` | FS-CMT-07 |
+
+## UI
+
+| Route | Mockup |
+| --- | --- |
+| `/posts/:id` thread | [04-post-comments.jpg](../20-Architecture/mockups/04-post-comments.jpg) — nested indent, like + reply, tombstone, load-more replies. |
+
 ## Acceptance
 
 - Given a comment at depth 3, when a member replies, then depth 4 is stored.
 - Given a comment at depth 4, when a member replies, then the API rejects the payload.
 - Given a deleted parent, when a child is fetched, then the parent appears as a tombstone and the child body is intact.
 
-Depth is stored on the row to avoid recursive checks on every write.
+## Errors
+
+| Situation | Code |
+| --- | --- |
+| Depth > 4 | `VALIDATION` |
+| Empty / too long body | `VALIDATION` |
+| Post or parent not viewable | `NOT_FOUND` |
+| Not the author on delete | `FORBIDDEN` |
+
+## Links
+
+- Posts: [05-Posts-and-engagement.md](05-Posts-and-engagement.md)
+- Class (`Comment.depth`): [../60-UML-diagrams/04-Class.md](../60-UML-diagrams/04-Class.md)
+- HTTP inventory: [../40-Technical-specifications/09-Target-HTTP-surface.md](../40-Technical-specifications/09-Target-HTTP-surface.md)

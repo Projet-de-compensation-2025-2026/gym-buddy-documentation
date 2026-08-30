@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft |
+| Status | Approved |
 
 ## Login and refresh
 
@@ -95,4 +95,24 @@ sequenceDiagram
   B->>API: GET /media/:id/url
   API-->>B: signed GET
   B->>S3: GET image
+```
+
+## Serve friend suggestions
+
+```mermaid
+sequenceDiagram
+  actor A as Member
+  participant API as API
+  participant DB as PostgreSQL
+
+  A->>API: GET /suggestions
+  API->>DB: suggestion_scores for A if computed_at < 48h
+  alt cache fresh
+    API-->>A: top k + reasons
+  else stale
+    API->>API: FoF ∪ city∩sport ∪ co-participants, score
+    API-->>A: top k + reasons
+  end
+  A->>API: POST /suggestions/{id}/dismiss
+  API->>DB: until = now+30d
 ```

@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft |
+| Status | Approved |
 | Related | [../40-Technical-specifications/07-Test-fixtures.md](../40-Technical-specifications/07-Test-fixtures.md) |
 
 The brief asks for a **reasonable** plan covering functional, unit, and integration tests — not 100% of every getter.

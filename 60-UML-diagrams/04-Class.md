@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft |
+| Status | Approved |
 | Related | [../20-Architecture/06-Data-model.md](../20-Architecture/06-Data-model.md) |
 
 Domain types (not ORM annotations). Align fields with the data model when either changes.
@@ -92,6 +92,12 @@ classDiagram
     +weeklyPairs(users) Pair[]
   }
 
+  class SuggestionDismissal {
+    +UUID viewerId
+    +UUID candidateId
+    +Date until
+  }
+
   User "1" --> "1" Profile
   User "1" --> "*" Friendship
   User "1" --> "*" Post
@@ -106,6 +112,7 @@ classDiagram
   SuggestionEngine ..> User
   MatchingEngine ..> Event
   MatchingEngine ..> User
+  User "1" --> "*" SuggestionDismissal
 ```
 
 Enums: `Role`, `Status`, `Visibility`, `FriendStatus`, `AppStatus`, `MsgType`, `MediaKind`, `Level`.
