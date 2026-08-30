@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
+| Status | Approved |
 | Related | [08-Feature-implementation.md](08-Feature-implementation.md), [05-Tickets-and-GitHub-projects.md](05-Tickets-and-GitHub-projects.md) |
 
 Even on an individual project, every merge to `develop` (features) or `main` (releases / hotfixes) gets a **self-review checklist**. Treat it as the Software Engineering module’s process evidence.

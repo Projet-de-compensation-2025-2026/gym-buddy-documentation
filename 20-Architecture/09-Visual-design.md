@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
+| Status | Approved |
 | Related | [04-Frontend.md](04-Frontend.md), [05-Back-office.md](05-Back-office.md), [07-Technology-choices.md](07-Technology-choices.md) |
 
 Visual tokens and mockups for the member app and the back-office. Joaquim replaced the earlier Stitch canvas PNGs with higher-quality JPG screens on `fix/mockups`. The committed source of truth is this page plus the files under [`mockups/`](mockups/). The Stitch project [Gym Buddy Web App](https://stitch.withgoogle.com/projects/2603399363233092540) is a **related link**, not the SoT.
@@ -120,9 +120,24 @@ Dropped from this pass (no replacement file): `03-feed-lower`, `04-post-detail`,
 | Fixtures | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin fixtures](mockups/21-admin-fixtures.jpg) | Database Fixtures generate/reset. |
 | Audit | [FS admin](../30-Functional-specifications/11-Admin-and-moderation.md) | ![Admin audit](mockups/22-admin-audit.jpg) | the append-only Audit Log. |
 
+## Mockup leftovers (do not implement)
+
+Stitch chrome that has **no FS ID**. Kernel matches layout tokens and the listed screens; it does **not** invent these entities:
+
+| Leftover | Where | Do instead |
+| --- | --- | --- |
+| Billing, Notifications product | Settings 15 / 16 | Privacy + Profile only |
+| “Recover by logging back in” | 16 | Close is `status=closed`; login fails; staff unlock restores |
+| Current Focus progress bars, Workouts counter | 05 | Friend count; optional accepted-event count. No workout tracker |
+| Video post composer icon | 03 | Images only (max 4). No video |
+| External share control | 04 | Like / comment / repost only |
+| Admin Dashboard, Bookings, Analytics, Invite User, Export CSV, + New Session | 17–22 | Nav: Users, Content, Reports, Media, Fixtures, Audit |
+| Avatar “Max 2MB” | 15 | Contract is 8 MiB (FS-MED-03) |
+| Miles on search radius | 12 | API `radiusKm` (1–50) |
+
 ## What these are not
 
 - Not the academic screenshot checklist in [../99-Academic-deliverables/03-Screenshots.md](../99-Academic-deliverables/03-Screenshots.md). Do not copy these JPGs there. That gallery waits for real Angular shots after the UI is stable.
 - Not a live UI. `gym-buddy-ui` on `develop` still has `/register`, `/login`, and log-out only.
 - Ticket **#37** is **closed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** Todo it. Do **not** start Kernel on it.
-- Expanding `/api/v1` past health + auth is still open. These mockups do not implement those routes.
+- Expanding `/api/v1` past health + auth is still open (inventory: [../40-Technical-specifications/09-Target-HTTP-surface.md](../40-Technical-specifications/09-Target-HTTP-surface.md)). These mockups do not implement those routes.

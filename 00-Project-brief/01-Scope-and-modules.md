@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft |
+| Status | Approved |
 | Related | [ProjetDeCompensation2526.en.md](ProjetDeCompensation2526.en.md), [02-Stakeholders-and-defense.md](02-Stakeholders-and-defense.md) |
 
 ## Academic frame
@@ -65,11 +65,11 @@ Record any change to this list in this wiki. There will be **no** instructor sco
 | --- | --- | --- |
 | Discuss and scope the project with the instructor | Will not happen (instructor on holiday) | Joaquim, 2026-08-19 — see below |
 | Write functional and technical specifications | Written | This wiki. Not blocked on a cadrage meeting |
-| Provide UML diagrams | Written (Draft) | [../60-UML-diagrams](../60-UML-diagrams/README.md) |
-| Design and write algorithms | Written (Draft) | [../50-Algorithms](../50-Algorithms/README.md) |
-| Implement backend, frontend, back-office | In progress on `develop` | Angular 22 + Spring exist on `develop` (auth + health only) |
-| Test plan and unit tests | Strategy written | [../80-Testing](../80-Testing/README.md) — no application test sources yet |
-| Critical analysis | Written (pre-implementation) | [../91-Critical-analysis](../91-Critical-analysis/README.md) |
+| Provide UML diagrams | Written (Approved, Mermaid) | [../60-UML-diagrams](../60-UML-diagrams/README.md) |
+| Design and write algorithms | Written (Approved) | [../50-Algorithms](../50-Algorithms/README.md) — implement in the product tickets |
+| Implement backend, frontend, back-office | In progress on `develop` | Angular 22 + Spring exist on `develop` (auth + health only). Remaining product is ticketed after this spec pass. |
+| Test plan and unit tests | Strategy written (Approved) | [../80-Testing](../80-Testing/README.md) — application tests ship with each feature ticket |
+| Critical analysis | Written (pre-remaining-product) | [../91-Critical-analysis](../91-Critical-analysis/README.md) |
 | Justify library choices | Approved | [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md) |
 
 ## Instructor cadrage (2026-08-19)

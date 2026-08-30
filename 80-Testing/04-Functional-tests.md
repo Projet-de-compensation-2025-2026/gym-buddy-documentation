@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft |
+| Status | Approved |
 | Related | [../99-Academic-deliverables/03-Screenshots.md](../99-Academic-deliverables/03-Screenshots.md) |
 
 Browser-level journeys. Keep the set small and aligned with the defense demo.

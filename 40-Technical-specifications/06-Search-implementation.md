@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
+| Status | Approved |
 | Related | [../50-Algorithms/02-Filtered-search.md](../50-Algorithms/02-Filtered-search.md), [../30-Functional-specifications/08-Advanced-search.md](../30-Functional-specifications/08-Advanced-search.md) |
 
 ## Stack at MVP

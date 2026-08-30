@@ -2,8 +2,10 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
-| Related | [../30-Functional-specifications/07-Events.md](../30-Functional-specifications/07-Events.md), [01-Friend-suggestions.md](01-Friend-suggestions.md) |
+| Status | Approved |
+| Related | [../30-Functional-specifications/07-Events.md](../30-Functional-specifications/07-Events.md), [../30-Functional-specifications/09-Friend-suggestions.md](../30-Functional-specifications/09-Friend-suggestions.md), [01-Friend-suggestions.md](01-Friend-suggestions.md) |
+
+Product IDs: **FS-EVT-13** (organizer suggested accept order), **FS-MATCH-01..03** (weekly opt-in matching). Do not substitute an ML service. Weights stay constants in config.
 
 ## Problem
 

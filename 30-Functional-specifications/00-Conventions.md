@@ -45,3 +45,6 @@ Staff (`moderator`, `admin`) can **see** hidden or private content in the back-o
 - Requirements are testable. Avoid “the system should be user-friendly”.
 - Do not prescribe CSS.
 - If a number is a product decision (max comment depth, max event capacity), put it in the feature page and reference it from tests.
+- Each feature page lists **target HTTP operations** (paths relative to `/api/v1`). The YAML in `gym-buddy-openapi` is still the machine-readable source of truth; the table is what Kernel must add there. Canonical inventory: [../40-Technical-specifications/09-Target-HTTP-surface.md](../40-Technical-specifications/09-Target-HTTP-surface.md).
+- Cite the mockup file under [../20-Architecture/mockups/](../20-Architecture/mockups/). Mockups may contain Stitch leftovers (Billing, Notifications as a product, workout tracking, video posts, admin Bookings / Analytics / Invite User / Export CSV / + New Session). **Implement only surfaces that have an FS ID.** Do not invent entities from leftover chrome.
+- After OpenAPI for a slice lands on `develop`, consumers pin a new **0.1.x** tag (or the new `develop` SHA only until that tag exists). Do **not** invent `1.0.0`. Do **not** restore `openapi/bundled.yaml`. Do **not** treat `springdoc` `/v3/api-docs` as truth.

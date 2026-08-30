@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft |
+| Status | Approved |
 | Related | [../30-Functional-specifications](../30-Functional-specifications/README.md) |
 
 ## Actors and goals
@@ -28,6 +28,8 @@ flowchart LR
   member --> UC10[Send private text / image / audio]
   member --> UC11[Apply to event]
   member --> UC12[Report content]
+  member --> UC19[Change password / close account]
+  member --> UC20[Opt in to weekly matching]
 
   organizer --> UC13[Create instant or recurring event]
   organizer --> UC14[Accept or decline applications]
