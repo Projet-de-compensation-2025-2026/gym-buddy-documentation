@@ -69,7 +69,7 @@ If the first build fails on Mermaid or a plugin, use **GitHub Actions** (`action
 - Ticket **#31** is **Done / closed** (apiBaseUrl + CORS + live v0.1.1 verified).
 - Password eye is on live **v0.1.1**. Ticket **#34** is **Done**.
 - Today’s VPS container is **aea1c56**.
-- Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** claim login-from-Pages (UFW 443 IPv6-only; refresh cookie `HttpOnly`+`Secure`+`SameSite=Lax`, path `/api/v1/auth`). Do **not** Todo **#37**. Joaquim’s Pages login is operator-home only. Sentinel IPv4 `104.30.175.37` (US) → `https://vps-c39cdf03.vps.ovh.net/api/v1/healthz` TLS unexpected EOF.
+- Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** Todo **#37**. Ticket **#89** is the leftover session cookie: refresh is `HttpOnly; Secure; SameSite=None; Partitioned; Path=/api/v1/auth` so a github.io → VPS credentialed XHR can send it. Access JWT stays in memory. Do not store refresh in `localStorage`. Contract: [../40-Technical-specifications/02-JWT-authentication.md](../40-Technical-specifications/02-JWT-authentication.md).
 - Approved toolchain stays TypeScript **`~6.0.2`** + **pnpm**. Ticket **#24** stays cancelled.
 
 ## SPA client routes (GitHub Pages has no rewrite)
