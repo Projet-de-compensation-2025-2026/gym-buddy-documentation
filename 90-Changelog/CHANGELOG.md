@@ -13,6 +13,12 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Added
 
+### Changed
+
+## [1.0.0] — 2026-08-30
+
+### Added
+
 - Academic pack ticket #71: `99-Academic-deliverables/Gym-Buddies-report.pdf` and `Gym-Buddies-defense.pptx`. Live screenshot files wait on a Release of current `develop` (do not paste mockup JPGs).
 - Fixture generation ticket #70: Datafaker factories, seed `20260813`, CLI + `POST /admin/fixtures` and `/reset`, named demo accounts, power-law friends and city×sport clusters. Disabled on `prod`. CI uses tens of rows, not the 3 000-user demo set.
 - Admin / back-office implementation ticket #69: OpenAPI documents `/admin/*` and member `POST /reports`; service implements staff lock/role/hide/reports/audit/fixtures stub; isolated Angular admin bundle. Members hitting `/admin/*` get `NOT_FOUND`.
@@ -99,5 +105,6 @@ Documentation contract only (process + specs). Not the Java application.
 - English and French assignment text under `00-Project-brief`
 
 [Unreleased]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/compare/v0.2.0...HEAD
+[1.0.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v1.0.0
 [0.2.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v0.2.0
 [0.1.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v0.1.0
