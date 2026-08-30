@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft — slide spine complete; `.pptx` not built |
+| Status | Assembled — `Gym-Buddies-defense.pptx` (12 slides). Live demo still operator-run |
 | Related | [../00-Project-brief/02-Stakeholders-and-defense.md](../00-Project-brief/02-Stakeholders-and-defense.md) |
 
 Defense: **20 minutes** + **30 minutes Q&A**, in person or remote.

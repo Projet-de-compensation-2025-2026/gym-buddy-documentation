@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft — checklist complete; images blocked on UI |
+| Status | Checklist complete. Live shots 1–16 wait for a Release of current `develop` (Pages is still v0.1.1). Do not paste mockup JPGs |
 
 Capture after the UI is stable. Prefer the `demo.alex` / `demo.blake` accounts. Store images next to this file (`screenshots/`) when they exist. Do not commit placeholder images.
 

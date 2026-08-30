@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft — template complete; PDF not assembled |
+| Status | Assembled — `Gym-Buddies-report.pdf` (wiki `2fcabfa`). Live screenshots 1–16 still operator-captured |
 | Related | [../00-Project-brief/ProjetDeCompensation2526.en.md](../00-Project-brief/ProjetDeCompensation2526.en.md), [03-Screenshots.md](03-Screenshots.md) |
 
 The report **summarizes** this wiki and the implementation. It is not a second specification. Assemble it in the last weeks; keep screenshots current.

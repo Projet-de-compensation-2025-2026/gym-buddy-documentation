@@ -5,7 +5,11 @@
 | Status | Proposed |
 | Related | [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
-This page is updated after implementation. It already records **design-level** strengths and weaknesses so the report is not written the night before the defense.
+This page is updated after implementation. Product tickets **#59–#70** are on `develop` (auth, profiles, friends, media, posts, comments, feed, events, search, suggestions, messaging, admin, fixtures).
+
+## Post-implementation (2026-08-30)
+
+What shipped matches the wiki: OpenAPI `$ref` tree first, generated Java interfaces and orval client, Gitflow PRs to `develop`, FS-named tests, Datafaker seed `20260813`. Gaps that remain honest: greedy matching is not exact; DMs are not E2E; live GitHub Pages is still **v0.1.1** (auth-era) so the full product needs a Release; login-from-Pages is not claimed (#37 closed).
 
 ## Strengths
 
