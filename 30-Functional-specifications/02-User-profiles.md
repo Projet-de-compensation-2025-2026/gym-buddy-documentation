@@ -33,7 +33,7 @@ Member (owner or viewer), staff (full view in back-office only).
 - `preferred_windows`: list of `{ weekday: 0–6, start: "HH:MM", end: "HH:MM" }`, max 14.
 - Stub payload for a stranger on a private profile: `handle`, `displayName` omitted or initials only, `visibility=private`, `avatar` if the owner did not hide it (default: show avatar), no bio/sports/city/windows/friend count.
 - Friend count on a **full** view is the number of `accepted` friendships. Do **not** invent a Workouts / Current Focus progress entity. Mockup 05’s “142 WORKOUTS” and “Current Focus” bars are leftovers. Show friend count; optional “sessions” = accepted event attendances if events exist, otherwise omit.
-- Username on Edit Profile **is** `handle` (FS-ACCT-02 uniqueness).
+- Username on Edit Profile **is** `handle` (FS-ACCT-02 uniqueness). Handle is not an email: no `@`, and it must not equal the account email (ticket **#103**).
 - Mockup 15 “Security / Notifications / Billing” nav: Security/Privacy goes to [01-Accounts-and-administration.md](01-Accounts-and-administration.md). Notifications and Billing are **not** product.
 
 ## Target HTTP

@@ -10,7 +10,7 @@ The human-readable rules on this page must match the machine-readable document i
 ## Base
 
 - Prefix: `/api/v1`
-- JSON only (`Content-Type: application/json`) except media upload
+- JSON only (`Content-Type: application/json; charset=UTF-8`) except media upload. Error bodies, including unauthenticated `/api/v1/admin/*`, are UTF-8 (ticket **#85**). Do not emit `charset=ISO-8859-1`.
 - Auth: `Authorization: Bearer <access_token>`
 - Time: ISO-8601 UTC
 - IDs: UUID strings

@@ -55,8 +55,9 @@ Do **not** store 15 000 unique JPEGs. Upload ~10 stock images to MinIO and point
 
 ## Safety
 
-- Fixture reset is **disabled** when the Spring profile is `prod`
-- The command truncates only if `--reset` is passed
+- Fixture generate and reset stay **disabled** when the Spring profile is `prod`. `POST /api/v1/admin/fixtures` and `/reset` remain `FORBIDDEN` there. Do not enable that HTTP trigger on the live VPS.
+- Live v1.0.0 has **no** `demo.admin` / `demo.mod` until an operator bootstraps them. Ticket **#78**: env-gated one-shot `GYM_BUDDY_BOOTSTRAP_STAFF=true` inserts those two accounts **only if they are missing**. It does not generate the 3 000-user fixture set. Passwords come from `DEMO_ADMIN_PASSWORD` / `DEMO_MOD_PASSWORD` on the host (`.env.example` placeholders only; never commit production secrets). Unset the flag after one successful boot. Operator steps: [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
+- The fixture command truncates only if `--reset` is passed
 - Passwords for bulk users are a single known hash to speed inserts
 
 ## Tests vs demo
