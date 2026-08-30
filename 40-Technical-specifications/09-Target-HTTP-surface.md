@@ -138,6 +138,7 @@ Prefix `/admin`. `role=moderator` or `admin`. Members calling these get `NOT_FOU
 | `POST` | `/admin/users/{id}/lock` | FS-ACCT-08, FS-ADM-04 | Staff |
 | `POST` | `/admin/users/{id}/unlock` | FS-ACCT-08 | Staff (also restores `closed`) |
 | `PATCH` | `/admin/users/{id}/role` | FS-ACCT-09, FS-ADM-02 | Admin only |
+| `GET` | `/admin/content` | FS-ADM-03 | Staff. Query `type=post\|comment\|event\|media`, optional `q` / `hidden` |
 | `POST` | `/admin/content/{type}/{id}/hide` | FS-ADM-03 | Staff. `type=post\|comment\|event\|media` |
 | `POST` | `/admin/content/{type}/{id}/unhide` | FS-ADM-03 | Staff |
 | `GET` | `/admin/reports` | FS-ADM-07 | Staff |
