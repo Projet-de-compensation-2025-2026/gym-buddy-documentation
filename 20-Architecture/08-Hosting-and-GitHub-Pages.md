@@ -18,8 +18,8 @@ That constraint decides what can live on Pages and what cannot.
 | Piece | On GitHub Pages? | How |
 | --- | --- | --- |
 | This documentation wiki | **Yes** | Jekyll (built in) turns the Markdown tree into a site. Config is already in this repo (`_config.yml`). |
-| Member frontend (Angular) | **Yes** — **live** | Project site https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ returns HTTP **200** and serves the Angular app with production `baseHref` `/gym-buddy-ui/` (ticket **#30** Done; first UI tag **v0.1.0**). Root 200 is the acceptance. |
-| Back-office (Angular, same frontend repo) | **Yes** | Second configuration / `baseHref`, same static model. |
+| Member frontend (Angular) | **Yes** — **live** | Project site https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ returns HTTP **200** and serves the Angular app with production `baseHref` `/gym-buddy-ui/` (ticket **#30** Done; first UI tag **v0.1.0**). Root 200 is the acceptance. **Live v1.0.0** still uses site-root `404.html` for non-root member paths. **Unreleased** ticket **#99**: known static client routes are real files (HTTP 200). |
+| Back-office (Angular, same frontend repo) | **Yes** | Isolated `gym-buddy-admin` bundle inside `gym-buddy-ui` at `/admin/` (not a fourth repo). **Unreleased** ticket **#75**: known staff client routes are copied from that admin bundle so they do not fall through the member `404.html`. |
 | OpenAPI contract + reference UI | **Not live** | `gym-buddy-openapi` GitHub Pages is **not** live. Release run [32155209479](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi/actions/runs/32155209479) created tag **v0.1.0**, then failed only on deploy/pages: “Failed to create deployment (status: 404)… Ensure GitHub Pages has been enabled.” Live https://projet-de-compensation-2025-2026.github.io/gym-buddy-openapi/ is HTTP **404**. The package/tag is **not** broken. Do **not** treat “enable OpenAPI Pages + re-run deploy” as remaining work to start. Joaquim has not asked for the spec site. Atlas will not Todo that ticket unless he wants it. Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** claim login-from-Pages. Do **not** Todo **#37**. |
 | Java backend | **No** | Needs a process (Spring Boot). Pages cannot run it. Lives on the OVH VPS. |
 | PostgreSQL | **No** | Needs a database engine. Pages cannot run it. |
@@ -60,7 +60,7 @@ If the first build fails on Mermaid or a plugin, use **GitHub Actions** (`action
 
 - Live URL: https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/
 - Root returns **HTTP 200** and serves the Angular app with production `baseHref` `/gym-buddy-ui/`. Root 200 is the acceptance.
-- Direct `/register` (and other client routes) return **HTTP 404** with the same SPA `index.html` body (`404.html` copied by Deploy). That is GitHub Pages’ static fallback, **not** a broken app and **not** a working auth route.
+- **Live tag v1.0.0:** Direct `/register` (and other client routes) return **HTTP 404** with the same SPA `index.html` body (`404.html` copied by Deploy). That was GitHub Pages’ static fallback, **not** a broken app. Unreleased tickets **#99** / **#75** copy known routes as real files (next section).
 - First tag **v0.1.0** pointed at `http://127.0.0.1:8080/api/v1`.
 - Live Pages is **v0.1.1** and embeds `https://vps-c39cdf03.vps.ovh.net/api/v1`.
 - UI `develop` **`7916fa8`** has that VPS `apiBaseUrl`.
@@ -69,8 +69,33 @@ If the first build fails on Mermaid or a plugin, use **GitHub Actions** (`action
 - Ticket **#31** is **Done / closed** (apiBaseUrl + CORS + live v0.1.1 verified).
 - Password eye is on live **v0.1.1**. Ticket **#34** is **Done**.
 - Today’s VPS container is **aea1c56**.
-- Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** claim login-from-Pages (UFW 443 IPv6-only; refresh cookie `HttpOnly`+`Secure`+`SameSite=Lax`, path `/api/v1/auth`). Do **not** Todo **#37**. Joaquim’s Pages login is operator-home only. Sentinel IPv4 `104.30.175.37` (US) → `https://vps-c39cdf03.vps.ovh.net/api/v1/healthz` TLS unexpected EOF.
+- Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** Todo **#37**. Ticket **#89** is the leftover session cookie: refresh is `HttpOnly; Secure; SameSite=None; Partitioned; Path=/api/v1/auth` so a github.io → VPS credentialed XHR can send it. Access JWT stays in memory. Do not store refresh in `localStorage`. Contract: [../40-Technical-specifications/02-JWT-authentication.md](../40-Technical-specifications/02-JWT-authentication.md).
 - Approved toolchain stays TypeScript **`~6.0.2`** + **pnpm**. Ticket **#24** stays cancelled.
+
+## SPA client routes (GitHub Pages has no rewrite)
+
+GitHub Pages is static files only. There is **no** SPA rewrite. Project sites have **one** custom 404: site-root `404.html`. Hash routing is not used.
+
+**Live tag v1.0.0:** Deploy copies only member `index.html` → `404.html`. Cold GET of `/login`, `/register`, and every other member path is HTTP **404** with the member SPA body. `/admin/` is 200 (admin bundle). `/admin/login` and the other staff client paths are HTTP 404 **member** `404.html` (`<app-root>`, not `<admin-root>`). That is tickets **#99** (member tree) and **#75** (admin tree).
+
+**Unreleased (tickets #99 and #75):** UI Deploy runs `stage_pages.py` after `ng build`. It copies each known client route to `path/index.html` **and** sibling `path.html` (GitHub Pages pretty URL for `/path` without a trailing slash) so a cold GET is HTTP **200** (or another non-error status) and the browser does not log `Failed to load resource: 404` for those paths.
+
+Member copies (member bundle, `<app-root>`, `base href="/gym-buddy-ui/"`):
+
+- `/`, `/register`, `/login`, `/events`, `/events/new`, `/friends`, `/search`, `/messages`, `/inbox`, `/suggestions`, `/friends/suggestions`, `/settings`, `/settings/profile`, `/settings/privacy`
+
+Site-root `404.html` remains the member index. It is the fallback for **unknown** paths **and** for parameterized routes Pages cannot enumerate: `/events/:id`, `/messages/:id`, `/posts/:id`, `/u/:handle`. Those still boot the member SPA via HTTP 404 + `404.html`. That is honest.
+
+Admin copies from the isolated `gym-buddy-admin` bundle **inside** `gym-buddy-ui` (`dist-admin` → `/admin/`, live `/gym-buddy-ui/admin/`). Do **not** publish a fourth repo at `gym-buddy-admin`.
+
+- `admin/index.html`
+- `admin/login`, `admin/users`, `admin/content`, `admin/reports`, `admin/media`, `admin/fixtures`, `admin/audit` (each `index.html` + sibling `.html`)
+
+Those files are the admin SPA (`<admin-root>`, title Gym Buddy Admin, `base href="/gym-buddy-ui/admin/"`). They never fall through the member `404.html`.
+
+`admin/404.html` is also copied from the admin index. GitHub Pages **will not** serve it for unknown `/admin/*` paths — only the site-root `404.html` is the custom 404. Unknown staff URLs still receive the member fallback. Known staff routes are real files so they do not depend on that.
+
+This lands on live Pages at the next Release. Do **not** dispatch Release from these tickets. Do **not** enable OpenAPI Pages. Do **not** reopen #37.
 
 ## Backend and database (OVH VPS)
 

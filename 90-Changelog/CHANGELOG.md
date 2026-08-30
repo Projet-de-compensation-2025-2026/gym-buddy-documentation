@@ -15,6 +15,25 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Changed
 
+## [1.1.0] — 2026-08-30
+
+### Added
+
+- Admin back-office QA of live UI tag **v1.0.0**: [qa-v1.0.0-admin.md](../99-Academic-deliverables/qa-v1.0.0-admin.md) and shots under `99-Academic-deliverables/screenshots/qa-v1.0.0/admin/`. Bugs filed Not Ready: #75–#87.
+- Public / auth QA of live UI tag **v1.0.0** on GitHub Pages: [qa-v1.0.0-public.md](../99-Academic-deliverables/qa-v1.0.0-public.md) and shots under `99-Academic-deliverables/screenshots/qa-v1.0.0/public/`. Create-account + sign-in from the Pages origin worked (do not Todo closed #37). Bugs filed Not Ready: #89 session refresh/logout cookie, #90 auth error copy, #91 mockup mismatch, #92 register confirmation, #93 empty-feed CTA path, #94 leftover Video control, #95 unknown-route redirect.
+- Member-app QA of live UI tag **v1.0.0**: [qa-v1.0.0-member.md](../99-Academic-deliverables/qa-v1.0.0-member.md) and shots under `99-Academic-deliverables/screenshots/qa-v1.0.0/member/`. Bugs filed Not Ready: #96–#110 (duplicates of public #89/#94/#95 noted on those issues).
+
+### Changed
+
+- Refresh cookie policy (ticket **#89**): `HttpOnly; Secure; SameSite=None; Partitioned; Path=/api/v1/auth`. Access JWT stays in memory. Do not store refresh in `localStorage`. `SameSite=None` lets a credentialed XHR from GitHub Pages send the cookie; `Partitioned` is required for Chromium third-party cookie partitions. Do **not** Todo closed **#37**.
+- Handle is not an email (ticket **#103**): `POST /auth/register` and `PATCH /profiles/me` reject a handle that contains `@` or equals the account email (`VALIDATION`). Live operator note to rename or close `joaquim.keloglanian@gmail.com` is in [04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md). No production data wipe.
+- Live staff accounts (ticket **#78**): `POST /admin/fixtures` stays `FORBIDDEN` on `prod`. Env-gated one-shot `GYM_BUDDY_BOOTSTRAP_STAFF=true` inserts missing `demo.admin` / `demo.mod` only. Passwords from `DEMO_ADMIN_PASSWORD` / `DEMO_MOD_PASSWORD` on the host. Documented in [07-Test-fixtures.md](../40-Technical-specifications/07-Test-fixtures.md) and [04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
+- JSON error bodies use UTF-8 (`Content-Type: application/json; charset=UTF-8`), including unauthenticated `/api/v1/admin/*` (ticket **#85**).
+- `GET /api/v1/events` must return **200** for the organizer after create (ticket **#96**). Live v1.0.0 list 500 is a service JDBC bind bug, not an ACL change.
+- GitHub Pages known **member** client routes are real static files (HTTP 200) after the next UI Release. Site-root `404.html` remains the fallback for unknown paths and for parameterized routes Pages cannot enumerate (`/u/:handle`, `/posts/:id`, `/events/:id`, `/messages/:id`). Ticket **#99**. Hosting: [08-Hosting-and-GitHub-Pages.md](../20-Architecture/08-Hosting-and-GitHub-Pages.md).
+- Isolated **admin** client routes (`/admin/login`, `/admin/users`, `/admin/content`, `/admin/reports`, `/admin/media`, `/admin/fixtures`, `/admin/audit`) are copied from the `gym-buddy-admin` bundle inside `gym-buddy-ui` so they do not fall through the member `404.html`. GitHub Pages still has one root `404.html`; `admin/404.html` is not a working nested 404. Ticket **#75**.
+- Staff content moderation lists hideable posts, comments, events, and media via `GET /admin/content` (FS-ADM-03, ticket #80). Hide/unhide paths are unchanged. Members hitting `/admin/*` stay `NOT_FOUND`.
+
 ## [1.0.0] — 2026-08-30
 
 ### Added
@@ -105,6 +124,7 @@ Documentation contract only (process + specs). Not the Java application.
 - English and French assignment text under `00-Project-brief`
 
 [Unreleased]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/compare/v0.2.0...HEAD
+[1.1.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v1.1.0
 [1.0.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v1.0.0
 [0.2.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v0.2.0
 [0.1.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v0.1.0

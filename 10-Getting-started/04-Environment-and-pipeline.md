@@ -82,6 +82,9 @@ Values live in a local `.env` that is **not** committed. This table is names and
 | `S3_SECRET_KEY` | Local / production | Object-store secret key |
 | `S3_REGION` | Local / production | Region string the client library expects |
 | `FIXTURE_SEED` | Local / CI fixtures | Fixed seed `20260813` |
+| `DEMO_ADMIN_PASSWORD` | Local `.env` / VPS env file | Password for `demo.admin` (fixture seed or staff bootstrap). Placeholder only. |
+| `DEMO_MOD_PASSWORD` | Local `.env` / VPS env file | Password for `demo.mod` (fixture seed or staff bootstrap). Placeholder only. |
+| `GYM_BUDDY_BOOTSTRAP_STAFF` | VPS env file, optional | `true` inserts missing `demo.admin` / `demo.mod` on API start. Leave unset / `false` afterwards. Does **not** enable `POST /admin/fixtures` on `prod`. |
 | `SPRING_PROFILES_ACTIVE` | Local / VM | `local` / `test` / `prod`. Production refuses to start without object storage. |
 | `DEPLOY_HOST` | GitHub Actions only | SSH host for service Deploy |
 | `DEPLOY_USER` | GitHub Actions only | SSH user |
@@ -107,6 +110,53 @@ These handles always exist after a local fixture seed. Passwords live in the loc
 | `demo.admin` | admin |
 
 Flyway on `develop` is **V1 baseline** plus **V2** (`users` + `profiles`, service #5 / `e2ef2aa`). Later migrations will implement the rest of [../20-Architecture/06-Data-model.md](../20-Architecture/06-Data-model.md). Fixture generation uses **Datafaker** with `FIXTURE_SEED=20260813` — [../40-Technical-specifications/07-Test-fixtures.md](../40-Technical-specifications/07-Test-fixtures.md).
+
+### Live VPS staff (no prod fixtures)
+
+`POST /api/v1/admin/fixtures` stays **FORBIDDEN** on `prod`. Live v1.0.0 therefore has **no** `demo.admin` / `demo.mod` until an operator bootstraps them (ticket **#78**). Academic shots 15–16 need a documented staff sign-in.
+
+One-shot (preferred): on the host, in `/etc/gym-buddy/vps.env` (not in git):
+
+```text
+GYM_BUDDY_BOOTSTRAP_STAFF=true
+DEMO_ADMIN_PASSWORD=
+DEMO_MOD_PASSWORD=
+```
+
+Fill the two password placeholders on the host. `replace.sh` forwards those keys when they are set. Restart the API once. The process inserts `demo.admin` (`demo.admin@fixtures.gym.test`, role `admin`) and `demo.mod` (`demo.mod@fixtures.gym.test`, role `moderator`) **only if those handles and emails are missing**. Then **remove** `GYM_BUDDY_BOOTSTRAP_STAFF` (or set `false`) and replace again so the flag is off. Accounts stay. Do not commit real production passwords. `.env.example` / `deploy/vps.env.example` stay placeholders.
+
+CLI equivalent (same env, still allowed on `prod` because it is not the fixture generator):
+
+```bash
+GYM_BUDDY_BOOTSTRAP_STAFF=true mvn -q compile exec:java \
+  -Dexec.mainClass=fr.projetcompensation.gymbuddy.fixtures.StaffBootstrapCli
+```
+
+SQL/SSH fallback if the flag cannot be used (no secrets in this wiki; hash is Argon2id — prefer the bootstrap so the API hashes):
+
+```sql
+-- Inspect only:
+SELECT handle, email, role, status FROM users
+ WHERE handle IN ('demo.admin', 'demo.mod');
+```
+
+Do not `DELETE` member rows to make room. Do not run fixture `--reset` on prod.
+
+### Live email-handle (ticket #103)
+
+QA found public handle `joaquim.keloglanian@gmail.com` (`Test1`). Handle is not an email. After the service rejects `@` on register / profile edit, an operator may rename or close that one live row. No bulk wipe.
+
+```sql
+-- If the short handle is free:
+UPDATE users
+   SET handle = 'joaquim.keloglanian'
+ WHERE handle = 'joaquim.keloglanian@gmail.com';
+
+-- If that handle is taken, close instead (staff unlock can restore):
+UPDATE users
+   SET status = 'closed'
+ WHERE handle = 'joaquim.keloglanian@gmail.com';
+```
 
 ### Production refuse-without-S3
 

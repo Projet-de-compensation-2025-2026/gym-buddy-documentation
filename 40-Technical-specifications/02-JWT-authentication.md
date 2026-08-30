@@ -13,12 +13,12 @@ All auth HTTP paths are under `/api/v1`.
 
 | Token | Where it lives | TTL | Contains |
 | --- | --- | --- |
-| Access | `Authorization` header | 15 minutes | `sub`, `role`, `handle`, `typ=access` |
-| Refresh | `HttpOnly; Secure; SameSite=Lax` cookie, path `/api/v1/auth` | 14 days | `sub`, `jti`, `typ=refresh` |
+| Access | `Authorization` header (memory on the SPA; never `localStorage`) | 15 minutes | `sub`, `role`, `handle`, `typ=access` |
+| Refresh | `HttpOnly; Secure; SameSite=None; Partitioned` cookie, path `/api/v1/auth` | 14 days | `sub`, `jti`, `typ=refresh` |
 
 Both are signed with **HS256** at MVP (one secret, `JWT_ACCESS_SECRET`). RS256 is an improvement if a second service must verify.
 
-Refresh cookie is `HttpOnly`+`Secure`+`SameSite=Lax`, path `/api/v1/auth`. `SameSite=Lax` will **not** ride a github.io → VPS credentialed XHR. Ticket **#31** is **Done / closed** (apiBaseUrl + CORS + live v0.1.1 verified). Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** claim login-from-Pages (UFW 443 IPv6-only; that cookie). Do **not** Todo **#37**. Joaquim’s Pages login is operator-home only. Sentinel IPv4 `104.30.175.37` (US) → `https://vps-c39cdf03.vps.ovh.net/api/v1/healthz` TLS unexpected EOF. Today’s VPS container is **aea1c56**. Password eye is on live **v0.1.1**. Ticket **#34** is **Done**.
+Refresh cookie is `HttpOnly`+`Secure`+`SameSite=None`+`Partitioned`, path `/api/v1/auth`. Access JWT stays in memory. Do **not** put refresh in `localStorage`. `SameSite=Lax` does not ride a github.io → VPS credentialed XHR (that was the v1.0.0 session-drop). Ticket **#89** sets `SameSite=None; Secure` so `https://projet-de-compensation-2025-2026.github.io` can send the cookie, and `Partitioned` (CHIPS) so Chromium still stores it in the GitHub Pages top-level site partition. CORS already sends `Access-Control-Allow-Origin` for that Pages origin with credentials. Ticket **#31** is **Done / closed** (apiBaseUrl + CORS). Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in from Pages is enough). Do **not** Todo **#37**.
 
 ## Claims (access)
 

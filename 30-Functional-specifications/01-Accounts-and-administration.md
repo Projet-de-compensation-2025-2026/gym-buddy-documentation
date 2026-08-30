@@ -33,7 +33,7 @@ Visitor, member, admin.
 - `users.status` ∈ `active` \| `locked` \| `pending_verification` \| `closed`. Flyway V2 currently omits `closed`; remaining work adds it.
 - Closed is not “log in to recover”. After `POST /me/close`, login and refresh fail with the same generic `FORBIDDEN` as a locked account. Staff restore with unlock. Mockup 16’s “recover by logging back in” is leftover copy, not the contract.
 - Password change (`POST /auth/password`) verifies the current password, writes a new Argon2id hash, and denylists every refresh `jti` except none — the client must log in again **or** the current refresh is rotated once and all others revoked. Prefer: revoke all refresh tokens; return 204; client goes to `/login`.
-- Handle remains unique on profile edit (FS-ACCT-02).
+- Handle remains unique on profile edit (FS-ACCT-02). Handle is **not** an email: it must not contain `@` and must not equal the account email (`VALIDATION` on `POST /auth/register` and `PATCH /profiles/me`, ticket **#103**).
 - JWT details: [../40-Technical-specifications/02-JWT-authentication.md](../40-Technical-specifications/02-JWT-authentication.md). Do not reticket register / login / refresh / logout.
 
 ## Target HTTP
