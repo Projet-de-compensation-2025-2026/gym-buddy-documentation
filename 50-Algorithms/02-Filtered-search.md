@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
+| Status | Approved |
 | Related | [../30-Functional-specifications/08-Advanced-search.md](../30-Functional-specifications/08-Advanced-search.md), [../40-Technical-specifications/06-Search-implementation.md](../40-Technical-specifications/06-Search-implementation.md) |
 
 ## Problem

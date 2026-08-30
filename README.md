@@ -2,7 +2,7 @@
 
 This repository is the **source of truth** for Gym Buddies: a social application that connects athletes (for example fitness practitioners) so they can train together, motivate each other, and find their gym buddy.
 
-It is a Confluence-style wiki adapted for Markdown and GitHub. Other Gym Buddies repositories (`gym-buddy-service`, `gym-buddy-ui`, `gym-buddy-openapi`) should link here instead of duplicating product or process decisions. This wiki is intended to be published on [GitHub Pages](20-Architecture/08-Hosting-and-GitHub-Pages.md).
+It is a Confluence-style wiki adapted for Markdown and GitHub. Other Gym Buddies repositories (`gym-buddy-service`, `gym-buddy-ui`, `gym-buddy-openapi`) should link here instead of duplicating product or process decisions. This wiki is intended to be published on [GitHub Pages](20-Architecture/08-Hosting-and-GitHub-Pages.md). The Angular member app is hosted at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**, production `baseHref` `/gym-buddy-ui/`; ticket **#30** Done). That is the static app. Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** claim login-from-Pages. Do **not** Todo **#37**. Joaquim’s Pages login is operator-home only. UI `develop` **`7916fa8`** has production `apiBaseUrl` `https://vps-c39cdf03.vps.ovh.net/api/v1`. Service `develop` **`aea1c56`** CORS is **proven from Joaquim’s PC** (Pages origin ACAO **200** + credentials; foreign/evil origin **403**). First tag **v0.1.0** pointed at `http://127.0.0.1:8080/api/v1`. Live Pages is **v0.1.1** and embeds `https://vps-c39cdf03.vps.ovh.net/api/v1`. Ticket **#31** is **Done / closed**.
 
 | | |
 | --- | --- |
@@ -20,8 +20,8 @@ Top-level folders follow `XX-Section-name`, where `XX` is `00`–`99`. Numbers a
 | Folder | What you will find |
 | --- | --- |
 | [00-Project-brief](00-Project-brief/README.md) | Official assignment (FR/EN), academic scope, stakeholders, defense constraints |
-| [10-Getting-started](10-Getting-started/README.md) | How to read this wiki, related repositories, glossary |
-| [20-Architecture](20-Architecture/README.md) | Software architecture, Java backend / Angular frontend, data model, stack, GitHub Pages |
+| [10-Getting-started](10-Getting-started/README.md) | How to read this wiki, related repositories, glossary, **environment and pipeline runbook** |
+| [20-Architecture](20-Architecture/README.md) | Software architecture, Java backend / Angular frontend, data model, stack, GitHub Pages + OVH VPS |
 | [30-Functional-specifications](30-Functional-specifications/README.md) | Product behavior for every feature listed in the assignment overview |
 | [40-Technical-specifications](40-Technical-specifications/README.md) | JWT, file access, image storage, messaging transport, search, fixtures, API conventions |
 | [50-Algorithms](50-Algorithms/README.md) | Friend suggestions, filtered search, user matching — with justification |
@@ -38,8 +38,9 @@ Every folder has its own `README.md`. Start there when you land in a section.
 
 1. Read the English assignment: [00-Project-brief/ProjetDeCompensation2526.en.md](00-Project-brief/ProjetDeCompensation2526.en.md)
 2. Skim [10-Getting-started/01-How-to-use-this-wiki.md](10-Getting-started/01-How-to-use-this-wiki.md)
-3. Open [20-Architecture/01-Software-architecture.md](20-Architecture/01-Software-architecture.md) for the system map
-4. Jump to a feature in [30-Functional-specifications](30-Functional-specifications/README.md)
+3. Read [10-Getting-started/04-Environment-and-pipeline.md](10-Getting-started/04-Environment-and-pipeline.md) for local compose, env keys, CI/CD, and the VPS
+4. Open [20-Architecture/01-Software-architecture.md](20-Architecture/01-Software-architecture.md) for the system map
+5. Jump to a feature in [30-Functional-specifications](30-Functional-specifications/README.md)
 
 ## Assignment coverage
 
@@ -58,6 +59,7 @@ Everything required by the compensation brief is recorded in this repository:
 | Justification of libraries, languages, frameworks | [20-Architecture/07-Technology-choices.md](20-Architecture/07-Technology-choices.md) |
 | Report, screenshots, architecture, data model, UML, PowerPoint | [99-Academic-deliverables](99-Academic-deliverables/README.md) |
 | Code practices and workflows | [70-Engineering-practices](70-Engineering-practices/README.md) |
+| Local environment, pipeline, VPS | [10-Getting-started/04-Environment-and-pipeline.md](10-Getting-started/04-Environment-and-pipeline.md) |
 | Version changelogs | [90-Changelog](90-Changelog/README.md) |
 
 ## Document status
@@ -71,7 +73,7 @@ Pages use a short status table:
 | `Approved` | Locked for implementation |
 | `Deprecated` | Kept for history only |
 
-Until the instructor meeting in [00-Project-brief/01-Scope-and-modules.md](00-Project-brief/01-Scope-and-modules.md) is recorded, treat product pages as **Draft** and technical choices as **Proposed**.
+Instructor cadrage will **not** happen (Joaquim, 2026-08-19; instructor on holiday). See [00-Project-brief/01-Scope-and-modules.md](00-Project-brief/01-Scope-and-modules.md). Product pages are not blocked on a meeting. Stack, hosting, CI/CD, and the environment runbook stay **Approved** for implementation unless a later wiki change overturns them.
 
 ## Contributing
 

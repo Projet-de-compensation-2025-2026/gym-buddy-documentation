@@ -2,8 +2,8 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
-| Related | [01-Software-architecture.md](01-Software-architecture.md), [../60-UML-diagrams/01-Use-cases.md](../60-UML-diagrams/01-Use-cases.md) |
+| Status | Approved |
+| Related | [01-Software-architecture.md](01-Software-architecture.md), [../60-UML-diagrams/01-Use-cases.md](../60-UML-diagrams/01-Use-cases.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
 ## System context
 
@@ -14,13 +14,17 @@ flowchart LR
   instructor([Instructor])
 
   gb[Gym Buddies]
+  caddy[Caddy on OVH VPS]
 
   email[Outbound email]
   geo[Geocoding optional]
   gh[GitHub]
+  pages[GitHub Pages]
 
-  member -->|uses web app| gb
-  staff -->|uses back-office| gb
+  member -->|uses web app| pages
+  pages -->|HTTPS API| caddy
+  caddy --> gb
+  staff -->|uses back-office| pages
   gb --> email
   gb -.-> geo
   instructor -->|reads private repos| gh
@@ -40,9 +44,11 @@ flowchart LR
 
 | System | Required at MVP? | Notes |
 | --- | --- | --- |
+| OVH VPS + Caddy | Yes for the live API | Hostname `vps-c39cdf03.vps.ovh.net`. API on loopback only. |
 | SMTP / mail provider | Yes for verification; can be MailHog in dev | Do not block local fixtures on real mail |
-| Object storage | Yes | MinIO locally, S3-compatible in deploy |
+| Object storage | Yes | MinIO locally, S3-compatible in deploy. Production refuses to start without it. |
 | Geocoding | No | Members may type a free-text place + optional lat/lng |
 | Push notifications | No | In-app + websocket is enough for the defense |
+| GitHub Pages | Yes for wiki + Angular | Wiki; Angular member app at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ (HTTP **200**, ticket **#30** Done). `gym-buddy-openapi` Pages is **not** live (HTTP **404**). Do **not** treat “enable OpenAPI Pages + re-run deploy” as remaining work. Joaquim has not asked for the spec site. Atlas will not Todo that ticket unless he wants it. Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** claim login-from-Pages (UI login-from-Pages, a different thing). Do **not** Todo **#37**. |
 
 GitHub is part of the **academic** system, not the runtime.

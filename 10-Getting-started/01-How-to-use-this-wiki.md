@@ -26,6 +26,7 @@ Leave gaps (this tree already does: 00, 10, 20, …) so a new top-level section 
 | A diagram for the report | [../60-UML-diagrams](../60-UML-diagrams/README.md) |
 | How to open a PR | [../70-Engineering-practices](../70-Engineering-practices/README.md) |
 | How to take a feature from spec to `develop` | [../70-Engineering-practices/08-Feature-implementation.md](../70-Engineering-practices/08-Feature-implementation.md) |
+| How to run locally / ship to the VPS | [04-Environment-and-pipeline.md](04-Environment-and-pipeline.md) |
 
 ## Page contract
 

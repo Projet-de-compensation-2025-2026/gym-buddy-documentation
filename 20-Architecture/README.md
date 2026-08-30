@@ -12,8 +12,9 @@ How Gym Buddies is split into systems, where data lives, and why the proposed st
 | [04-Frontend.md](04-Frontend.md) | Member-facing web application |
 | [05-Back-office.md](05-Back-office.md) | Admin / moderator console |
 | [06-Data-model.md](06-Data-model.md) | Relational model covering every overview feature |
-| [07-Technology-choices.md](07-Technology-choices.md) | Java 26, Angular 22, TypeScript 7, PostgreSQL 18, OpenAPI repo |
-| [08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md) | What Pages can host (wiki, Angular, OpenAPI UI) and what it cannot (Java, PostgreSQL). Deploy is the tagged Release — see [../70-Engineering-practices/07-CI-CD.md](../70-Engineering-practices/07-CI-CD.md) |
+| [07-Technology-choices.md](07-Technology-choices.md) | Java 25 LTS, Angular 22 (`@angular/compiler-cli` **22.1.2**, peer `>=6.0 <6.1`), TypeScript **6** (`~6.0.2`) + **pnpm@11.22.0** (approved and today; stay on `~6.0.2` until Angular supports 7; ticket #24 cancelled), PostgreSQL 18, OpenAPI repo |
+| [08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md) | Pages for wiki / Angular (live: https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/, HTTP **200**, ticket **#30** Done). `gym-buddy-openapi` Pages is **not** live (HTTP **404**). That enablement is **not** remaining work. OVH VPS + Caddy for Java. Runbook: [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
+| [09-Visual-design.md](09-Visual-design.md) | Stitch visual tokens (palette, Inter, icons) and committed mockups for member routes and back-office surfaces |
 
 Implementation details that are not architectural (JWT shape, signed URLs, fixture generation) live in [40-Technical-specifications](../40-Technical-specifications/README.md).
 

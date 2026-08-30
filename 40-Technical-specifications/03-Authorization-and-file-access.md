@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
+| Status | Approved |
 | Related | [../30-Functional-specifications/12-Media-and-files.md](../30-Functional-specifications/12-Media-and-files.md), [04-Image-storage.md](04-Image-storage.md) |
 
 The brief requires **security and controlled access for all files**.

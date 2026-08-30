@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Status | Approved |
-| Related | [01-Software-architecture.md](01-Software-architecture.md), [08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md), [../91-Critical-analysis/01-Current-analysis.md](../91-Critical-analysis/01-Current-analysis.md) |
+| Related | [01-Software-architecture.md](01-Software-architecture.md), [08-Hosting-and-GitHub-Pages.md](08-Hosting-and-GitHub-Pages.md), [09-Visual-design.md](09-Visual-design.md), [../91-Critical-analysis/01-Current-analysis.md](../91-Critical-analysis/01-Current-analysis.md) |
 
 The brief requires **justification** of languages, frameworks, and libraries. Language and client/server split below are **decided**. Library versions are the latest stable as of 13 August 2026; pin exact builds in each application repo.
 
@@ -11,10 +11,11 @@ The brief requires **justification** of languages, frameworks, and libraries. La
 
 | Concern | Choice | Why this, not the alternative |
 | --- | --- | --- |
-| Backend language | **Java 26** (latest GA; JDK 26.0.2) | Course-friendly, strong typing for algorithms and JWT, long toolchain. **Java 25** is the current LTS if a library does not yet run on 26. Java 27 is not released yet (expected September 2026). |
+| Backend language | **Java 25 LTS** | Course-friendly, strong typing for algorithms and JWT, long toolchain. Current LTS; Joaquim chose 25 LTS for stability. Java 27 is not released yet (expected September 2026). |
 | Backend framework | **Spring Boot** (latest stable that supports the chosen JDK) | Modules, Spring Security for JWT, JDBC/JPA, WebSocket, Actuator health. The HTTP contract is **not** owned by Spring’s `/v3/api-docs` endpoint — see OpenAPI below. |
-| Frontend language | **TypeScript 7.0** (native compiler rewritten in [Go](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)) | Latest TypeScript; 8–12× faster `tsc`. If Angular’s compiler lags a patch behind 7.0, use the newest TypeScript **Angular 22 supports** and record the gap in the changelog. |
-| Member UI | **Angular 22** (22.1.x as of August 2026) | Latest Angular; official TypeScript SPA; static `ng build` output can go to GitHub Pages. |
+| Frontend language | **TypeScript 6** (`~6.0.2` on `develop`) | **Approved and today.** Angular 22 includes `@angular/compiler-cli` **22.1.2**, peer `>=6.0 <6.1`. Stay on TypeScript `~6.0.2` until Angular actually supports 7. Joaquim cancelled the TypeScript 6→7 migration (ticket #24 cancelled/closed). `typescript@7.0.0` is 404 on npm; **7.0.2** exists (2026-07-08, Go `tsc` from the `typescript` package) but `ng build` fails (`ts.readConfigFile is not a function`). Do **not** claim TypeScript 7 landed. Do **not** treat 7.0.0 or 7.0.2 as the approved compiler. Do **not** pin `@typescript/native-preview`, `tsgo`, or Angular next. |
+| Node package manager | **pnpm** (Corepack pin, not `latest`) | Required for `gym-buddy-ui` and any Node work. Stop using npm as the project package manager. Four-week release-age floor: `minimumReleaseAge: 40320` (**minutes**) in `pnpm-workspace.yaml`. Older pnpm fallback: `.npmrc` `minimum-release-age=40320`. Do **not** invent a `package.json` field — pnpm does not read the floor from there. Commit `pnpm-lock.yaml`. Disable or tightly allow lifecycle scripts (`onlyBuiltDependencies` and/or ignore-scripts). Today the UI on `develop` is **`pnpm@11.22.0`** (ui #4 / `63bebed`; committed lockfile; `minimumReleaseAge` **40320**). |
+| Member UI | **Angular 22** (includes `@angular/compiler-cli` **22.1.2**, peer `>=6.0 <6.1`) | Latest Angular; official TypeScript SPA; static `ng build` output can go to GitHub Pages. Stay on TypeScript `~6.0.2` until Angular actually supports 7. |
 | Back-office | **Angular 22**, second app (or `/admin`) **in the frontend repo** | Same stack as the member app. Not a fourth repository. Staff JS stays in a separate bundle. |
 | HTTP contract | **OpenAPI 3** in its **own repository** (`gym-buddy-openapi`) | Source of truth is a versioned spec, not a live endpoint the backend happens to expose. Backend *implements* the spec; frontend *generates* a client from it. |
 | Database | **PostgreSQL 18** (18.6 as of 13 August 2026) | Latest **stable** major. PostgreSQL 19 is still beta — do not use it for the project. Arrays, JSON, full-text, constraints, radius search. |
@@ -30,13 +31,22 @@ The brief requires **justification** of languages, frameworks, and libraries. La
 | Recurrence | `org.dmfs:lib-recur` or ical4j (RRULE) | Recurring events |
 | Logging | SLF4J + Logback | Spring default, structured JSON in deploy |
 
+## UI visual
+
+Does not change Java, Angular, TypeScript, or pnpm. Tokens and mockups: [09-Visual-design.md](09-Visual-design.md).
+
+| Concern | Choice | Why this, not the alternative |
+| --- | --- | --- |
+| Typeface | **Inter** | Stitch theme panel: Headline, Body, and Label are all Inter. Load from Google Fonts or fontsource in `gym-buddy-ui`. Weights 400 (body), 500 (label), 600/700 (headline). Do not add a second family. |
+| Icons | **Material Symbols Outlined** (recommended) | Stitch did **not** name an icon library. One set only (`material-symbols-outlined`, or `@angular/material` + Material Symbols). Do not add Font Awesome or Lucide unless a later wiki change says so. |
+
 ## Repositories (decided)
 
 | Repository | Stack |
 | --- | --- |
 | `gym-buddy-documentation` | Markdown wiki (this repo), GitHub Pages |
-| `gym-buddy-service` | Java 26 + Spring Boot + PostgreSQL 18 |
-| `gym-buddy-ui` | Angular 22 + TypeScript 7 |
+| `gym-buddy-service` | Java 25 LTS + Spring Boot + PostgreSQL 18 |
+| `gym-buddy-ui` | **Approved and today on `develop`:** Angular 22 + TypeScript **6** (`~6.0.2`) + **`pnpm@11.22.0`** (ui #4 / `63bebed`; ticket **#23** Done). Ticket #24 (TS 6→7) is **cancelled/closed** |
 | `gym-buddy-openapi` | OpenAPI 3 documents + static reference UI |
 
 There is no separate back-office repository and no “the spec is whatever the running server prints”.

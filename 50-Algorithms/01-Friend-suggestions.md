@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
+| Status | Approved |
 | Related | [../30-Functional-specifications/09-Friend-suggestions.md](../30-Functional-specifications/09-Friend-suggestions.md) |
 
 ## Problem

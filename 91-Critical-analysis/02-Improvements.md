@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Draft |
+| Status | Proposed |
 
 Ranked. “Now” means before the defense if time remains. “Later” is post-MVP. “Out of scope” stays unless the instructor expands the brief.
 

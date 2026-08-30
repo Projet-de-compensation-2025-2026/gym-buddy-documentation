@@ -1,18 +1,34 @@
 name: Ticket
-description: Work item. Must link a page in this documentation repository.
+description: Work item. Must link a feature spec and 70-Engineering-practices. Lands on Gym Buddy Project.
 title: "[GB] "
 labels: []
+projects: ["Projet-de-compensation-2025-2026/1"]
 body:
   - type: markdown
     attributes:
       value: |
-        Tickets live in **gym-buddy-documentation**. Every ticket must point at a wiki page
-        (functional spec, technical spec, algorithm, architecture, test plan, …)
-        and must be attached to the singular **Gym Buddy Project**.
-        Fill every field. New tickets default to **Not Ready**; only Joaquim Kéloglanian
-        moves them to **Todo** after an explicit review.
-        See `70-Engineering-practices/08-Feature-implementation.md`
-        and `70-Engineering-practices/05-Tickets-and-GitHub-projects.md`.
+        Tickets live in **gym-buddy-documentation**.
+
+        Every ticket must point at:
+        1. The **feature** wiki page it implements (functional / technical spec, algorithm, architecture, …)
+        2. **`70-Engineering-practices`** — org-wide conventions for code style, Gitflow / Conventional Commits,
+           pull requests, tickets, versioning, and CI/CD. This directory is the source of truth for every
+           repository and every agent. Do not invent a second workflow.
+
+        **This form adds the issue to [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1).**
+        Status starts at **Not Ready**.
+
+        Atlas alone sets **Not Ready** → **Todo**.
+        Kernel sets **Todo** → **In Progress** when they start the ticket (after creating or
+        linking the branch from the issue Development panel). Do not leave a card in **Todo**
+        while Kernel is implementing.
+        Atlas sets **In Progress** → **Done** only after Sentinel confirms the work was implemented
+        and satisfies the gym-buddy-documentation functional requirements.
+        Atlas does not invent other status transitions. Sentinel does not move the board.
+        Joaquim is not the merge/board gate.
+        After **Todo**, create each implementation branch from the issue’s **Development → Create a branch**, or link the PR/branch there. This form cannot auto-link a future branch.
+
+        Start here: [`70-Engineering-practices`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/tree/develop/70-Engineering-practices).
   - type: dropdown
     id: type
     attributes:
@@ -28,8 +44,16 @@ body:
     id: wiki
     attributes:
       label: Documentation page
-      description: Required. Relative path in this repo, for example 30-Functional-specifications/07-Events.md
-      placeholder: 30-Functional-specifications/07-Events.md
+      description: Required. Feature spec path(s) in this repo. Example 30-Functional-specifications/01-Accounts-and-administration.md
+      placeholder: 30-Functional-specifications/01-Accounts-and-administration.md
+    validations:
+      required: true
+  - type: input
+    id: practices
+    attributes:
+      label: Engineering practices
+      description: Required on every ticket. Always this directory. Code style, git, PRs, and workflows for all repos and agents.
+      placeholder: 70-Engineering-practices
     validations:
       required: true
   - type: input
@@ -37,7 +61,7 @@ body:
     attributes:
       label: Spec IDs
       description: FS-EVT-07, TS-JWT-02, … when the page defines them
-      placeholder: FS-EVT-07
+      placeholder: FS-ACCT-01
   - type: dropdown
     id: target-repo
     attributes:
@@ -58,3 +82,19 @@ body:
       description: Checklist copied or cited from the linked spec
     validations:
       required: true
+  - type: checkboxes
+    id: on-project
+    attributes:
+      label: Gym Buddy Project
+      description: Required. The form already attaches this issue to the project. Confirm you will not remove it.
+      options:
+        - label: This ticket belongs on [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1) (Status starts at Not Ready). I will not remove it from the board.
+          required: true
+  - type: checkboxes
+    id: follow-practices
+    attributes:
+      label: Follow engineering practices
+      description: Required. Keeps code style, commits, PRs, and pipelines the same across repositories and agents.
+      options:
+        - label: I will follow [70-Engineering-practices](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/tree/develop/70-Engineering-practices) (coding standards, Gitflow / Conventional Commits, review, tickets, versioning, CI/CD). I will not invent a parallel workflow.
+          required: true

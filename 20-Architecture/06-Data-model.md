@@ -2,7 +2,7 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
+| Status | Approved |
 | Related | [../60-UML-diagrams/04-Class.md](../60-UML-diagrams/04-Class.md), [../40-Technical-specifications/07-Test-fixtures.md](../40-Technical-specifications/07-Test-fixtures.md) |
 
 PostgreSQL is the system of record. Identifiers are UUIDs. Timestamps are UTC. Soft-delete (`deleted_at`) is used on member-visible content so moderation and nested threads stay consistent.
@@ -36,7 +36,7 @@ erDiagram
 | `password_hash` | Argon2id |
 | `handle` | Unique public identifier |
 | `role` | `member` \| `moderator` \| `admin` |
-| `status` | `active` \| `locked` \| `pending_verification` |
+| `status` | `active` \| `locked` \| `pending_verification` \| `closed` (Flyway V2 today omits `closed`; remaining work adds it) |
 | `created_at` | |
 
 ### `profiles`
@@ -44,9 +44,9 @@ erDiagram
 | Column | Notes |
 | --- | --- |
 | `user_id` | PK/FK |
-| `display_name` | |
-| `bio` | |
-| `visibility` | `public` \| `private` |
+| `display_name` | Flyway V2 has this only |
+| `bio` | Remaining |
+| `visibility` | `public` \| `private` (default `public`) |
 | `sports` | `text[]` (weightlifting, running, …) |
 | `experience_level` | `beginner` \| `intermediate` \| `advanced` |
 | `city` | Free text |
@@ -68,13 +68,14 @@ A check constraint stores the pair once (`requester_id < addressee_id` **or** al
 
 ### `posts`, `reposts`, `likes`
 
-- `posts`: `author_id`, `body`, `visibility` (`friends` \| `public`), `created_at`, `deleted_at`
+- `posts`: `author_id`, `body`, `visibility` (`friends` \| `public`), `created_at`, `edited_at`, `deleted_at`, `hidden_at`, `hidden_reason`
 - `reposts`: (`user_id`, `post_id`) unique, `created_at`
 - `likes`: (`user_id`, `target_type`, `target_id`) unique where `target_type ∈ {post, comment}`
+- `post_media`: (`post_id`, `media_id`, `position`) max 4
 
 ### `comments`
 
-- `post_id`, `author_id`, `parent_id` nullable, `body`, `depth`, `deleted_at`
+- `post_id`, `author_id`, `parent_id` nullable, `body`, `depth`, `deleted_at`, `hidden_at`
 - `depth` is denormalized (`parent.depth + 1`) and capped (see [../30-Functional-specifications/06-Nested-comments.md](../30-Functional-specifications/06-Nested-comments.md)).
 
 ### `events`, `event_occurrences`, `event_applications`
@@ -107,11 +108,20 @@ Bytes live in MinIO. See [../40-Technical-specifications/04-Image-storage.md](..
 
 ### `reports`, `audit_events`
 
-Staff actions and member reports are append-only. Required for the back-office story.
+- `reports`: `id`, `reporter_id`, `target_type` (`user` \| `post` \| `comment` \| `event`), `target_id`, `reason`, `status` (`open` \| `resolved`), `created_at`
+- `audit_events`: `id`, `actor_id`, `action`, `target_type`, `target_id`, `reason`, `at` — append-only
 
 ### `suggestion_scores` (cache)
 
-Materialized `(user_id, candidate_id, score, computed_at)` so the request path does not walk the whole graph. Rebuilt asynchronously.
+Materialized `(user_id, candidate_id, score, primary_reason, computed_at)` so the request path does not walk the whole graph. Rebuilt asynchronously.
+
+### `suggestion_dismissals`
+
+`(viewer_id, candidate_id, until)` — FS-SUGG-04, 30 days.
+
+### `matching_opt_ins`
+
+`(user_id, week_start, created_at)` plus `matching_pairs` `(week_start, user_a, user_b, event_id nullable)` for FS-MATCH.
 
 ## Integrity highlights
 

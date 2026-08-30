@@ -9,7 +9,7 @@
 
 | Actor | Role |
 | --- | --- |
-| Student (author) | Sole implementer and maintainer. Individual project. |
+| Joaquim Kéloglanian (author) | Sole implementer and maintainer. Individual project. GitHub: Joaquim-Keloglanian |
 | Instructor ([maurras.togbe@isep.fr](mailto:maurras.togbe@isep.fr)) | Validates the topic, receives deliverables, attends the defense, must have GitHub access |
 | Member | Athlete using the product to find buddies and sessions |
 | Organizer | Member who creates events (not a separate account type) |
@@ -20,10 +20,12 @@
 
 - **Due:** 31 August 2026, no later
 - **Channel:** email the required deliverables to [maurras.togbe@isep.fr](mailto:maurras.togbe@isep.fr)
-- **GitHub:** add `maurras.togbe@isep.fr` to the private repository (**mandatory**)
+- **GitHub:** add `maurras.togbe@isep.fr` to every **private** repository (**mandatory**)
 - **Deliverables:**
-  - Report (GitHub link, screenshots, architecture, data model, UML, technical justifications, functional and technical specifications)
+  - Report (GitHub links, screenshots, architecture, data model, UML, technical justifications, functional and technical specifications)
   - PowerPoint presentation
+
+Repositories to cite: [../10-Getting-started/02-Related-repositories.md](../10-Getting-started/02-Related-repositories.md).
 
 See [../99-Academic-deliverables/01-Report-outline.md](../99-Academic-deliverables/01-Report-outline.md).
 

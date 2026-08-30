@@ -19,7 +19,16 @@ Reasons:
 - One sequence of ids (`#1`, `#2`, …) is shared across all implementation repos
 - Commits in other repos can still link here with `Refs: <owner>/gym-buddy-documentation#42`
 
-**Gym Buddy Project** is the only board. Every ticket opened from the template is attached to it. New items default to `Not Ready`. The four statuses and who may change them are defined in [08-Feature-implementation.md](08-Feature-implementation.md).
+**Gym Buddy Project** is the only board. Every ticket is attached to it **at creation**. There is no “open the issue, add it to the board later” step.
+
+How that is enforced:
+
+1. The issue form [`.github/ISSUE_TEMPLATE/ticket.yml`](../../.github/ISSUE_TEMPLATE/ticket.yml) sets `projects: ["Projet-de-compensation-2025-2026/1"]`. GitHub adds the issue to the project when the form is submitted. The opener needs write access on the project (org members do).
+2. The same form has a required checkbox: the ticket belongs on Gym Buddy Project and must not be removed.
+3. Blank issues are disabled (`config.yml`). Use the Ticket form.
+4. If an issue is created **outside** the form (API, `gh issue create`), attach it to the project in the same action. Status starts at `Not Ready`.
+
+New items default to `Not Ready`. The four statuses and who may change them are defined in [08-Feature-implementation.md](08-Feature-implementation.md).
 
 ## Mandatory ticket contents
 
@@ -29,20 +38,26 @@ A ticket is not ready for implementation unless it has **all** of the following:
 | --- | --- |
 | Title | Imperative, scoped to one outcome |
 | Type | Feature, Bug, Chore, or Docs (label) |
-| **Wiki link** | Path or URL of at least one page in **this** repository (functional spec, technical spec, algorithm, architecture, test plan, …) |
+| **Wiki link** | Path of the **feature** page in this repository (functional spec, technical spec, algorithm, architecture, test plan, …) |
+| **Engineering practices** | Always [`70-Engineering-practices`](README.md). Org-wide code style, Gitflow / Conventional Commits, PR review, tickets, versioning, CI/CD. Required so every repository and every agent uses the same workflow. |
 | Spec IDs | `FS-…` / `TS-…` when the page defines them |
 | Target repo | `gym-buddy-documentation`, `gym-buddy-service`, `gym-buddy-ui`, and/or `gym-buddy-openapi` |
 | Acceptance | Checklist copied or cited from the spec |
+| **Gym Buddy Project** | Attached at creation. Status visible on the board. |
 
-The issue template under [`.github/ISSUE_TEMPLATE/ticket.yml`](../../.github/ISSUE_TEMPLATE/ticket.yml) makes the wiki link **required**.
+The issue template under [`.github/ISSUE_TEMPLATE/ticket.yml`](../../.github/ISSUE_TEMPLATE/ticket.yml) makes the feature wiki link **and** `70-Engineering-practices` required, attaches the issue to the project, and requires a checkbox that the opener will follow this directory.
 
-Valid wiki links (examples):
+Valid feature wiki links (examples):
 
 - `30-Functional-specifications/07-Events.md`
 - `https://<owner>.github.io/gym-buddy-documentation/30-Functional-specifications/07-Events.html` (once Pages is on)
 - Several pages if the ticket genuinely spans them
 
 A ticket that only says “implement events” with no wiki link is incomplete. Create or update the spec first, then open the ticket.
+
+A ticket that does not cite `70-Engineering-practices` is incomplete. That directory is not optional documentation; it is the process the implementation must follow.
+
+A ticket that exists only in the repo issues list, and not on [Gym Buddy Project](https://github.com/orgs/Projet-de-compensation-2025-2026/projects/1), is incomplete. Attach it before anyone treats it as `Not Ready`.
 
 ## Tickets must reference this repository
 
@@ -54,6 +69,10 @@ A ticket that only says “implement events” with no wiki link is incomplete. 
 
 A ticket may produce many commits (spec tweak, OpenAPI, backend, tests, frontend). All of them keep the same scope `(#42)` as long as they are for that ticket.
 
+## Ticket and branch
+
+GitHub does not show a branch on the project ticket until the issue and the branch are associated. Create each implementation branch from the issue’s **Development → Create a branch** action, or link the PR/branch there, so the project item exposes it. Several branches or PRs can be linked to one ticket. The ticket form cannot auto-create or auto-link a future branch. The feature sequence is in [08-Feature-implementation.md](08-Feature-implementation.md).
+
 ## Commits without a ticket
 
 If there is no ticket, **do not** put a ticket number in the commit scope. Use a topical scope (`wiki`, `ci`, `deps`). Do not create dummy issues after the fact just to decorate a typo-fix unless you want the board to show it.
@@ -62,12 +81,16 @@ If there is no ticket, **do not** put a ticket number in the commit scope. Use a
 
 Exactly four. These replace any older Backlog / Ready / In review layout.
 
-| Status | Meaning |
-| --- | --- |
-| `Not Ready` | Default at creation. Specs and template are filled; Joaquim has not green-lit implementation |
-| `Todo` | Joaquim Kéloglanian has read, reviewed, and explicitly approved the ticket |
-| `In Progress` | Implementation of this ticket has started |
-| `Done` | Implemented, tested, formatted, and merged into `develop` |
+Atlas alone sets `Not Ready` → `Todo`. Kernel sets `Todo` → `In Progress` when they start the ticket (after creating or linking the branch from the issue Development panel). Do not leave a card in `Todo` while Kernel is implementing. Atlas sets `In Progress` → `Done` only after Sentinel confirms the work was implemented and satisfies the gym-buddy-documentation functional requirements. Atlas does not invent other status transitions. Sentinel does not move the board. Joaquim is not the merge/board gate.
+
+Create each implementation branch from the issue’s **Development → Create a branch** action, or link the PR/branch there, so the project item exposes it.
+
+| Status | Meaning | Who sets it |
+| --- | --- | --- |
+| `Not Ready` | Default at creation. Specs and template are filled; not yet set to `Todo` | Default at creation |
+| `Todo` | The ticket and linked specs are complete enough to implement | Atlas alone (`Not Ready` → `Todo`) |
+| `In Progress` | Implementation of this ticket has started | Kernel (`Todo` → `In Progress`) |
+| `Done` | Implemented, tested, formatted, and merged into `develop` | Atlas (`In Progress` → `Done`), only after Sentinel confirms |
 
 Rules and the full feature sequence: [08-Feature-implementation.md](08-Feature-implementation.md).
 

@@ -2,8 +2,8 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
-| Related | [02-System-context.md](02-System-context.md), [07-Technology-choices.md](07-Technology-choices.md) |
+| Status | Approved |
+| Related | [02-System-context.md](02-System-context.md), [07-Technology-choices.md](07-Technology-choices.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
 Gym Buddies is a **modular monolith** behind a single API, with two web clients. That is enough to cover Software Engineering and Web Technologies without paying a microservices tax on an individual project.
 
@@ -71,7 +71,7 @@ Modules are **bounded contexts** in one deployable. They may not import each oth
 
 ## Cross-cutting rules
 
-1. Every mutating request is authenticated except `POST /auth/register` and `POST /auth/login`.
+1. Every mutating request is authenticated except `POST /api/v1/auth/register` and `POST /api/v1/auth/login`.
 2. Every file download goes through an authorization check or a short-lived signed URL. See [../40-Technical-specifications/03-Authorization-and-file-access.md](../40-Technical-specifications/03-Authorization-and-file-access.md).
 3. Clients never receive a permanent object-store key they can guess.
 4. Background work (thumbnail, audio probe, suggestion recompute) is asynchronous.
@@ -86,4 +86,10 @@ Modules are **bounded contexts** in one deployable. They may not import each oth
 | Media | No unbounded writes to the API container disk |
 | Tenancy | Single deployment, role-based access |
 
-Physical deployment can start as Docker Compose for development and a single VM or PaaS for the defense demo.
+## Physical deployment
+
+- **Local:** Docker Compose in `gym-buddy-service` (plan — file not in the repo yet). Ports bind to `127.0.0.1`.
+- **Defense / live API:** OVH VPS `vps-c39cdf03.vps.ovh.net`. Caddy terminates HTTPS and proxies to `127.0.0.1:8080`. The API container is replaced by `replace.sh`, not compose.
+- **Static sites:** GitHub Pages (this wiki; Angular member app at https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/ — HTTP **200**, ticket **#30** Done). `gym-buddy-openapi` GitHub Pages is **not** live (HTTP **404** at https://projet-de-compensation-2025-2026.github.io/gym-buddy-openapi/; Release [32155209479](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi/actions/runs/32155209479) tagged **v0.1.0**, then failed only on deploy/pages). The package/tag is **not** broken. Do **not** treat “enable OpenAPI Pages + re-run deploy” as remaining work to start. Joaquim has not asked for the spec site. Atlas will not Todo that ticket unless he wants it. Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** claim login-from-Pages (UI login-from-Pages, a different thing). Do **not** Todo **#37**.
+
+Details: [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).

@@ -2,14 +2,16 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Proposed |
-| Related | [03-Authorization-and-file-access.md](03-Authorization-and-file-access.md) |
+| Status | Approved |
+| Related | [03-Authorization-and-file-access.md](03-Authorization-and-file-access.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
 The brief: **avoid running out of local storage**.
 
 ## Decision
 
 Store bytes in an **S3-compatible bucket** (MinIO in development). The API container’s disk holds only temp files during processing, capped and cleaned.
+
+When `SPRING_PROFILES_ACTIVE=prod`, the API **must refuse to start** if `S3_ENDPOINT` / `S3_BUCKET` / credentials are missing or unreachable. Falling back to a local `uploads/` directory is forbidden.
 
 ## Layout
 
