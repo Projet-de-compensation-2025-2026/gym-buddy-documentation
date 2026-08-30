@@ -46,6 +46,7 @@ All under `/api/v1`. Member `POST /reports`. Staff `/admin/*` — members get `N
 | `POST` | `/admin/users/{id}/lock` | FS-ACCT-08, FS-ADM-04 |
 | `POST` | `/admin/users/{id}/unlock` | FS-ACCT-08 |
 | `PATCH` | `/admin/users/{id}/role` | FS-ACCT-09, FS-ADM-02 |
+| `GET` | `/admin/content` | FS-ADM-03 |
 | `POST` | `/admin/content/{type}/{id}/hide` | FS-ADM-03 |
 | `POST` | `/admin/content/{type}/{id}/unhide` | FS-ADM-03 |
 | `GET` | `/admin/reports` | FS-ADM-07 |

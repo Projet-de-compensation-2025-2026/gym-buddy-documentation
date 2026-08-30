@@ -21,6 +21,7 @@ Until the first application release, versions refer to the **documentation contr
 
 - GitHub Pages known **member** client routes are real static files (HTTP 200) after the next UI Release. Site-root `404.html` remains the fallback for unknown paths and for parameterized routes Pages cannot enumerate (`/u/:handle`, `/posts/:id`, `/events/:id`, `/messages/:id`). Ticket **#99**. Hosting: [08-Hosting-and-GitHub-Pages.md](../20-Architecture/08-Hosting-and-GitHub-Pages.md).
 - Isolated **admin** client routes (`/admin/login`, `/admin/users`, `/admin/content`, `/admin/reports`, `/admin/media`, `/admin/fixtures`, `/admin/audit`) are copied from the `gym-buddy-admin` bundle inside `gym-buddy-ui` so they do not fall through the member `404.html`. GitHub Pages still has one root `404.html`; `admin/404.html` is not a working nested 404. Ticket **#75**.
+- Staff content moderation lists hideable posts, comments, events, and media via `GET /admin/content` (FS-ADM-03, ticket #80). Hide/unhide paths are unchanged. Members hitting `/admin/*` stay `NOT_FOUND`.
 
 ## [1.0.0] — 2026-08-30
 
