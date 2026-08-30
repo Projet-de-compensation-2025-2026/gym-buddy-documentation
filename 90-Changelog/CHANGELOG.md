@@ -13,6 +13,7 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Added
 
+- Fixture generation ticket #70: Datafaker factories, seed `20260813`, CLI + `POST /admin/fixtures` and `/reset`, named demo accounts, power-law friends and city×sport clusters. Disabled on `prod`. CI uses tens of rows, not the 3 000-user demo set.
 - Admin / back-office implementation ticket #69: OpenAPI documents `/admin/*` and member `POST /reports`; service implements staff lock/role/hide/reports/audit/fixtures stub; isolated Angular admin bundle. Members hitting `/admin/*` get `NOT_FOUND`.
 - Remaining product specs are implementable: every FS page has intent, actors, FS IDs, business rules, acceptance, errors, target HTTP, mockup links, and leftover-chrome exclusions. New inventory [09-Target-HTTP-surface.md](../40-Technical-specifications/09-Target-HTTP-surface.md). FS-EVT-13 + FS-MATCH-01..03. Algorithms, UML, test plan, and data model promoted to Approved. Consumers pin a new 0.1.x OpenAPI tag after each contract land (no 1.0.0).
 - Visual design page ([09-Visual-design.md](../20-Architecture/09-Visual-design.md)): Stitch light-mode tokens, derived dark-mode role mapping, Inter, Material Symbols Outlined recommendation, and mockup table embedding JPGs under `20-Architecture/mockups/`
