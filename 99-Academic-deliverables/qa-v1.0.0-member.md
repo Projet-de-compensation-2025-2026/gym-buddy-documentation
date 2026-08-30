@@ -56,7 +56,7 @@ Unauthenticated deep links that the router treats as guarded then client-redirec
 
 ## Defects (ticketed)
 
-Each row is one GitHub **Bug** on `gym-buddy-documentation`, label `bug`, type Bug, Gym Buddy Project **Not Ready**.
+Each row is one GitHub **Bug** on `gym-buddy-documentation`, label `bug`, type Bug, Gym Buddy Project **Not Ready**. Closed as duplicates of the public crawl: **#98 → #89** (session cookie), **#100 → #94** (Video leftover), **#110 → #95** (unknown-route 404 UI).
 
 | Issue | Defect | Shot | FS |
 | --- | --- | --- | --- |
