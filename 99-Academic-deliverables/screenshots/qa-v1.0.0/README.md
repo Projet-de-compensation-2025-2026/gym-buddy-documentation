@@ -10,6 +10,6 @@ Each child folder is one crawl (admin back-office, public/auth, member app).
 | --- | --- |
 | [admin/](admin/) | Isolated `/admin/` bundle |
 | [public/](public/) | Public / auth |
-| [member/](member/) | Signed-in member app (when landed) |
+| [member/](member/) | Signed-in member app |
 
-Findings: [../../qa-v1.0.0-admin.md](../../qa-v1.0.0-admin.md), [../../qa-v1.0.0-public.md](../../qa-v1.0.0-public.md). Parent: [../README.md](../README.md).
+Findings: [../../qa-v1.0.0-admin.md](../../qa-v1.0.0-admin.md), [../../qa-v1.0.0-public.md](../../qa-v1.0.0-public.md), [../../qa-v1.0.0-member.md](../../qa-v1.0.0-member.md). Parent: [../README.md](../README.md).

@@ -15,6 +15,7 @@ Until the first application release, versions refer to the **documentation contr
 
 - Admin back-office QA of live UI tag **v1.0.0**: [qa-v1.0.0-admin.md](../99-Academic-deliverables/qa-v1.0.0-admin.md) and shots under `99-Academic-deliverables/screenshots/qa-v1.0.0/admin/`. Bugs filed Not Ready: #75–#87.
 - Public / auth QA of live UI tag **v1.0.0** on GitHub Pages: [qa-v1.0.0-public.md](../99-Academic-deliverables/qa-v1.0.0-public.md) and shots under `99-Academic-deliverables/screenshots/qa-v1.0.0/public/`. Create-account + sign-in from the Pages origin worked (do not Todo closed #37). Bugs filed Not Ready: #89 session refresh/logout cookie, #90 auth error copy, #91 mockup mismatch, #92 register confirmation, #93 empty-feed CTA path, #94 leftover Video control, #95 unknown-route redirect.
+- Member-app QA of live UI tag **v1.0.0**: [qa-v1.0.0-member.md](../99-Academic-deliverables/qa-v1.0.0-member.md) and shots under `99-Academic-deliverables/screenshots/qa-v1.0.0/member/`. Bugs filed Not Ready: #96–#110 (duplicates of public #89/#94/#95 noted on those issues).
 
 ### Changed
 
