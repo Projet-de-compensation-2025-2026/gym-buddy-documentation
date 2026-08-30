@@ -13,6 +13,8 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Added
 
+- Admin back-office QA of live UI tag **v1.0.0**: [qa-v1.0.0-admin.md](../99-Academic-deliverables/qa-v1.0.0-admin.md) and shots under `99-Academic-deliverables/screenshots/qa-v1.0.0/admin/`. Bugs filed Not Ready: #75–#87.
+
 ### Changed
 
 ## [1.0.0] — 2026-08-30
