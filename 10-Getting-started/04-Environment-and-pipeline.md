@@ -52,12 +52,15 @@ docker compose up -d --build
 docker compose --profile mail up -d
 ```
 
-Recorded laptop run (2026-08-18 12:40 PT / 10:40:55Z): `GET /api/v1/healthz` and `GET /api/v1/readyz` both 200 `{"status":"ok"}`. Published ports were `127.0.0.1` only. Write-up: [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md) on `gym-buddy-service` `develop`. Do not paste secrets. `.env` stays gitignored.
+Clone `gym-buddy-ui` next to `gym-buddy-service` (`../gym-buddy-ui`). Compose builds that tree into an nginx image and publishes **http://127.0.0.1:4200** (member) and **http://127.0.0.1:4200/admin/** (back-office). The UI proxies `/api` to the API container so login cookies stay first-party. `pnpm start` on the host is still valid if you do not want the UI image.
+
+Recorded laptop run (2026-08-18 12:40 PT / 10:40:55Z): `GET /api/v1/healthz` and `GET /api/v1/readyz` both 200 `{"status":"ok"}`. Published ports were `127.0.0.1` only. Write-up: [`docs/local-compose-proof.md`](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/blob/develop/docs/local-compose-proof.md) on `gym-buddy-service` `develop`. Do not paste secrets. `.env` stays gitignored. That proof predates the UI image; `127.0.0.1:4200` is the later Compose add-on.
 
 | Service | Image role | Host bind | Port |
 | --- | --- | --- |
-| API | Spring Boot (Java 25 LTS image) | `127.0.0.1` | `8080` |
-| PostgreSQL | **18** (not 19), image `postgres:18.6` | `127.0.0.1` | `5432` |
+| UI | nginx: member + `/admin/` + `/api` proxy | `127.0.0.1` | `4200` |
+| API | Spring Boot (Java 25 LTS image) | `127.0.0.1` | `8080` (`API_HOST_PORT` if that port is already taken) |
+| PostgreSQL | **18** (not 19), image `postgres:18.6` | `127.0.0.1` | `5432` (`POSTGRES_HOST_PORT` if that port is already taken) |
 | Redis | Cache / refresh denylist, image `redis:8-alpine` | `127.0.0.1` | `6379` |
 | MinIO | S3 API | `127.0.0.1` | `9000` |
 | MinIO console | Local admin UI | `127.0.0.1` | `9001` |
