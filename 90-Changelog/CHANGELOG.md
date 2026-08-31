@@ -15,6 +15,8 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Changed
 
+- Messaging from GitHub Pages is HTTP-only at MVP: `/api/v1/ws` does not stay open from github.io (ticket **#125**, FS-MSG-07). Fetch remains the source of truth.
+
 ## [1.1.1] — 2026-08-31
 
 ### Added
