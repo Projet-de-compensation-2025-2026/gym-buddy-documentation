@@ -2,12 +2,12 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Assembled — `Gym-Buddies-defense.pptx` (12 slides). Live demo still operator-run |
+| Status | Assembled — `Gym-Buddies-defense.pptx` (12 slides). Demo slides 4–6 carry live v1.1.0 shots |
 | Related | [../00-Project-brief/02-Stakeholders-and-defense.md](../00-Project-brief/02-Stakeholders-and-defense.md) |
 
 Defense: **20 minutes** + **30 minutes Q&A**, in person or remote.
 
-**Blocked on:** a demoable UI (or a recorded fallback). Do not commit an empty `Gym-Buddies-defense.pptx`.
+Pages **v1.1.0** is live. Demo as a freshly registered member if `demo.alex` is not in `.env`. Refresh cookie on live 1.1.0 is `SameSite=None; Partitioned` ([../40-Technical-specifications/02-JWT-authentication.md](../40-Technical-specifications/02-JWT-authentication.md)). Admin demo still needs #78 staff bootstrap.
 
 ## Slide spine (≈ 12 slides)
 

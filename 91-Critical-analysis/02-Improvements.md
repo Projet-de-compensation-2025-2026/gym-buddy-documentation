@@ -13,6 +13,8 @@ Ranked. “Now” means before the defense if time remains. “Later” is post-
 3. Event discussion thread (reuse comments)
 4. Rate limits on login, register, media, messages
 5. Recorded backup of the demo (network will fail)
+6. Operator `GYM_BUDDY_BOOTSTRAP_STAFF` so academic shots 15–16 exist
+7. Configure VPS object storage so `POST /media` mints signed URLs (chat image/audio and post images)
 
 ## Later
 

@@ -117,7 +117,7 @@ function addEyebrow(slide, text) {
     italic: true,
     margin: 0,
   });
-  s.addText("Joaquim Kéloglanian  ·  20 min + 30 min Q&A  ·  wiki commit 2fcabfa", {
+  s.addText("Joaquim Kéloglanian  ·  20 min + 30 min Q&A  ·  wiki ab679f9+#71", {
     x: ML,
     y: 6.6,
     w: 11,
@@ -246,7 +246,7 @@ function addEyebrow(slide, text) {
 
 {
   const s = pres.addSlide();
-  addBase(s, { pageNum: 4, footer: "Demo 1 · social  ·  live as demo.alex" });
+  addBase(s, { pageNum: 4, footer: "Demo 1 · social  ·  live v1.1.0" });
   addEyebrow(s, "Demo 1 — social · 4 min");
   s.addText("Feed, post, comment, like, friend.", {
     x: ML,
@@ -259,7 +259,7 @@ function addEyebrow(slide, text) {
     margin: 0,
   });
   const steps = [
-    ["01", "Sign in", "demo.alex from .env"],
+    ["01", "Sign in", "fresh register on Pages"],
     ["02", "Feed", "Friends + own, cursor 20"],
     ["03", "Post", "Text, optional images"],
     ["04", "Thread", "Depth cap 4, likes"],
@@ -606,7 +606,7 @@ function addEyebrow(slide, text) {
     margin: 0,
   });
   const sec = [
-    ["JWT", "HS256 access in JSON. Refresh cookie HttpOnly + Secure + SameSite=Lax. Redis denylist."],
+    ["JWT", "HS256 access in JSON. Refresh cookie HttpOnly + Secure + SameSite=None; Partitioned. Redis denylist."],
     ["Passwords", "Argon2id. Never logged. ≥ 10 characters."],
     ["canRead", "Mint a 60 s signed GET only after ACL. Deny and missing both NOT_FOUND."],
     ["Admin", "Member calls to /admin/* return NOT_FOUND. Staff JS is a separate bundle."],
@@ -714,7 +714,7 @@ function addEyebrow(slide, text) {
       { text: "Weekly matching opt-in — greedy 1/2-approx, not exact.", options: { bullet: true, breakLine: true } },
       { text: "Audio DMs — text + image would still satisfy the brief.", options: { bullet: true, breakLine: true } },
       { text: "Recurring events beyond WEEKLY+UNTIL.", options: { bullet: true, breakLine: true } },
-      { text: "Live Pages login from the public internet (UFW + SameSite=Lax).", options: { bullet: true } },
+      { text: "Staff bootstrap + MinIO on the VPS (admin 15–16 and signed media).", options: { bullet: true } },
     ],
     {
       x: ML,

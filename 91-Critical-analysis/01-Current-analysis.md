@@ -5,11 +5,18 @@
 | Status | Proposed |
 | Related | [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
 
-This page is updated after implementation. Product tickets **#59–#70** are on `develop` (auth, profiles, friends, media, posts, comments, feed, events, search, suggestions, messaging, admin, fixtures).
+This page is updated after implementation. Product tickets **#59–#70** are on `develop` (auth, profiles, friends, media, posts, comments, feed, events, search, suggestions, messaging, admin, fixtures). Academic pack **#71** captured live v1.1.0 UI on 2026-08-31.
 
-## Post-implementation (2026-08-30)
+## Post-implementation (2026-08-31, live v1.1.0)
 
-What shipped matches the wiki: OpenAPI `$ref` tree first, generated Java interfaces and orval client, Gitflow PRs to `develop`, FS-named tests, Datafaker seed `20260813`. Gaps that remain honest: greedy matching is not exact; DMs are not E2E; live GitHub Pages is still **v0.1.1** (auth-era) so the full product needs a Release; login-from-Pages is not claimed (#37 closed).
+What shipped matches the wiki: OpenAPI `$ref` tree first, generated Java interfaces and orval client, Gitflow PRs to `develop`, FS-named tests, Datafaker seed `20260813`. Application tag **v1.1.0** is live on GitHub Pages (known member and admin routes HTTP 200). Create-account + sign-in from `github.io` works (ticket **#37** stays closed). Refresh cookie is `HttpOnly; Secure; SameSite=None; Partitioned` so Chromium stores it in the Pages partition (ticket **#89**).
+
+Gaps that remain honest after that Release:
+
+- **Staff bootstrap (#78) was not SSH-run.** `demo.admin` / `demo.mod` are missing on prod. Academic shots 15–16 (role change + audit, hidden post) could not be taken. Member login to `/admin/login` correctly returns “Staff accounts only.”
+- **Object storage is not configured on the VPS.** `POST /api/v1/media` and `GET /media/{id}/url` return 401 `UNAUTHENTICATED` / `media is not configured`. Chat image/audio and post images fail; fail-closed ACL still shows “post not found” to a stranger on a friends-only post.
+- **Prod fixtures are off** (`POST /admin/fixtures` stays `FORBIDDEN` on `prod`). Suggestions for three live users were empty (FS-SUGG-07 recompute is async / nightly; no 3 000-user graph).
+- Greedy matching is not exact; DMs are not E2E; staff could read plaintext if messaging persisted.
 
 ## Strengths
 
@@ -31,8 +38,10 @@ What shipped matches the wiki: OpenAPI `$ref` tree first, generated Java interfa
 - Greedy matching is a 1/2-approximation; we do not yet show empirical gap vs exact.
 - Search quality on messy city strings will be poor without geocoding.
 - Instant messaging is not E2E encrypted; staff can read plaintext in the DB.
-- Large fixtures with shared image keys make the demo look repetitive.
-- Angular 22 auth pages exist on `develop` (ui #3). Service auth is on `develop` (service #5 / `e2ef2aa`): `POST /api/v1/auth/register`, `/login`, `/refresh`, `/logout`. Ticket #12 is closed / Done. Local compose is proven on a laptop. VPS apply is **done**. Ticket **#20** is **Done / closed**. VPS Java container on the host is `develop` **`aea1c56`**. Loopback `GET /api/v1/healthz` and `GET /api/v1/readyz` **200** on `127.0.0.1:8080`. API bind `127.0.0.1`; data-plane ports unpublished. A bad loopback `POST /api/v1/auth/register` → **422 `VALIDATION`** (auth routes exist). `replace.sh` skip-pull for local tags is on `develop` (service #8 / `fb1e618`). **Not** a GHCR pull / Release / replace-from-registry. Caddy is **proven from the operator network** (healthz **200**, register **201**, login **200** + JWT). The API is not the bug. Caddy is **not** proven from the GitHub Pages origin. Ticket **#37** is **closed / completed**. Do **not** claim login-from-Pages. UI `develop` **`7916fa8`** has production `apiBaseUrl` `https://vps-c39cdf03.vps.ovh.net/api/v1`. Service `develop` **`aea1c56`** CORS is **proven from Joaquim’s PC**. First tag **v0.1.0** pointed at localhost. Live Pages is **v0.1.1** and embeds `https://vps-c39cdf03.vps.ovh.net/api/v1`. Ticket **#31** is **Done / closed**. Ticket **#37** is **closed / completed**. Do **not** claim login-from-Pages. Do **not** Todo **#37**. Flyway on `develop` is V1 + V2 (`users` + `profiles`).
+- Large fixtures with shared image keys make the demo look repetitive **when fixtures run**. Live prod has **no** 3 000-user seed, so the demo graph is whatever members register.
+- Live Pages is **v1.1.0**. Register / login / feed / friends / events / search / messages work from this operator PC. CORS + `SameSite=None; Partitioned` is what made the session stick after v1.0.0’s `SameSite=Lax` drop. Ticket **#37** stays **closed**. Do **not** Todo **#37**.
+- VPS object storage is **not** serving signed uploads (`media is not configured`). MinIO is in the architecture; the live host does not yet mint 60 s URLs.
+- Flyway on `develop` includes the domain tables past V2; prod still cannot reset fixtures.
 
 ## Risks
 
@@ -47,4 +56,4 @@ What shipped matches the wiki: OpenAPI `$ref` tree first, generated Java interfa
 
 ## Academic honesty
 
-Do not claim machine learning if we ship weighted sums. The justification pages exist so the defense can be precise. `gym-buddy-service` `develop` is Java 25 LTS / Spring Boot (`pom.xml`) and implements register / login / refresh / logout (service #5 / `e2ef2aa`). Ticket #12 is closed / Done. VPS apply is **done**. Ticket **#20** is **Done / closed**. The VPS Java container on the host is `develop` **`aea1c56`**. Loopback `GET /api/v1/healthz` and `GET /api/v1/readyz` **200** on `127.0.0.1:8080`. A bad loopback `POST /api/v1/auth/register` → **422 `VALIDATION`** (auth routes exist). `replace.sh` skip-pull for local tags is on `develop` (service #8 / `fb1e618`). **Not** a GHCR pull, a Release tag, or a successful replace-from-registry. Caddy is **proven from the operator network** (healthz **200**, register **201**, login **200** + JWT). The API is not the bug. Caddy is **not** proven from the GitHub Pages origin. Ticket **#37** is **closed / completed**. Do **not** claim login-from-Pages. Ticket **#31** is **Done / closed**. Ticket **#37** is **closed / completed**. Do **not** claim login-from-Pages. Do **not** Todo **#37**. Local laptop compose is proven (`docs/local-compose-proof.md`).
+Do not claim machine learning if we ship weighted sums. The justification pages exist so the defense can be precise. Live **v1.1.0** is a tagged product: Pages + VPS Caddy `healthz` **200** from the operator network, register **201**, login **200**. Ticket **#37** is **closed / completed**. Do **not** Todo **#37**. Do not claim staff fixtures or MinIO signed URLs on prod until #78 is applied and object storage is configured. Local laptop compose is proven (`docs/local-compose-proof.md`).
