@@ -6,9 +6,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import (
+    Image,
     KeepTogether,
-    ListFlowable,
-    ListItem,
     PageBreak,
     Paragraph,
     SimpleDocTemplate,
@@ -16,11 +15,15 @@ from reportlab.platypus import (
     Table,
     TableStyle,
 )
+from reportlab.lib.utils import ImageReader
 
 from pathlib import Path
 
-OUT = str(Path(__file__).with_name("Gym-Buddies-report.pdf"))
-DOC_SHA = "2fcabfa"
+HERE = Path(__file__).resolve().parent
+OUT = str(HERE / "Gym-Buddies-report.pdf")
+SHOTS = HERE / "screenshots"
+# Parent develop SHA plus this #71 live-screenshot PR (not a mockup gallery).
+DOC_SHA = "ab679f9+#71"
 TEAL = colors.HexColor("#00535B")
 INK = colors.HexColor("#141B2B")
 HAIR = colors.HexColor("#BEC8CA")
@@ -111,9 +114,46 @@ def styles():
 
 S = styles()
 
+FIGURES = [
+    ("01-register-login.png", "Figure 1. After register on Pages v1.1.0 the SPA lands on login with “Account created. Sign in to continue.”"),
+    ("02-public-profile.png", "Figure 2. A public profile shows display name, bio, sports, city, and experience (FS-PROF)."),
+    ("03-private-profile-stranger.png", "Figure 3. A stranger on a private profile sees only a stub and Request Friend (FS-PROF-04)."),
+    ("04-friend-request-pending.png", "Figure 4a. Outbound friend request stays pending until the addressee accepts (FS-FRND)."),
+    ("04-friend-request.png", "Figure 4b. After accept, Blake appears under My Friends."),
+    ("05-friends-feed-post-repost.png", "Figure 5. Friends feed shows Blake’s post and “Alex Live reposted” (FS-FEED)."),
+    ("07-comment-thread.png", "Figure 6–7. The same post has a like plus a three-level comment thread (FS-POST, FS-CMT)."),
+    ("08-friends-only-event.png", "Figure 8. Friends-only evening lift: place, 90 minutes, capacity 1 (FS-EVT)."),
+    ("09-event-applications-pending.png", "Figure 9a. Organizer queue with Blake pending (matching score 0.30)."),
+    ("09-event-applications.png", "Figure 9b. After the last seat is accepted, a later friend sees Full / 1 (FS-EVT-07)."),
+    ("10-recurring-event-occurrences.png", "Figure 10. WEEKLY run club materialises the next 90 days of occurrences (FS-EVT-03)."),
+    ("11-advanced-search.png", "Figure 11. People search with query, city, sport, and experience filters (FS-SRCH)."),
+    ("12-suggestions-why.png", "Figure 12. Suggestions empty on prod: no 3 000-user fixtures and recompute is async (FS-SUGG-03)."),
+    ("13-chat-text-image-audio.png", "Figure 13. DM text delivered; image/audio fail because live object storage is not configured (FS-MSG)."),
+    ("14-denied-media.png", "Figure 14. A stranger opening a friends-only post sees “post not found” — no existence leak (FS-MED-06)."),
+    ("17-architecture.png", "Figure 17. Modular monolith from the wiki Mermaid in 20-Architecture/01-Software-architecture.md."),
+    ("18-data-model.png", "Figure 18. Core ER from the wiki Mermaid in 20-Architecture/06-Data-model.md."),
+    ("19-https-health.png", "Figure 19. Operator-network probe: GET /api/v1/healthz and /readyz return HTTP 200."),
+]
+
 
 def P(text, style="body"):
     return Paragraph(text, S[style])
+
+
+def figure(filename, caption, max_h=88 * mm):
+    path = SHOTS / filename
+    if not path.is_file():
+        return [P("[missing %s]" % filename, "caption")]
+    src = ImageReader(str(path))
+    iw, ih = src.getSize()
+    max_w = A4[0] - 36 * mm
+    w, h = max_w, max_w * ih / iw
+    if h > max_h:
+        h = max_h
+        w = h * iw / ih
+    img = Image(str(path), width=w, height=h)
+    img.hAlign = "CENTER"
+    return KeepTogether([img, P(caption, "caption"), Spacer(1, 4)])
 
 
 def grid(rows, col_widths):
@@ -295,10 +335,13 @@ def story():
         ),
         P("6. Security", "h1"),
         P(
-            "Access JWT is HS256 in JSON. Refresh is a cookie (HttpOnly, Secure, SameSite=Lax, path "
-            "/api/v1/auth) rotated on use and denylisted in Redis on logout. Passwords are Argon2id, "
-            "never logged. Missing ACL returns NOT_FOUND (no existence leak) unless a spec names "
-            "FORBIDDEN. Every file download is a 60-second signed GET minted only after canRead. "
+            "Access JWT is HS256 in JSON. Refresh is a cookie (HttpOnly, Secure, SameSite=None, "
+            "Partitioned, path /api/v1/auth) rotated on use and denylisted in Redis on logout. "
+            "SameSite=Lax was the v1.0.0 session-drop from github.io; live 1.1.0 uses None+Partitioned "
+            "so Chromium stores the cookie in the Pages partition. Passwords are Argon2id, never logged. "
+            "Missing ACL returns NOT_FOUND (no existence leak) unless a spec names FORBIDDEN. "
+            "File downloads are 60-second signed GETs minted only after canRead — on this VPS "
+            "POST /media currently returns “media is not configured”, so that path is honest, not claimed. "
             "Member calls to /admin/* return NOT_FOUND. Staff JavaScript is a separate Angular bundle.",
             "body",
         ),
@@ -315,9 +358,9 @@ def story():
             "Gitflow: feature branches from develop, PRs to develop, Conventional Commits with the "
             "documentation ticket in the scope (feat(#59): …) and Refs: …/gym-buddy-documentation#N. "
             "GitHub Actions: format, tests, HTTP smoke on every PR. Release squash-merges develop "
-            "onto main, tags vX.Y.Z, and deploys. Application versions stay 0.1.x; 1.0.0 is the "
-            "academic ship and is never chosen automatically. Live Pages is still a 0.1.1 bundle; "
-            "the full product is on develop and needs a Release to appear on github.io.",
+            "onto main, tags vX.Y.Z, and deploys. Live GitHub Pages is <b>v1.1.0</b> "
+            "(known member and admin routes HTTP 200). The SPA talks to "
+            "https://vps-c39cdf03.vps.ovh.net/api/v1. Operator-network healthz/readyz are 200.",
             "body",
         ),
         P("8. Tests and fixtures", "h1"),
@@ -338,11 +381,13 @@ def story():
             "body",
         ),
         P(
-            "After implementation, the main gaps are honest: suggestion matching is greedy, not exact; "
-            "DMs are not E2E encrypted (staff can read plaintext); search on messy city strings has no "
-            "geocoder; GitHub Pages cannot host Java, and UFW plus SameSite=Lax means login-from-Pages "
-            "is not claimed; live Pages is an older 0.1.1 tag. With two weeks less I would drop weekly "
-            "matching, audio DMs, and recurrence beyond WEEKLY+UNTIL.",
+            "After v1.1.0, the main gaps are honest: suggestion matching is greedy, not exact; "
+            "DMs are not E2E encrypted; search on messy city strings has no geocoder; GitHub Pages "
+            "cannot host Java. Live Pages login from this operator PC <b>does</b> work "
+            "(SameSite=None; Partitioned). Prod has no demo.admin (#78 not SSH-run) and no object "
+            "storage, so admin shots 15–16 and signed media URLs are not claimed. Suggestions for "
+            "three live users were empty (no 3 000-user fixtures). With two weeks less I would drop "
+            "weekly matching, audio DMs, and recurrence beyond WEEKLY+UNTIL.",
             "body",
         ),
         P("10. Conclusion", "h1"),
@@ -354,15 +399,17 @@ def story():
             "body",
         ),
         P("11. Appendix", "h1"),
-        P("Screenshot checklist (03-Screenshots.md)", "h2"),
+        P("Live screenshots (Pages v1.1.0, 2026-08-31)", "h2"),
         P(
-            "Shots 1–16 must be captured from the <b>live Angular UI</b> after a Release of current "
-            "develop (or local compose + fixtures). They are <b>not</b> in this PDF: the ticket forbids "
-            "pasting wiki mockup JPGs as if they were product screens, and github.io still serves "
-            "Pages v0.1.1 (auth-era). Operator: sign in as demo.alex / demo.blake, store files under "
-            "99-Academic-deliverables/screenshots/, one-sentence caption each.",
+            "Figures below are captures from the running Angular UI, not wiki mockup JPGs. "
+            "demo.alex passwords are not in git; three fresh members were registered and friended. "
+            "Admin 15–16 are omitted: demo.admin is missing on prod (ticket #78).",
             "body",
         ),
+    ]
+    for name, caption in FIGURES:
+        out.append(figure(name, caption))
+    out += [
         grid(
             [
                 ["#", "Shot", "FS"],
@@ -371,9 +418,9 @@ def story():
                 ["4", "Friend request", "FS-FRND"],
                 ["5–7", "Feed, likes, nested comments", "FS-FEED / POST / CMT"],
                 ["8–10", "Event create, accept, recurrence", "FS-EVT"],
-                ["11–12", "Search; suggestion why", "FS-SRCH / SUGG"],
-                ["13–14", "Chat; denied media", "FS-MSG / MED"],
-                ["15–16", "Admin role + hidden post", "FS-ADM"],
+                ["11–12", "Search; suggestion why (empty on prod)", "FS-SRCH / SUGG"],
+                ["13–14", "Chat text; stranger NOT_FOUND", "FS-MSG / MED"],
+                ["15–16", "Admin — blocked, no staff login", "FS-ADM"],
             ],
             [18 * mm, w - 42 * mm, 24 * mm],
         ),

@@ -2,12 +2,12 @@
 
 | Field | Value |
 | --- | --- |
-| Status | Assembled — `Gym-Buddies-report.pdf` (wiki `2fcabfa`). Live screenshots 1–16 still operator-captured |
+| Status | Assembled — `Gym-Buddies-report.pdf` with live v1.1.0 figures. Wiki parent `ab679f9` plus this #71 PR |
 | Related | [../00-Project-brief/ProjetDeCompensation2526.en.md](../00-Project-brief/ProjetDeCompensation2526.en.md), [03-Screenshots.md](03-Screenshots.md) |
 
 The report **summarizes** this wiki and the implementation. It is not a second specification. Assemble it in the last weeks; keep screenshots current.
 
-**Blocked on:** Spring + Angular implementation, screenshot set, instructor cadrage notes. Do not export a PDF that pretends those exist.
+Live v1.1.0 member shots 1–14 plus wiki diagrams 17–18 and VPS health 19 are in `screenshots/`. Admin 15–16 remain blocked on staff bootstrap (#78). Instructor cadrage did not happen (holiday).
 
 ## Required contents (brief)
 

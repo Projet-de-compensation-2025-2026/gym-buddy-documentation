@@ -13,7 +13,11 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Added
 
+- Academic live screenshot set for ticket **#71**: v1.1.0 Pages captures 1–14, wiki Mermaid 17–18, VPS `healthz`/`readyz` 19 under `99-Academic-deliverables/screenshots/`. Report PDF and defense deck cite those figures. Admin 15–16 remain blocked on staff bootstrap (#78).
+
 ### Changed
+
+- `Gym-Buddies-report.pdf` / `Gym-Buddies-defense.pptx` no longer wait on a UI Release. Cookie line on the security slide matches live 1.1.0: `SameSite=None; Partitioned`.
 
 ## [1.1.0] — 2026-08-30
 
