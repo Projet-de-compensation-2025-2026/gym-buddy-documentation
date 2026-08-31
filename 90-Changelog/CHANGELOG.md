@@ -13,6 +13,12 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Added
 
+### Changed
+
+## [1.1.1] — 2026-08-31
+
+### Added
+
 - Academic live screenshot set for ticket **#71**: v1.1.0 Pages captures 1–14, wiki Mermaid 17–18, VPS `healthz`/`readyz` 19 under `99-Academic-deliverables/screenshots/`. Report PDF and defense deck cite those figures. Admin 15–16 remain blocked on staff bootstrap (#78).
 
 ### Changed
@@ -128,6 +134,7 @@ Documentation contract only (process + specs). Not the Java application.
 - English and French assignment text under `00-Project-brief`
 
 [Unreleased]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/compare/v0.2.0...HEAD
+[1.1.1]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v1.1.1
 [1.1.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v1.1.0
 [1.0.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v1.0.0
 [0.2.0]: https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation/releases/tag/v0.2.0
