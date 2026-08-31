@@ -24,6 +24,10 @@ Canonical paths: [09-Target-HTTP-surface.md](09-Target-HTTP-surface.md) (`/conve
 
 `GET /api/v1/conversations/{id}/messages?before=` remains the source of truth. The frontend polls every 10 s if the socket is closed.
 
+## Today (v1.1.1)
+
+From GitHub Pages the WebSocket at `/api/v1/ws` does not stay up (browser close **1006**). `GET /api/v1/ws` without Upgrade is **426**. **HTTP fetch is the MVP** for the Pages origin: friends open a conversation with `POST /conversations`, then list and send messages over HTTP. Do not claim live WS from github.io. Ticket **#125**.
+
 ## Media messages
 
 The message row references `media_id`. The payload sent on the socket contains metadata + a signed URL minted **for that recipient** at fan-out time (or the client fetches `/media/:id/url` itself — simpler, preferred).
