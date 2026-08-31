@@ -13,6 +13,9 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Added
 
+- Laptop Compose runbook: sibling `gym-buddy-ui` Docker image on `127.0.0.1:4200`
+  (member + `/admin/`), `/api` proxied to the local API.
+
 ### Changed
 
 - Messaging from GitHub Pages is HTTP-only at MVP: `/api/v1/ws` does not stay open from github.io (ticket **#125**, FS-MSG-07). Fetch remains the source of truth.
