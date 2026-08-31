@@ -13,6 +13,9 @@ Until the first application release, versions refer to the **documentation contr
 
 ### Added
 
+- VPS operator runbook: Postgres on `127.0.0.1:5432` for pgAdmin over SSH.
+  Redis/MinIO stay unpublished. No public `5432`.
+
 ### Changed
 
 - Messaging from GitHub Pages is HTTP-only at MVP: `/api/v1/ws` does not stay open from github.io (ticket **#125**, FS-MSG-07). Fetch remains the source of truth.

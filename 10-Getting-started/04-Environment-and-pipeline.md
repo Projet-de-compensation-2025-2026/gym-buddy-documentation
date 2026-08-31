@@ -285,7 +285,7 @@ docker logs gym-buddy-service
 docker logs --tail 200 -f gym-buddy-service
 ```
 
-Data-plane logs from a `gym-buddy-service` checkout on the VPS (`deploy/compose.yaml`, project `gym-buddy-vps`, network `gym-buddy-data`; Postgres 18.6, Redis, MinIO; no published `5432` / `6379` / `9000` / `9001`; host env `/etc/gym-buddy/vps.env`):
+Data-plane logs from a `gym-buddy-service` checkout on the VPS (`deploy/compose.yaml`, project `gym-buddy-vps`, network `gym-buddy-data`; Postgres 18.6, Redis, MinIO; Postgres loopback `127.0.0.1:5432` only; Redis/MinIO unpublished; host env `/etc/gym-buddy/vps.env`):
 
 ```bash
 docker compose --env-file /etc/gym-buddy/vps.env -f deploy/compose.yaml logs postgres
