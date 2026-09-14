@@ -212,11 +212,6 @@ def story():
             "on every private repository.",
             "body",
         ),
-        P(
-            "There was no instructor cadrage meeting (instructor on holiday, recorded 2026-08-19). "
-            "The supplied assignment therefore remained the basis for required features and deliverables.",
-            "body",
-        ),
         P("Repositories", "h2"),
         grid(
             [

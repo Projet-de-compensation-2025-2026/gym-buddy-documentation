@@ -61,7 +61,7 @@ Also in scope because the brief requires them as *work*, not only as features:
 
 Functional/technical specifications, UML diagrams, algorithms and engineering choices are recorded in this repository. Angular member/staff applications and the Spring service implement the product. Their test evidence and remaining verification limits are tracked in [release verification](../80-Testing/06-Release-verification.md); specifications alone do not prove completion.
 
-Joaquim recorded on 19 August 2026 that the instructor scoping meeting would not occur because the instructor was on holiday. No meeting minutes are claimed. The assignment remains the scope reference.
+The assignment defines the scope; no additional scoping-meeting minutes are included.
 
 ## Non-goals for this wiki
 

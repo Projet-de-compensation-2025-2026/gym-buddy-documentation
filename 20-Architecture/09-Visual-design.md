@@ -51,7 +51,7 @@ Secondary `#83C5BE` is a Stitch board chip only. It was not a mode on the mockup
 
 ### Dark mapping
 
-Joaquim asked for light + dark without regenerating mockups. **Derived mapping**, not sampled from a dark file. No new brand hues.
+The dark palette is a derived design mapping; the source mockups are light-only. It reuses the existing brand hues.
 
 | Role | Light (implement) | Dark |
 | --- | --- | --- |
