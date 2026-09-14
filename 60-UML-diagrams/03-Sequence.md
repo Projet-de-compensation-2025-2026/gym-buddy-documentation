@@ -81,7 +81,7 @@ sequenceDiagram
   actor A as Sender
   participant FE as Frontend
   participant API as API
-  participant S3 as MinIO
+  participant S3 as SeaweedFS
   participant WS as Gateway
   actor B as Friend
 

@@ -1,6 +1,6 @@
 # 50 — Algorithms
 
-Designs that must be written, implemented, and **justified** (assignment requirement). Each page states the problem, the algorithm, complexity, alternatives, and why this one was chosen. Status of the three pages is **Approved** — Kernel implements them in the suggestions / search / events tickets.
+Designs that must be written, implemented, and **justified** (assignment requirement). Each page states the problem, the algorithm, complexity, alternatives, and why this one was chosen. The pages distinguish implemented behavior from proposed evaluation and scaling improvements.
 
 ## Contents
 

@@ -31,7 +31,7 @@ Authenticated member.
 - Filters AND across fields; sports OR inside the field. Algorithm: [../50-Algorithms/02-Filtered-search.md](../50-Algorithms/02-Filtered-search.md).
 - Private strangers never appear. Public profiles do. Friends’ private profiles may appear.
 - Radius 1–50 km. Mockup 12 shows miles; **implement kilometres** in the API (`radiusKm`). The UI may label km.
-- People tab and Events tab are separate queries (two paths). The mockup’s mixed grid is a visual; Kernel may render the active tab’s results as cards.
+- People tab and Events tab are separate queries (two paths). The mockup’s mixed grid is a visual; the application renders the active tab’s results as cards.
 
 ## Target HTTP
 

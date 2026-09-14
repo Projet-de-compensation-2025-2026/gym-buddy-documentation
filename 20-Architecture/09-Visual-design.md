@@ -122,7 +122,7 @@ Dropped from this pass (no replacement file): `03-feed-lower`, `04-post-detail`,
 
 ## Mockup leftovers (do not implement)
 
-Stitch chrome that has **no FS ID**. Kernel matches layout tokens and the listed screens; it does **not** invent these entities:
+Stitch chrome that has **no FS ID**. Match layout tokens and the listed screens while following the functional specifications:
 
 | Leftover | Where | Do instead |
 | --- | --- | --- |
@@ -135,9 +135,6 @@ Stitch chrome that has **no FS ID**. Kernel matches layout tokens and the listed
 | Avatar “Max 2MB” | 15 | Contract is 8 MiB (FS-MED-03) |
 | Miles on search radius | 12 | API `radiusKm` (1–50) |
 
-## What these are not
+## Verification
 
-- Not the academic screenshot checklist in [../99-Academic-deliverables/03-Screenshots.md](../99-Academic-deliverables/03-Screenshots.md). Do not copy these JPGs there. That gallery waits for real Angular shots after the UI is stable.
-- Not a live UI. `gym-buddy-ui` on `develop` still has `/register`, `/login`, and log-out only.
-- Ticket **#37** is **closed** (Joaquim 2026-08-19: create-account + sign-in is enough). Do **not** Todo it. Do **not** start Kernel on it.
-- Expanding `/api/v1` past health + auth is still open (inventory: [../40-Technical-specifications/09-Target-HTTP-surface.md](../40-Technical-specifications/09-Target-HTTP-surface.md)). These mockups do not implement those routes.
+Mockups are design references, not screenshots of the delivered application. Capture real desktop and mobile journeys for the [academic screenshot checklist](../99-Academic-deliverables/03-Screenshots.md), including populated, empty and error states. Record deviations and unresolved gaps in [release verification](../80-Testing/06-Release-verification.md).

@@ -57,30 +57,11 @@ Also in scope because the brief requires them as *work*, not only as features:
 - Public social graph export
 - Multi-tenant white-label
 
-Record any change to this list in this wiki. There will be **no** instructor scoping meeting (see cadrage below).
+## Deliverables and evidence
 
-## Instructor cadence
+Functional/technical specifications, UML diagrams, algorithms and engineering choices are recorded in this repository. Angular member/staff applications and the Spring service implement the product. Their test evidence and remaining verification limits are tracked in [release verification](../80-Testing/06-Release-verification.md); specifications alone do not prove completion.
 
-| Step from the brief | Status | Notes |
-| --- | --- | --- |
-| Discuss and scope the project with the instructor | Will not happen (instructor on holiday) | Joaquim, 2026-08-19 — see below |
-| Write functional and technical specifications | Written | This wiki. Not blocked on a cadrage meeting |
-| Provide UML diagrams | Written (Approved, Mermaid) | [../60-UML-diagrams](../60-UML-diagrams/README.md) |
-| Design and write algorithms | Written (Approved) | [../50-Algorithms](../50-Algorithms/README.md) — implement in the product tickets |
-| Implement backend, frontend, back-office | In progress on `develop` | Angular 22 + Spring exist on `develop` (auth + health only). Remaining product is ticketed after this spec pass. |
-| Test plan and unit tests | Strategy written (Approved) | [../80-Testing](../80-Testing/README.md) — application tests ship with each feature ticket |
-| Critical analysis | Written (pre-remaining-product) | [../91-Critical-analysis](../91-Critical-analysis/README.md) |
-| Justify library choices | Approved | [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md) |
-
-## Instructor cadrage (2026-08-19)
-
-Joaquim recorded on **2026-08-19** that there will be **no** instructor cadrage. The instructor is on holiday.
-
-The ISEP brief only says “Discuter et cadrer le projet avec l'enseignant” / “Discuss and scope the project with the instructor” ([ProjetDeCompensation2526.fr.md](ProjetDeCompensation2526.fr.md), [ProjetDeCompensation2526.en.md](ProjetDeCompensation2526.en.md)). It does **not** say wiki pages stay **Draft** until that meeting.
-
-Product functional-specification pages are **not** blocked on a meeting. Existing FS `Status` fields are not mass-rewritten here. Implementation still goes wiki → OpenAPI tag → implement ([../70-Engineering-practices/08-Feature-implementation.md](../70-Engineering-practices/08-Feature-implementation.md)).
-
-Do not invent minutes for a meeting that will not happen. Technical choices stay **Approved** unless a later wiki change overturns them.
+Joaquim recorded on 19 August 2026 that the instructor scoping meeting would not occur because the instructor was on holiday. No meeting minutes are claimed. The assignment remains the scope reference.
 
 ## Non-goals for this wiki
 

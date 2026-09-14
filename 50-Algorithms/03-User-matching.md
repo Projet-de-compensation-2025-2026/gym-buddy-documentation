@@ -27,12 +27,12 @@ M(e,v) = a_1 A + a_2 J + a_3 G + a_4 T + a_5 H
 | Term | Meaning | Weight |
 | --- | --- | --- |
 | \(A\) | 1 if \(v\) applied, 0.3 if only suggested | 0.30 |
-| \(J\) | Jaccard(sports, {e.activity}) or 1 if activity ∈ sports | 0.25 |
+| \(J\) | 1 if event activity matches a candidate sport; otherwise 0 | 0.25 |
 | \(G\) | Geo closeness to event | 0.20 |
 | \(T\) | Window overlap with `starts_at` | 0.15 |
 | \(H\) | History: previous accepted co-attendance with organizer | 0.10 |
 
-Used by the organizer UI (“suggested accept order”) and by “people you may invite”.
+Used to rank pending applicants in organizer event detail. Invitation selection remains a separate member choice.
 
 **Capacity** is not in the score; it is a hard constraint when accepting (FS-EVT-07).
 
@@ -55,15 +55,17 @@ Use a **greedy maximal matching**:
 
 1. Sort edges by weight descending
 2. Scan; add edge if both endpoints are free
-3. Break remaining ties with earlier `created_at` (fairness)
+3. Break remaining ties with earlier opt-in timestamp, then endpoint identifiers (determinism)
 
 Approximation: ≥ 1/2 of maximum weight matching. Good enough, easy to justify, easy to unit-test.
 
-If \(|U| \le 80\), we may run a blossom implementation in a library and compare greedy in a test (algorithmic bonus).
+The implementation constructs all candidate pairs in O(n²), sorts eligible edges in O(E log E), then scans once. No blossom solver is implemented. The one-half bound applies to nonnegative edge weights.
 
 ### Output
 
-Each matched pair gets a **proposed instant event** (draft, `visibility=friends`, capacity=1) at the midpoint of the overlapping window. Members still accept (human in the loop).
+Each matched pair gets a proposed instant event with `visibility=private` and capacity 1. The first member organizes it; the other is explicitly invited, so compatible public strangers can access their proposed session. It starts at the beginning of the shared window and fits within the overlap. If that slot has passed, the proposal advances by whole weeks. The invitee applies and the organizer accepts through the normal event workflow.
+
+Each nightly run preserves existing pairs and considers only unassigned opt-ins. A transaction and week lock keep pair persistence and event creation atomic. Reading a pair rechecks active status, blocks and public-or-friend visibility. Stored windows and recurrence use UTC; local clock times can shift across daylight-saving changes.
 
 ## Why this and not “just search”
 
@@ -81,3 +83,4 @@ That is the Algorithms module evidence, distinct from suggestions.
 - No edge across a block
 - Empty overlap → no edge
 - Tiny graph: greedy result equals the obvious optimum
+- Real database tests verify later opt-ins, concurrency, rollback after event creation failure and private invitation visibility

@@ -1,0 +1,12 @@
+* text=auto
+*.pdf -text
+*.pptx -text
+*.png -text
+*.jpg -text
+*.jpeg -text
+*.webp -text
+*.gif -text
+*.ico -text
+*.7z -text
+*.zip -text
+*.gz -text

@@ -1,57 +1,24 @@
-# Image storage
+# Images, audio and object storage
 
-| Field | Value |
+Media metadata and ownership live in PostgreSQL. Object bytes live in a private SeaweedFS bucket through the S3 API, both locally and on the VPS. No AWS-hosted bucket is assumed.
+
+1. The authenticated API validates ownership, quota and the requested media kind, then creates an upload record and a short-lived signed PUT URL.
+2. The browser uploads directly to object storage using the configured public HTTPS endpoint.
+3. Completion validates the actual content. Images are decoded, stripped of metadata and processed into bounded variants; audio duration is checked.
+4. Before issuing a short-lived signed GET URL, the API checks the media's owning resource and the caller's current access.
+
+| Limit | Reviewed implementation |
 | --- | --- |
-| Status | Approved |
-| Related | [03-Authorization-and-file-access.md](03-Authorization-and-file-access.md), [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md) |
+| Signed URL lifetime | 60 seconds |
+| Individual upload | 8 MiB |
+| Owner quota | 1 GiB, including pending, ready and retained deleted objects plus variants |
+| Image dimensions | At most 8,000 pixels per side and 64 megapixels |
+| Image variants | Bounded 320 / 960 pixel variants |
+| Audio duration | 120 seconds |
+| Processing temporary space | Bounded `gb-media` temporary directory; 256 MiB cap |
 
-The brief: **avoid running out of local storage**.
+The service stores processed images under an immutable serving key distinct from the upload key, preventing later replacement through an unexpired upload URL. Rejected and stale uploads are cleaned up; deleted media has a seven-day grace period before cleanup and retains its quota charge until physical purge. Integration tests cover these protections; browser evidence is recorded separately.
 
-## Decision
+The VPS internal endpoint is `http://storage:8333`; that hostname is not browser reachable. `S3_PUBLIC_ENDPOINT` must be the externally reachable HTTPS origin. Caddy must preserve the signed host and object path and allow the Pages origin's PUT/GET/HEAD requests. Keep the bucket private and its administration ports unpublished.
 
-Store bytes in an **S3-compatible bucket** (MinIO in development). The API container’s disk holds only temp files during processing, capped and cleaned.
-
-When `SPRING_PROFILES_ACTIVE=prod`, the API **must refuse to start** if `S3_ENDPOINT` / `S3_BUCKET` / credentials are missing or unreachable. Falling back to a local `uploads/` directory is forbidden.
-
-## Layout
-
-```
-s3://gym-buddy/
-  original/{userId}/{mediaId}
-  variant/{userId}/{mediaId}/sm   # 320w webp
-  variant/{userId}/{mediaId}/md   # 960w webp
-```
-
-Keys are unguessable UUIDs. Directory listing is disabled.
-
-## Processing
-
-A Java image worker (Thumbnailator / ImageIO) :
-
-- Strip EXIF (GPS in gym selfies is a privacy bug)
-- Re-encode (no stored bombs)
-- Produce `sm` / `md`
-- Reject dimensions > 8000 px or compression bombs (decompressed size cap)
-
-Temp dir: `os.tmpdir()/gb-media` with a 256 MiB quota. Fail the job rather than fill the disk.
-
-## Quotas
-
-| Limit | Value |
-| --- | --- |
-| Per file | 8 MiB |
-| Per user | 1 GiB (sum of `media.bytes` for non-deleted) |
-| Per post | 4 images |
-| Variants | Count toward quota |
-
-When a post or account is deleted, objects are marked and a daily job hard-deletes after 7 days.
-
-## Why not local disk
-
-| Local `uploads/` | Object storage |
-| --- | --- |
-| Fills the VM; fixtures × images die | Dedicated volume / cloud bucket |
-| Hard to share between API replicas | Shared by key |
-| Accidental static-file hosting | No public list; signed GET only |
-
-This is also the justification paragraph for the report.
+See [authorization](03-Authorization-and-file-access.md), [media requirements](../30-Functional-specifications/12-Media-and-files.md) and [release verification](../80-Testing/06-Release-verification.md).

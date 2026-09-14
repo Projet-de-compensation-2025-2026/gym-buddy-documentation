@@ -1,0 +1,19 @@
+# Release verification — 14 September 2026
+
+The backend was deployed at 20:36 UTC as **1.2.0**, revision `06efed857808549b7bfaa378059662f0da1a70e0`. Public HTTPS health and readiness both returned 200. Frontend 1.2.0, revision `962e4ce01c458b80cb9f78c36ef81ce07def653b`, was published through [Pages release CI](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-ui/actions/runs/34894128538). Media browser checks are recorded below; one passing journey does not establish complete feature coverage.
+
+| Evidence | Verified result |
+| --- | --- |
+| Backend tests | [Hosted CI](https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service/actions/runs/34889330450) passed 294 tests, with no failures or skipped integration tests. Coverage includes PostgreSQL persistence, staff filters, matching transactions, fixtures and signed S3 lifecycle/access denial. |
+| Database migration | Isolated rehearsal and frozen final restore matched all 23 table counts/content hashes, index/constraint definitions and sequence state. ICU en-US and case-insensitive email uniqueness passed. Original volumes and protected logical backups were retained. |
+| Storage deployment | SeaweedFS 4.47 replaced the previous object store using a private bucket and loopback S3 endpoint. The old bucket was empty in both inventory checks. Caddy preserves signed host/path and exposes only object operations. |
+| Live member journeys | Separate synthetic members exercised registration/login, feed engagement, nested comments, friendships, private-resource denial, real-time text delivery and event applications. |
+| UI repair preview | Private-event editing/invites, own-post editing, combined search filters and narrow-screen layouts passed against the API. These fixes are now released; final browser acceptance remains in progress. |
+| Live staff journeys | Admin and moderator login/default user lists passed after deployment. Admin hid/restored one synthetic post and resolved a synthetic report, with persisted audit entries. Moderator navigation and direct audit-route denial passed; last-admin controls were disabled. |
+| Browser media | On the released website, synthetic D sent A a 400×400 image received without reload, and a 2.06-second audio clip played on both accounts without error. D updated their avatar and created an image post whose detail rendered correctly. Event-cover verification remains separate. |
+| Security scans | The released API image, patched PostgreSQL image and SeaweedFS image had zero CRITICAL findings in the dated Trivy scans. Reviewed non-test Maven coordinates had no OSV matches; the UI package audit found no advisories. This is scoped scan evidence, not a guarantee of no vulnerabilities. |
+| Host review | Installed Caddy had zero CRITICAL scan findings, while its module advisory review retained HIGH/MODERATE matches. Ubuntu reported no applicable standard security updates; ordinary updates and a reboot-required marker remain. No broad host upgrade or reboot was performed. |
+
+The deployment used the exact scanned images, transferred through an authenticated temporary CI artifact after the existing CI SSH credentials failed. Archive checksums and original image configuration hashes were verified on the VPS; registry digests and Docker runtime identifiers are recorded separately. Future automated VPS deployment needs the SSH credential configuration repaired. Published Git history has not been rewritten.
+
+Known limits include UTC-based weekly recurrence, unmeasured large-dataset performance and incomplete coverage of every mockup/state. Password-change browser validation and the nightly matching user journey remain distinct from their automated tests. See [test plan](01-Test-plan.md) and [critical analysis](../91-Critical-analysis/01-Current-analysis.md).

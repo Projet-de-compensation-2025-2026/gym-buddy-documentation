@@ -33,7 +33,7 @@ Member (requester, addressee), staff (read-only in back-office).
 - Unfriend deletes the row (or sets `declined`). Either side may send a new request afterwards.
 - Block: upsert status `blocked` with the blocker as requester. Reverse pending requests are cancelled. Existing DMs remain readable (FS-MSG-10) but send is `FORBIDDEN`.
 - Self-friend and request to `closed`/`locked` → `NOT_FOUND`.
-- Incoming/outbound pending lists are owner-only.
+- Incoming/outbound pending lists and the blocked list are owner-only. An existing block cannot be taken over by its target; only its owner can remove it.
 
 ## Target HTTP
 

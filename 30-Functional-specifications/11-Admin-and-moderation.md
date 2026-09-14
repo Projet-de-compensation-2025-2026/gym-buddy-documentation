@@ -7,7 +7,7 @@
 
 ## Intent
 
-Staff accounts are **created and administered**, not self-serve. The brief requires admin / moderator accounts **and** a back-office.
+Staff accounts are created and administered by an administrator or the designated operator bootstrap. The first registration on an empty database may become admin (FS-ACCT-10). The brief requires admin / moderator accounts **and** a back-office.
 
 ## Actors
 
@@ -34,7 +34,7 @@ Also implements remaining FS-ACCT-08 (lock/unlock) and FS-ACCT-09 (roles) from [
 - Last admin cannot demote or lock themselves (`CONFLICT`).
 - Hide is not a member delete: members see `NOT_FOUND`; staff see the row + reason.
 - Back-office is a **separate Angular application** (or isolated `/admin` configuration with its own bundle) inside `gym-buddy-ui` ([../20-Architecture/05-Back-office.md](../20-Architecture/05-Back-office.md)).
-- Mockup leftovers **not** to implement: Dashboard widgets, Bookings, Analytics, Invite User, Export CSV, + New Session, Billing. Nav is Users, Content, Reports, Media, Fixtures, Audit.
+- Out-of-scope mockup controls: Dashboard widgets, Bookings, Analytics, Invite User, Export CSV, + New Session, Billing. Nav is Users, Content, Reports, Media, Fixtures, Audit.
 
 ## Target HTTP
 

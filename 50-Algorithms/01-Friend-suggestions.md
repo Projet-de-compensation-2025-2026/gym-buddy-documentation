@@ -16,7 +16,7 @@ This is the assignment’s “personalized friend suggestions (algorithm used mu
 - Thousands of users (fixtures), not millions
 - Must explain each card (“why this person”)
 - Must respect blocks, pending requests, private profiles
-- Request path &lt; 200 ms p95 → **precompute candidates**
+- Response-time target: < 200 ms p95; requires measurement on fixture data.
 
 ## Approach: two-stage generate-and-score
 
@@ -46,7 +46,7 @@ S(u,v) = w_1 \hat{m} + w_2 J + w_3 G + w_4 T + w_5 E
 | \(T\) | Overlap of `preferred_windows` (hours / week shared ÷ 10, capped at 1) | 0–1 | 0.15 |
 | \(E\) | Experience closeness: 1 if equal, 0.5 if adjacent, 0 else | 0–1 | 0.10 |
 
-Weights sum to 1. They are constants in config so the defense can show a sensitivity argument.
+Weights sum to 1. They are explicit constants in the scorer, allowing a sensitivity discussion.
 
 **Primary reason** on the card = feature with the largest \(w_i \cdot \text{feature}_i\).
 
@@ -57,20 +57,13 @@ Read top \(k\) from `suggestion_scores` for \(u\). If the row set is older than 
 Recompute:
 
 - Nightly for all users (batch)
-- On accept-friend, for both endpoints and their neighbors (incremental)
+- On a request when stored scores are absent, older than 48 hours, or predate the viewer’s latest relationship change. This refresh is synchronous; an incremental neighbor worker is not implemented.
 
 ## Complexity
 
-Let \(d\) be average degree (~8 with 3k users / 12k edges).
+Candidate generation caps the scored set at 200. Graph-neighbor intersections, recent attendance and profile compatibility still require data access; the cap alone does not make the entire request constant-time. Scoring traverses candidate features and the implementation sorts all scores in O(C log C), then takes the requested top k (default 20, maximum 50). It does not use a top-k heap.
 
-| Step | Time |
-| --- | --- |
-| FoF | \(O(d^2)\) per user |
-| Score one candidate | \(O(d + |sports|)\) |
-| Score \(\|C\|=200\) | negligible |
-| Nightly all users | \(O(n d^2)\) ≈ 3k × 64 — fine in a script |
-
-No \(O(n^2)\) all-pairs.
+Stored scores live in PostgreSQL. A daily job at 03:15 UTC refreshes suggestions and assigns weekly matches. Database query count and nightly duration need fixture-scale measurements.
 
 ## Why not the alternatives
 
@@ -92,7 +85,7 @@ On fixture clusters (city × sport):
 - **Coverage**: % of users who receive ≥ 5 suggestions
 - **Abuse**: 0 blocked users in any list (invariant test)
 
-These metrics are unit-tested on a tiny hand-built graph and integration-tested on a slice of fixtures.
+These are proposed evaluation metrics, not measured results. Existing tests verify scoring and exclusion rules; report measured precision and coverage only after running an explicit evaluation.
 
 ## Pseudocode
 
