@@ -1,66 +1,28 @@
 # Test plan
 
-| Field | Value |
-| --- | --- |
-| Status | Approved |
-| Related | [../40-Technical-specifications/07-Test-fixtures.md](../40-Technical-specifications/07-Test-fixtures.md) |
+The school brief requires functional, unit and integration tests, including backend unit tests. Coverage is organized around failures users could encounter rather than a percentage of getters tested.
 
-The brief asks for a **reasonable** plan covering functional, unit, and integration tests — not 100% of every getter.
+| Layer | Scope | Tools |
+| --- | --- | --- |
+| Unit/component | Domain rules, algorithms, validation, authorization and UI state. | JUnit/AssertJ; Angular test tooling. |
+| Integration | Real SQL, migrations, Redis and signed private object storage. | JUnit and Testcontainers. |
+| Browser | Real member/staff journeys, privacy, uploads, errors and mockup comparison at desktop/mobile widths. | Interactive browser automation and screenshots. |
 
-## Test pyramid
+## Required scenarios
 
-| Layer | Where | Share of effort | Tool |
-| --- | --- | --- | --- |
-| Unit | Domain services, algorithms, security rules | ~60% | JUnit 5 + AssertJ |
-| Integration | API + DB + bucket (Testcontainers: PostgreSQL, MinIO) | ~25% | JUnit 5 + MockMvc / WebTestClient |
-| Functional | Critical user journeys in a browser | ~15% | Playwright against Angular |
+- Register/login/refresh/logout; invalid credentials; forged or expired JWT; account closure and role boundaries.
+- Public/private profiles, friend request/accept/decline/cancel/unfriend/block/unblock, and unauthorized direct URLs.
+- Feed/posts/reposts/likes; nested comment depth and tombstones; pagination and empty states.
+- Instant/weekly events, invitations, applications, acceptance/decline/withdrawal, occurrence cancellation and last-seat contention.
+- Combined people/event filters, explainable suggestions, exclusions/dismissals, matching opt-in persistence and no double assignment.
+- Text/image/audio messages, delivery with socket fallback, sender deletion and conversation access.
+- Signed media upload/download, content validation, quota, hidden/deleted media, processing limits and cleanup.
+- Moderator/admin lists, report resolution, moderation, audit, role changes and production fixture guards.
 
-Backend unit tests are the academic priority.
+## Evidence and completion
 
-## Risk-based coverage
+A feature requiring deployed behavior needs a real browser check after release, including failure paths and persistence where relevant. Compare major routes with the supplied mockups and check mobile overflow, input labels and loading/error states. Passing unit tests do not establish visual parity or production readiness.
 
-Must have automated tests:
+Container integration tests must run in CI; explicitly distinguish unavailable local Docker from executed tests. Fixture performance and relevance measurements are separate from dataset creation. The bounded 1,000-user integration dataset does not establish the latency of a full 3,000-user deployment.
 
-| Risk | Tests |
-| --- | --- |
-| JWT forged / expired / wrong `typ` | Unit + integration |
-| Private profile / friends-only event leak | Integration |
-| Capacity race on accept | Integration (transaction) |
-| Comment depth cap | Unit |
-| Suggestion forbids friends/blocks | Unit on a fixture graph |
-| Matching double-assigns | Unit |
-| Signed URL without `canRead` | Integration |
-| Fixture command refused in production | Unit |
-
-Should have:
-
-- Feed pagination
-- Search filters (sports + city + remaining)
-- Message persist when WS is down
-- Role guard on `/admin`
-
-Won’t automate at MVP:
-
-- Visual polish
-- Mail rendering
-- Full 3 000-user performance (one manual EXPLAIN + one timed suggestion run is enough for the report)
-
-## Definition of done for a feature
-
-1. FS IDs listed in the PR
-2. Unit tests for every new business rule
-3. At least one integration test if an HTTP contract changed
-4. Functional test only if the journey is in [04-Functional-tests.md](04-Functional-tests.md)
-
-## Environments
-
-| Env | Data |
-| --- | --- |
-| CI unit | No I/O |
-| CI integration | Ephemeral Postgres (+ MinIO if services available) |
-| Local demo | Large fixtures |
-| Production | Fixtures disabled |
-
-## Traceability
-
-Name tests after IDs: `FS-EVT-07 rejects accept when full`.
+Record requirement IDs, tested revision/environment, observed result and remaining limitations in [release verification](06-Release-verification.md). [Fixture details](../40-Technical-specifications/07-Test-fixtures.md) describe reproducibility and safe local generation.

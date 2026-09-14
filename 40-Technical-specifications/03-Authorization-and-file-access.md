@@ -1,52 +1,24 @@
 # Authorization and file access
 
-| Field | Value |
-| --- | --- |
-| Status | Approved |
-| Related | [../30-Functional-specifications/12-Media-and-files.md](../30-Functional-specifications/12-Media-and-files.md), [04-Image-storage.md](04-Image-storage.md) |
+The API authorizes every signed download using the active account, media state and its parent resource. A private S3-compatible bucket supplies storage; its policy alone cannot express friendship or conversation access.
 
-The brief requires **security and controlled access for all files**.
+`MediaService.url` requires an active authenticated viewer. Missing and denied media both return `NOT_FOUND`. Its checks are ordered:
 
-## Object ACL is not enough
+1. The media must be ready and not deleted. Hidden media is denied to ordinary members.
+2. If the owner is missing or closed, only staff can read it.
+3. Staff can inspect ready media for moderation. The owner can read their own ready media.
+4. Other viewers need access to the attached post, event or conversation. An avatar requires a public profile or accepted friendship. Unsupported/unattached media is denied.
 
-MinIO/S3 bucket policies are a backstop. **Product authorization** lives in the API because visibility depends on friendship, event membership, and conversation membership.
+These rules are implemented in `MediaService.canRead` and `CompositeAttachedMediaAccess` with `PostAttachedMediaAccess`, `EventAttachedMediaAccess` and `MessageAttachedMediaAccess`. A signed URL remains a transferable capability until its 60-second expiry; later visibility changes do not revoke an already issued URL immediately.
 
-## Access algorithm
+## Upload and download
 
-```
-canRead(user, media):
-  if media.status != ready: deny
-  if user.role in {admin, moderator}: allow          # back-office only
-  parent = loadParent(media)
-  match parent.kind:
-    avatar  → profile visible to user (FS-PROF)
-    post    → user can view the post (FS-POST / FS-FEED)
-    comment → (no media at MVP)
-    message → user ∈ conversation.members
-    event   → user can view the event (FS-EVT)
-  else deny
-```
+`POST /api/v1/media` accepts JSON `{kind, mime, bytes}` and reserves quota before returning a media ID and a 60-second signed PUT URL. The browser PUTs bytes directly to object storage. The scheduled processor verifies content, size and image/audio limits, creates sanitized immutable serving objects/variants and marks valid media ready. Parent creation/update attaches the media ID.
 
-Never leak existence: deny and missing both return `NOT_FOUND`.
+`GET /api/v1/media/{id}/url` returns a 60-second signed GET after authorization. There is no application proxy-stream or multipart-upload endpoint. [Image storage](04-Image-storage.md) describes processing limits and quota accounting.
 
-## Two download modes
+## Lifecycle
 
-| Mode | Use | Rule |
-| --- | --- | --- |
-| Signed GET | Browsers (`<img src>`, audio) | Presigned URL, 60 s, GET only, content-type fixed |
-| Proxy stream | When the bucket must stay private on a network that cannot hit MinIO | API re-runs `canRead` then streams |
+The sweep retries pending ingestion. Unprocessed pending objects older than one hour and their rows are removed. Rejected uploads have their object tree deleted; their metadata supports rejection tracking. Completed upload keys receive a later cleanup pass to remove replayed bytes. Deleted media is denied immediately but its objects remain for a seven-day grace period and continue counting toward quota until physical purge. Processed serving keys differ from the mutable upload key.
 
-Signed URLs are **capability tokens**. They can be forwarded; keep TTL short. Do not issue a URL until `canRead` is true.
-
-## Upload
-
-1. `POST /media` `{ kind, mime, bytes }` → quota check → `media` row `pending` + `{ uploadUrl, mediaId }`
-2. Client PUT bytes to `uploadUrl` (also short-lived)
-3. Worker (or hook) verifies magic bytes, size, duration; writes variants; sets `ready`
-4. Client attaches `mediaId` to post/message/profile
-
-Orphan `pending` rows older than 1 h are deleted.
-
-## Encryption
-
-TLS in transit. Bucket encryption at rest if the provider offers it. No application-level E2E for files at MVP (called out in critical analysis).
+TLS protects browser transport. The application does not implement end-to-end encryption or claim verified storage encryption at rest. Current deployment and migration checks are recorded in [release verification](../80-Testing/06-Release-verification.md).

@@ -30,7 +30,7 @@ Two accepted friends; staff may inspect in back-office (no E2E).
 
 ## Business rules
 
-- Persistence first: HTTP write, then fan-out. A dropped socket never loses a message ([../40-Technical-specifications/05-Messaging-transport.md](../40-Technical-specifications/05-Messaging-transport.md)).
+- Persistence first: HTTP write, then fan-out. A dropped socket never loses a message ([../40-Technical-specifications/05-Messaging-transport.md](../40-Technical-specifications/05-Messaging-transport.md)). The client also polls as a fallback; a delivery observation alone does not identify its transport.
 - One conversation per unordered friend pair.
 - Presence (“Online” on mockup 14) is optional Redis TTL; not required for acceptance.
 - Read receipts beyond unread count are out of scope. Unread increments until the viewer `GET`s the thread (or sends a `read` event).

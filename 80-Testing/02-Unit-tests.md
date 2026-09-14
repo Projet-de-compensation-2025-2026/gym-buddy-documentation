@@ -39,4 +39,4 @@ Use a fake clock for “edit window 15 minutes” and “dismiss 30 days”.
 
 ## What not to unit-test
 
-Hibernate / Spring internals, generated OpenAPI clients, CSS. Cover those at integration / visual review.
+Spring internals, generated OpenAPI clients, CSS. Cover those at integration / visual review.

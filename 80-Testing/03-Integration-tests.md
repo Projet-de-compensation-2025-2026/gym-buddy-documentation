@@ -1,32 +1,17 @@
 # Integration tests
 
-| Field | Value |
+The service runs JUnit tests against disposable PostgreSQL, Redis and S3-compatible storage through Testcontainers. Docker is required; CI requires the integration suites to execute and rejects skipped container tests. Unit-only local results are recorded separately.
+
+| Suite | Boundary exercised |
 | --- | --- |
-| Status | Approved |
+| `AuthIT`, `ProfilesIT` | Persistent accounts/authentication and profile visibility. |
+| `ConversationsIT` | Stored direct conversations/messages and participant access. |
+| `EventsIT` | Persisted events, applications and transactional capacity behavior. |
+| `MediaIT`, `ReadinessIT` | Real signed object-storage operations, media processing and dependency readiness. |
+| `FixtureGeneratorIT` | Related fixture rows and a bounded 1,000-user dataset with database constraints. |
+| `AdminCatalogIT` | Staff listing SQL with optional filters and PostgreSQL parameter typing. |
+| `PostgresImageIT` | Replacement database image startup/tool/locale behavior; it does not prove a production-data migration. |
 
-## Scope
+The S3 compatibility checks cover signed PUT/GET/HEAD/delete, object metadata, anonymous access denial and tampered upload length. Image scanning is a separate security check. A database migration additionally requires protected dump/restore rehearsal with every table's counts/content hashes and index/constraint checks; starting an empty replacement database is insufficient.
 
-One real API process, real PostgreSQL, real or testcontainer MinIO, Redis if refresh denylist is exercised.
-
-## Contracts to lock
-
-| Contract | Assert |
-| --- | --- |
-| `POST /auth/login` | 200 + cookie; bad password 401 generic |
-| `GET /profiles/:handle` as stranger vs friend | stub vs full |
-| `POST /friendships` duplicate | 409 |
-| `GET /feed` | only friends’ items |
-| `POST /events/:id/applications` as stranger on friends-only | 404/403 |
-| `POST /applications/:id/accept` twice to overflow | second 409 |
-| `POST /media` then unsigned GET of key | denied |
-| `GET /search/people` | private stranger absent |
-| `POST /admin/users/:id/role` as moderator | 403 |
-| Production guard on fixtures | 403 / disabled |
-
-## Data
-
-Each test builds the rows it needs via factories (tens, not thousands). A `beforeEach` transaction rollback keeps tests isolated.
-
-## Time
-
-Prefer < 5 minutes on CI. If MinIO is unavailable, skip media cases with an explicit `describe.skip` rather than a false green.
+Each suite controls its own disposable data. Do not infer one universal transaction rollback fixture or test duration. Run the repository's normal Maven verification command and inspect the test report; [release verification](06-Release-verification.md) records the precise executed revision and outcomes.
