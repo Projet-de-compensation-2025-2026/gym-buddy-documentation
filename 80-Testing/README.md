@@ -16,3 +16,5 @@ Fixture generation is specified in [../40-Technical-specifications/07-Test-fixtu
 ## Next
 
 [90-Changelog](../90-Changelog/README.md) · [Back to home](../README.md)
+
+[Dated release verification](06-Release-verification.md) separates deployed, preview and local-test evidence.

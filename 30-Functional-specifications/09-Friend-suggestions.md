@@ -23,10 +23,10 @@ Authenticated member.
 | FS-SUGG-04 | The member can dismiss a suggestion (`not now`); it is suppressed for 30 days. |
 | FS-SUGG-05 | “Add friend” from a card creates a normal request ([03-Friends.md](03-Friends.md)). |
 | FS-SUGG-06 | Suggestions respect private profiles: a private stranger may appear only as a stub if the scoring features used are allowed (mutual friends, not hidden bio). |
-| FS-SUGG-07 | Recompute at least daily and after friend-graph changes (async). Stale scores older than 48 h must not be served if a recompute is pending — fall back to on-the-fly top-k for the viewer. |
+| FS-SUGG-07 | Refresh nightly and synchronously on reads when scores are absent, older than 48 hours, or predate the viewer’s latest relationship change. Filter current visibility and relationships before returning cards. |
 | FS-MATCH-01 | A member may opt into “match me this week”. |
 | FS-MATCH-02 | The service runs the greedy maximal matching in [../50-Algorithms/03-User-matching.md](../50-Algorithms/03-User-matching.md) on the opt-in set (nightly). |
-| FS-MATCH-03 | Each matched pair gets a **proposed instant event** draft (`visibility=friends`, capacity 1) at the overlapping window. Members still accept (human in the loop). No edge across a block; a person is assigned at most once. |
+| FS-MATCH-03 | Each matched pair gets a proposed instant event (`visibility=private`, capacity 1) at the start of a shared window, with the other member explicitly invited. Application and organizer acceptance remain required. No edge crosses a block; a person is assigned at most once per week. |
 
 ## Business rules
 

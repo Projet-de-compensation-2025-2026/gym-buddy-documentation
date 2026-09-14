@@ -81,13 +81,19 @@ sequenceDiagram
   actor A as Sender
   participant FE as Frontend
   participant API as API
-  participant S3 as MinIO
+  participant S3 as SeaweedFS
   participant WS as Gateway
   actor B as Friend
 
   A->>API: POST /media
   API-->>A: mediaId + signed PUT
   A->>S3: PUT bytes
+  API->>S3: Scheduled ingestion reads uploaded bytes
+  API->>API: Validate, sanitize and mark READY
+  loop Until ready or rejected
+    FE->>API: GET /media/:id/url
+    API-->>FE: Not ready, rejection, or ready URL
+  end
   A->>API: POST /conversations/:id/messages {type:image, mediaId}
   API->>API: canRead / canWrite conversation
   API-->>WS: message.created

@@ -1,15 +1,9 @@
-# QA v1.0.0 live shots
+# Historical v1.0.0 browser captures
 
-Playwright captures of the **v1.0.0** GitHub Pages UI against the OVH API. These are live Angular screens, not wiki mockup JPGs.
+These screenshots preserve the earlier released Angular UI against the OVH API. They are historical evidence, distinct from design mockups and current release verification.
 
-Each child folder is one crawl (admin back-office, public/auth, member app).
+- [Public/auth](public/README.md)
+- [Member application](member/README.md)
+- [Staff application](admin/README.md)
 
-## Contents
-
-| Folder | Crawl |
-| --- | --- |
-| [admin/](admin/) | Isolated `/admin/` bundle |
-| [public/](public/) | Public / auth |
-| [member/](member/) | Signed-in member app |
-
-Findings: [../../qa-v1.0.0-admin.md](../../qa-v1.0.0-admin.md), [../../qa-v1.0.0-public.md](../../qa-v1.0.0-public.md), [../../qa-v1.0.0-member.md](../../qa-v1.0.0-member.md). Parent: [../README.md](../README.md).
+Current provenance: [screenshot gallery](../README.md). The superseded detailed issue narratives remain in Git history.

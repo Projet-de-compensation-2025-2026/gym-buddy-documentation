@@ -18,7 +18,7 @@ All auth HTTP paths are under `/api/v1`.
 
 Both are signed with **HS256** at MVP (one secret, `JWT_ACCESS_SECRET`). RS256 is an improvement if a second service must verify.
 
-Refresh cookie is `HttpOnly`+`Secure`+`SameSite=None`+`Partitioned`, path `/api/v1/auth`. Access JWT stays in memory. Do **not** put refresh in `localStorage`. `SameSite=Lax` does not ride a github.io → VPS credentialed XHR (that was the v1.0.0 session-drop). Ticket **#89** sets `SameSite=None; Secure` so `https://projet-de-compensation-2025-2026.github.io` can send the cookie, and `Partitioned` (CHIPS) so Chromium still stores it in the GitHub Pages top-level site partition. CORS already sends `Access-Control-Allow-Origin` for that Pages origin with credentials. Ticket **#31** is **Done / closed** (apiBaseUrl + CORS). Ticket **#37** is **closed / completed** (Joaquim 2026-08-19: create-account + sign-in from Pages is enough). Do **not** Todo **#37**.
+The refresh cookie is HttpOnly, Secure, SameSite=None and Partitioned, scoped to `/api/v1/auth`. Credentialed CORS allows the Pages origin. The access token stays in memory. Browser cookie behavior must be verified on the actual deployed origins.
 
 ## Claims (access)
 
@@ -37,10 +37,10 @@ Do not put email in the access token (leakage via browser logs).
 
 ## Flows
 
-1. `POST /api/v1/auth/register` → user row + profile + (optional) verification mail
+1. `POST /api/v1/auth/register` → user row + profile
 2. `POST /api/v1/auth/login` `{ email, password }` → access JSON + `Set-Cookie` refresh
 3. `POST /api/v1/auth/refresh` (cookie) → new access, rotated refresh (`jti` replaced)
-4. `POST /api/v1/auth/logout` → refresh `jti` denylisted in Redis until `exp`
+4. `POST /api/v1/auth/logout` → refresh credential revoked in Redis
 5. Locked user: login and refresh fail
 
 ## Password
@@ -49,14 +49,14 @@ Argon2id, memory ≥ 19 MiB, one-way. Timing-safe compare. Generic error on unkn
 
 ## Guards
 
-A Spring Security filter (or `OncePerRequestFilter`) verifies signature, `exp`, `typ=access`, and that `users.status = active`. A method-security expression (`@PreAuthorize("hasRole('ADMIN')")`) or a dedicated voter checks `role` for `/api/v1/admin/*`.
+`AccessTokenFilter` validates the access credential and supplies the current principal. Resource services enforce ownership, membership, visibility and staff permissions. Account state is checked server-side. Refresh rotation consumes the prior credential atomically in Redis; password/account changes invalidate relevant credentials.
 
 ## Threat notes
 
 | Risk | Mitigation |
 | --- | --- |
 | Stolen access token | Short TTL |
-| Stolen refresh | Rotation + Redis denylist + Secure cookie |
+| Stolen refresh | Atomic rotation + Redis credential state + Secure cookie |
 | XSS reading tokens | Prefer memory for access, HttpOnly for refresh |
 | Algorithm none | Library configured to refuse `alg=none` |
 

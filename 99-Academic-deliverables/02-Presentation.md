@@ -1,46 +1,34 @@
-# Presentation (PowerPoint)
+# Soutenance — déroulé de 18 minutes
 
-| Field | Value |
+Le [diaporama français](Gym-Buddies-defense.pptx) contient 12 diapositives et des notes orales. Prévoir 18 minutes, garder 2 minutes de marge, puis environ 30 minutes de questions conformément au sujet.
+
+| Temps | Partie |
 | --- | --- |
-| Status | Assembled — `Gym-Buddies-defense.pptx` (12 slides). Demo slides 4–6 carry live v1.1.0 shots |
-| Related | [../00-Project-brief/02-Stakeholders-and-defense.md](../00-Project-brief/02-Stakeholders-and-defense.md) |
+| 0:00–1:30 | Besoin, périmètre et modules évalués |
+| 1:30–3:30 | Architecture et rôle des quatre dépôts |
+| 3:30–9:30 | Démonstration : publication, séance, conversation avec image/audio |
+| 9:30–11:00 | Authentification, confidentialité et personnel |
+| 11:00–14:30 | Suggestions puis appariement hebdomadaire |
+| 14:30–17:00 | Tests, migration et limites |
+| 17:00–18:00 | Bilan |
+| 18:00–20:00 | Marge pour la navigation ou un incident réseau |
 
-Defense: **20 minutes** + **30 minutes Q&A**, in person or remote.
+## Préparer la démonstration
 
-Pages **v1.1.0** is live. Demo as a freshly registered member if `demo.alex` is not in `.env`. Refresh cookie on live 1.1.0 is `SameSite=None; Partitioned` ([../40-Technical-specifications/02-JWT-authentication.md](../40-Technical-specifications/02-JWT-authentication.md)). Admin demo still needs #78 staff bootstrap.
+Utiliser deux profils de navigateur ou deux navigateurs distincts pour les membres A et D. Deux onglets du même profil partagent le cookie de renouvellement et ne constituent pas deux sessions indépendantes. Préparer le personnel dans un profil séparé. Garder les mots de passe hors du support et du partage d’écran.
 
-## Slide spine (≈ 12 slides)
+Ouvrir le [site publié](https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/), les profils, la conversation image/audio et une séance de démonstration. Vérifier le son et la connexion avant de commencer. Les captures de [version 1.2.0](screenshots/release-1.2.0/README.md) constituent le secours si le réseau devient lent.
 
-| # | Slide | Minutes | Talk about | Speaker notes |
-| --- | --- | --- | --- | --- |
-| 1 | Title | 0.5 | Gym Buddies, ISEP 2025/2026, Joaquim Kéloglanian | One line: social app to find a gym buddy. |
-| 2 | Problem | 1 | Athletes train alone; need a buddy | Keep it human. No stack yet. |
-| 3 | Scope | 1 | Modules, in-scope list, explicit out-of-scope | Point at `01-Scope-and-modules.md`. Mention cadrage if it happened. |
-| 4 | Demo 1 — social | 4 | Feed, post, nested comment, like, friend accept | Live as `demo.alex`. If it fails, play the offline recording. |
-| 5 | Demo 2 — session | 4 | Friends-only event, apply, accept, capacity | Show a full event and a rejected extra applicant. |
-| 6 | Demo 3 — buddy | 2 | Suggestions + DM image | Read the “why” line on a suggestion. |
-| 7 | Architecture | 2 | Modular monolith, four repos, MinIO, Postgres, VPS | Wiki + OpenAPI + service + UI. Pages for static; OVH for Java. |
-| 8 | Data model | 1 | 6–8 entities, not the whole ER | User, Friendship, Post, Comment, Event, Media. |
-| 9 | Algorithm deep dive | 3 | Suggestions **or** matching — formula + why not ML | One formula on the slide. Complexity on 3k users. |
-| 10 | Security | 1.5 | JWT + `canRead` + signed URL | Stranger cannot fetch an object key. |
-| 11 | Tests and fixtures | 1 | Pyramid + 3 000 users | Datafaker, seed `20260813`. |
-| 12 | Limits and Q&A | 0.5 | Honest gaps | What you would drop with two weeks less. |
+Montrer un parcours déjà vérifié : image publiée, candidature puis acceptation, place restante, message reçu et lecture audio. Pour une séance hebdomadaire, sélectionner explicitement la bonne occurrence. Les données de démonstration sont synthétiques ; ne pas réinitialiser les fixtures du serveur.
 
-If demo environments fail, slides 4–6 become the recorded video. Keep that file **offline**.
+## Questions à préparer
 
-## Q&A (30 min) — likely questions
+- Pourquoi un monolithe modulaire et un contrat OpenAPI partagé ?
+- Comment empêcher un tiers de lire un média privé ? Pourquoi un lien signé reste-t-il valable 60 secondes ?
+- Comment éviter deux acceptations pour la dernière place ?
+- Que représentent les termes du score ? Quel coût pour les accès aux données et le tri ?
+- Pourquoi un appariement glouton, avec quelle garantie et quelles limites ?
+- Pourquoi les séances hebdomadaires peuvent-elles changer d’heure locale en hiver ?
+- Comment prouver que la version testée est celle qui est déployée ?
 
-- Why Java 25 LTS? Why Angular rather than React?
-- How do you stop a stranger fetching an image key?
-- Complexity of suggestions on 3k users?
-- What happens when two accepts race?
-- How is a recurring event stored?
-- Show a unit test for matching.
-- What would you drop if you had two weeks less?
-- How does a commit reach the VPS? (CI → Release button → GHCR → `replace.sh` → Caddy)
-
-Answers should point at a spec ID, not a new story.
-
-## File
-
-Store the `.pptx` in this folder when it exists (`Gym-Buddies-defense.pptx`). Do not commit huge screen-recordings to git; link them from the private drive or release assets.
+Les preuves et limites exactes figurent dans la [vérification de version](../80-Testing/06-Release-verification.md). Ne pas annoncer une absence absolue de bugs ou de vulnérabilités.

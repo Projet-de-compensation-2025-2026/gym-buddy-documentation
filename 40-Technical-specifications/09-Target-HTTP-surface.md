@@ -1,31 +1,17 @@
-# Target HTTP surface (remaining product)
+# Required HTTP surface
 
-| Field | Value |
-| --- | --- |
-| Status | Approved |
-| Related | [01-API-conventions.md](01-API-conventions.md), [08-OpenAPI-contract.md](08-OpenAPI-contract.md), [../30-Functional-specifications/00-Conventions.md](../30-Functional-specifications/00-Conventions.md) |
+This inventory maps functional requirements to HTTP operations. The versioned OpenAPI YAML is authoritative for exact request/response schemas. Keep this inventory synchronized when the contract changes.
 
-Paths are relative to `/api/v1`. **Today** the `$ref` tree only documents health + auth (`register` / `login` / `refresh` / `logout`). This page is the remaining contract Kernel must add to `gym-buddy-openapi` (`openapi/openapi.yaml` + path/component files). It is **not** a second source of truth once the YAML exists — if they disagree, fix both in the same ticket.
+Consumers pin an exact published compatible contract revision and regenerate their Java/TypeScript interfaces. See [contract workflow](08-OpenAPI-contract.md).
 
-Shared rules: JSON, Bearer access JWT, cursor pagination envelope, error envelope, `Idempotency-Key` on creating POSTs — [01-API-conventions.md](01-API-conventions.md). Fail closed: missing ACL → `NOT_FOUND` (no existence leak) unless a row already says `FORBIDDEN`.
-
-## Consuming a new contract
-
-Consumers currently pin gym-buddy-openapi tag **v0.1.0**. After an OpenAPI feature PR merges to `develop`:
-
-1. Cut a new **0.1.x** OpenAPI tag via Release **or**, if Release cannot run yet, temporarily pin the new `develop` SHA.
-2. Point `gym-buddy-service` and `gym-buddy-ui` at that pin and regenerate.
-3. Controllers implement generated interfaces. The UI uses the orval client. Do **not** vendor YAML. Do **not** commit generated Java sources.
-4. Application versions stay **0.1.x**. Service `pom.xml` stays **0.2.0-SNAPSHOT** until Release writes it. Do **not** invent **1.0.0**. Do **not** restore `openapi/bundled.yaml`.
-
-## Accounts (leftover after ticket #12)
+## Accounts
 
 | Method | Path | FS | Notes |
 | --- | --- | --- | --- |
 | `POST` | `/auth/password` | FS-ACCT-05 | Body `{ currentPassword, newPassword }`. Revoke other refresh `jti`s. |
 | `POST` | `/me/close` | FS-ACCT-07 | Body `{ password }`. Sets `users.status=closed`. Login afterwards is generic `FORBIDDEN`. Staff may restore via unlock. Mockup copy “recover by logging back in” is **not** the contract. |
 
-Register / login / refresh / logout already exist. Do not reticket them.
+Register, login, refresh and logout are also defined in the contract.
 
 ## Profiles
 
@@ -39,7 +25,7 @@ Register / login / refresh / logout already exist. Do not reticket them.
 
 | Method | Path | FS | Notes |
 | --- | --- | --- | --- |
-| `GET` | `/friendships` | FS-FRND-07 | Query `filter=accepted\|incoming\|outgoing`. Owner + friends may list accepted. |
+| `GET` | `/friendships` | FS-FRND-07 | Query `filter=accepted\|incoming\|outgoing\|blocked`. Blocked entries are visible only to their owner; owner + friends may list accepted. |
 | `POST` | `/friendships` | FS-FRND-01 | Body `{ handle }` or `{ userId }`. |
 | `POST` | `/friendships/{id}/accept` | FS-FRND-02 | Addressee only. |
 | `POST` | `/friendships/{id}/decline` | FS-FRND-02 | Addressee only. |
@@ -84,7 +70,7 @@ Register / login / refresh / logout already exist. Do not reticket them.
 | --- | --- | --- | --- |
 | `GET` | `/events` | FS-EVT | Query: `kind=instant\|recurring`, window. Visibility-filtered. |
 | `POST` | `/events` | FS-EVT-01..04 | Instant or `RRULE`. |
-| `GET` | `/events/{id}` | FS-EVT-03 | Includes occurrences for 90 days + remaining seats. Organizer also gets matching rank of pending applicants (FS-EVT-13). |
+| `GET` | `/events/{id}` | FS-EVT-03 | Includes materialized occurrences and remaining seats. Optional query `occurrenceId` selects the occurrence whose applications/status are shown; organizer receives ranked pending applicants (FS-EVT-13). |
 | `PATCH` | `/events/{id}` | FS-EVT-09 | |
 | `POST` | `/events/{id}/cancel` | FS-EVT-08 | Series or `occurrenceId`. |
 | `POST` | `/events/{id}/applications` | FS-EVT-05 | Optional `occurrenceId`. |
@@ -152,4 +138,6 @@ Prefix `/admin`. `role=moderator` or `admin`. Members calling these get `NOT_FOU
 ## Out of this surface
 
 - Video posts, stories, group chat, E2E encryption, OAuth, Billing, Notifications product, Export CSV, Invite User, admin Bookings / Analytics / Dashboard widgets.
-- Health and the four auth operations already on tag **v0.1.0**.
+Health and register/login/refresh/logout are also part of the contract.
+
+Weekly recurrences enumerate UTC days/times. There is no event timezone field; displayed local time can shift when daylight saving changes.

@@ -5,7 +5,7 @@
 | Status | Approved |
 | Related | [../20-Architecture/06-Data-model.md](../20-Architecture/06-Data-model.md) |
 
-Domain types (not ORM annotations). Align fields with the data model when either changes.
+Conceptual view of the implemented records and services. Selected fields are simplified for readability; this is not an exhaustive Java API listing. Business operations live in services, rather than invented record methods.
 
 ```mermaid
 classDiagram
@@ -15,7 +15,6 @@ classDiagram
     +String handle
     +Role role
     +Status status
-    +verifyPassword(raw)
   }
 
   class Profile {
@@ -26,28 +25,22 @@ classDiagram
     +Float lat
     +Float lng
     +Window[] preferredWindows
-    +isVisibleTo(viewer) bool
   }
 
   class Friendship {
     +User requester
     +User addressee
     +FriendStatus status
-    +accept()
-    +block()
   }
 
   class Post {
     +String body
     +Visibility visibility
-    +like(user)
-    +repost(user)
   }
 
   class Comment {
     +Comment parent
     +int depth
-    +reply(user, body) Comment
   }
 
   class Event {
@@ -55,19 +48,23 @@ classDiagram
     +Date startsAt
     +int durationMin
     +int capacity
-    +RRule recurrence
+    +String recurrence
     +Visibility visibility
-    +remainingSeats() int
+  }
+
+  class EventOccurrence {
+    +UUID id
+    +UUID eventId
+    +Instant startsAt
+    +Instant cancelledAt
   }
 
   class EventApplication {
+    +UUID occurrenceId
     +AppStatus status
-    +accept()
-    +decline()
   }
 
   class Conversation {
-    +send(sender, payload) Message
   }
 
   class Message {
@@ -80,16 +77,12 @@ classDiagram
     +String bucketKey
     +MediaKind kind
     +int bytes
-    +canRead(user) bool
   }
 
-  class SuggestionEngine {
-    +suggest(user, k) Candidate[]
+  class SuggestionService {
   }
 
-  class MatchingEngine {
-    +rankForEvent(event, users) Candidate[]
-    +weeklyPairs(users) Pair[]
+  class MatchingService {
   }
 
   class SuggestionDismissal {
@@ -104,14 +97,15 @@ classDiagram
   Post "1" --> "*" Comment
   Comment "0..1" --> "*" Comment
   User "1" --> "*" Event : organizes
-  Event "1" --> "*" EventApplication
+  Event "1" --> "*" EventOccurrence
+  EventOccurrence "1" --> "*" EventApplication
   User "1" --> "*" EventApplication
   User "*" --> "*" Conversation
   Conversation "1" --> "*" Message
   User "1" --> "*" Media
-  SuggestionEngine ..> User
-  MatchingEngine ..> Event
-  MatchingEngine ..> User
+  SuggestionService ..> User
+  MatchingService ..> Event
+  MatchingService ..> User
   User "1" --> "*" SuggestionDismissal
 ```
 

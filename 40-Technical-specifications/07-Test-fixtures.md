@@ -1,69 +1,38 @@
 # Test fixtures
 
-| Field | Value |
-| --- | --- |
-| Status | Approved |
-| Related | [../80-Testing/01-Test-plan.md](../80-Testing/01-Test-plan.md), [../20-Architecture/07-Technology-choices.md](../20-Architecture/07-Technology-choices.md) |
+The school brief requires thousands of fixtures. Java Datafaker factories and `JdbcFixtureGenerator` create related users, profiles, friendships, posts, comments, events/applications and text conversations in a disposable PostgreSQL database.
 
-The brief requires **thousands of test fixtures**.
+## Run locally
 
-## Goals
+Configure the service's local database/object-store environment and keep the Spring `prod` profile disabled. From the service repository:
 
-- Local demo looks alive (feed, search, suggestions, events)
-- Algorithms have a non-trivial graph
-- Tests can opt into a small deterministic set **or** a large seeded set
-
-## How
-
-Factory classes (`UserFactory`, `PostFactory`, …) on top of **Datafaker** (Java) with a **fixed seed** (`FIXTURE_SEED=20260813`). This matches the Approved stack. Do not add `@faker-js/faker` to the backend.
-
-A CLI / back-office action:
-
-```
-./mvnw -pl fixtures exec:java -- --users 3000 --posts-per-user 5 --events 800
+```sh
+mvn compile exec:java -Dexec.mainClass=fr.projetcompensation.gymbuddy.fixtures.FixturesCli -Dexec.args="--users 3000 --posts-per-user 5 --events 800"
 ```
 
-Default target (order of magnitude):
+The entry point starts the required Spring context without an HTTP listener. `--reset` deletes all users and related data in the configured test database, not only rows previously created by fixtures. Use it only with a disposable database; omit it to preserve existing rows. The generator uses `FIXTURE_SEED` (default `20260813`) and a fixed January 2026 time origin. An explicit `--seed` overrides that environment setting; omitting it preserves the configured seed. Focused tests verify both argument forms and precedence.
 
-| Entity | Count |
-| --- | --- |
-| Users | 3 000 |
-| Friendships (accepted) | 12 000 |
-| Posts | 15 000 |
-| Comments | 20 000 |
-| Events | 800 |
-| Applications | 4 000 |
-| Messages | 10 000 |
-| Media metadata | 5 000 (reuse a handful of real objects) |
+| Entity | Default requested count | Maximum accepted count |
+| --- | ---: | ---: |
+| Users | 3,000 | 10,000 |
+| Friendships | 12,000 | 50,000 |
+| Posts | 15,000 | 50,000 |
+| Comments | 20,000 | 80,000 |
+| Events | 800 | 5,000 |
+| Applications | 4,000 | 20,000 |
+| Messages | 10,000 | 50,000 |
+| Media metadata | 5,000 | 20,000 |
 
-## Media note
+Explicit flags also accept friendships, posts, comments, applications, messages and media counts. Counts are clamped; graph feasibility can reduce generated totals. `FriendshipFactory` biases selections toward low-index hubs and matching city/sport clusters, with bounded attempts. This is synthetic graph structure, not a measured real-world distribution.
 
-Do **not** store 15 000 unique JPEGs. Upload ~10 stock images to MinIO and point many `media` rows at those keys, or use 1×1 pixel fixtures in unit tests. This keeps the “no local disk” rule and the “thousands of rows” rule.
+## Media and accounts
 
-## Graph shape
+Media rows reuse ten stock object keys to bound storage. The stock payload is a decodable 32×32 JPEG pattern, verified by an image-decoder regression test. Reusing these tiny objects bounds fixture storage; it does not establish the quality of real user images, which are tested separately through signed uploads and processing.
 
-- Power-law-ish friends: a few hubs, many low-degree users (so suggestions have mutual friends)
-- Clusters by `city` + `sports` (so search and matching are visibly right)
-- Named demo accounts that always exist:
+Named fixture users include `demo.alex`, `demo.blake`, `demo.mod` and `demo.admin`. Password values belong in local secret configuration; bulk synthetic users share a precomputed hash per generation. Fixtures are test data and must not be used as production credentials.
 
-| Handle | Role | Password |
-| --- | --- | --- |
-| `demo.alex` | member | local `.env` only |
-| `demo.blake` | member, friend of alex | local `.env` only |
-| `demo.mod` | moderator | local `.env` only |
-| `demo.admin` | admin | local `.env` only |
+Generation/reset HTTP actions and the CLI are disabled under the `prod` profile. The separate environment-gated `StaffBootstrapCli` only creates missing designated staff accounts and is not the bulk generator. Staff bootstrap and bulk fixture generation are separate operations; current deployment evidence is recorded in the release-verification page.
 
-## Safety
+## Evidence
 
-- Fixture generate and reset stay **disabled** when the Spring profile is `prod`. `POST /api/v1/admin/fixtures` and `/reset` remain `FORBIDDEN` there. Do not enable that HTTP trigger on the live VPS.
-- Live v1.0.0 has **no** `demo.admin` / `demo.mod` until an operator bootstraps them. Ticket **#78**: env-gated one-shot `GYM_BUDDY_BOOTSTRAP_STAFF=true` inserts those two accounts **only if they are missing**. It does not generate the 3 000-user fixture set. Passwords come from `DEMO_ADMIN_PASSWORD` / `DEMO_MOD_PASSWORD` on the host (`.env.example` placeholders only; never commit production secrets). Unset the flag after one successful boot. Operator steps: [../10-Getting-started/04-Environment-and-pipeline.md](../10-Getting-started/04-Environment-and-pipeline.md).
-- The fixture command truncates only if `--reset` is passed
-- Passwords for bulk users are a single known hash to speed inserts
-
-## Tests vs demo
-
-| Suite | Dataset |
-| --- | --- |
-| Unit | In-memory objects, no DB |
-| Integration | Migrations + tiny factories (tens of rows) |
-| Functional / demo | Large seed, optional |
+Unit tests cover factory relationships and argument/guard behavior. Disposable PostgreSQL integration tests exercise a bounded 1,000-user fixture set. This proves the tested dataset and constraints; the full default 3,000-user live deployment and its performance have not been verified. See [test plan](../80-Testing/01-Test-plan.md) and [release verification](../80-Testing/06-Release-verification.md).

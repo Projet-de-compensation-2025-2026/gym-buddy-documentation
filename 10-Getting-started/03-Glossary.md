@@ -29,7 +29,7 @@
 | healthz | `GET /api/v1/healthz` — process is up (unauthenticated) |
 | readyz | `GET /api/v1/readyz` — PostgreSQL and object storage are reachable |
 | Caddy | Reverse proxy on the VPS; terminates HTTPS and forwards to `127.0.0.1:8080` |
-| Compose (local) | Laptop `compose.yaml` in `gym-buddy-service`: Postgres 18, Redis, MinIO, API |
+| Compose (local) | Laptop `compose.yaml` in `gym-buddy-service`: Postgres 18, Redis, SeaweedFS, API |
 | VM replace | `replace.sh` on the VPS: `docker run` of the API image on loopback, not compose |
 | CI | Continuous integration: format, tests, and a live smoke on every `develop` PR |
 | Release | Dedicated workflow that squash-merges `develop` onto `main` and tags SemVer |

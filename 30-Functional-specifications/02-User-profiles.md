@@ -27,12 +27,12 @@ Member (owner or viewer), staff (full view in back-office only).
 
 ## Business rules
 
-- Flyway V2 today stores only `display_name`. Remaining columns: `bio`, `visibility` (default `public`), `sports text[]`, `experience_level`, `city`, `lat`, `lng`, `preferred_windows` JSON, `avatar_media_id`.
+- Profile storage includes: `bio`, `visibility` (default `public`), `sports text[]`, `experience_level`, `city`, `lat`, `lng`, `preferred_windows` JSON, `avatar_media_id`.
 - `experience_level` ∈ `beginner` \| `intermediate` \| `advanced`.
 - `sports` is a small controlled vocabulary plus free-text tags (max 12, each 2–32 chars). Seed: `weightlifting`, `running`, `crossfit`, `yoga`, `hiit`, `cycling`, `swimming`, `climbing`, `martial-arts`, `team-sports`.
 - `preferred_windows`: list of `{ weekday: 0–6, start: "HH:MM", end: "HH:MM" }`, max 14.
 - Stub payload for a stranger on a private profile: `handle`, `displayName` omitted or initials only, `visibility=private`, `avatar` if the owner did not hide it (default: show avatar), no bio/sports/city/windows/friend count.
-- Friend count on a **full** view is the number of `accepted` friendships. Do **not** invent a Workouts / Current Focus progress entity. Mockup 05’s “142 WORKOUTS” and “Current Focus” bars are leftovers. Show friend count; optional “sessions” = accepted event attendances if events exist, otherwise omit.
+- Friend count on a full profile view is the number of accepted friendships. Workout and Current Focus progress counters in the mockup have no corresponding product entity.
 - Username on Edit Profile **is** `handle` (FS-ACCT-02 uniqueness). Handle is not an email: no `@`, and it must not equal the account email (ticket **#103**).
 - Mockup 15 “Security / Notifications / Billing” nav: Security/Privacy goes to [01-Accounts-and-administration.md](01-Accounts-and-administration.md). Notifications and Billing are **not** product.
 

@@ -1,14 +1,5 @@
-# QA v1.0.0 — public / auth shots
+# Historical v1.0.0 captures — Public and authentication
 
-Live Chromium captures of `https://projet-de-compensation-2025-2026.github.io/gym-buddy-ui/` login, register, empty feed, logout, and invalid routes. Do not paste wiki mockup JPGs here.
+Chromium screenshots at desktop and mobile widths preserve the released UI and errors observed during that earlier audit. Filenames identify the route or interaction; these images do not establish current behavior.
 
-Numbered `NN-*.png` files: desktop and mobile pairs for each step in [../../../qa-v1.0.0-public.md](../../../qa-v1.0.0-public.md).
-
-## Contents
-
-| Document | Job |
-| --- | --- |
-| PNG files in this folder | Evidence for tickets #89–#95 |
-| [../../../qa-v1.0.0-public.md](../../../qa-v1.0.0-public.md) | Written findings |
-
-[Back to qa-v1.0.0](../README.md)
+[Capture inventory](../README.md) · [Current verification](../../../../80-Testing/06-Release-verification.md)
