@@ -2,7 +2,7 @@
 
 Release history is retained in Git tags and commit history. This page keeps concise documentation milestones; dated observations do not define current deployed behavior.
 
-## [1.2.0] — 2026-09-14
+## [Unreleased]
 
 - Align architecture, storage, authentication, search and algorithms with implementation.
 - Remove superseded notes and version assertions; simplify repository guidance.
