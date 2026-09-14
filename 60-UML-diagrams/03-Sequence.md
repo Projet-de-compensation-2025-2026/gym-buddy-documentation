@@ -88,6 +88,12 @@ sequenceDiagram
   A->>API: POST /media
   API-->>A: mediaId + signed PUT
   A->>S3: PUT bytes
+  API->>S3: Scheduled ingestion reads uploaded bytes
+  API->>API: Validate, sanitize and mark READY
+  loop Until ready or rejected
+    FE->>API: GET /media/:id/url
+    API-->>FE: Not ready, rejection, or ready URL
+  end
   A->>API: POST /conversations/:id/messages {type:image, mediaId}
   API->>API: canRead / canWrite conversation
   API-->>WS: message.created

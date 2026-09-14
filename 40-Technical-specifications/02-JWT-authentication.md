@@ -49,7 +49,7 @@ Argon2id, memory ≥ 19 MiB, one-way. Timing-safe compare. Generic error on unkn
 
 ## Guards
 
-`AuthAccessTokenFilter` validates the access credential and supplies the current principal. Resource services enforce ownership, membership, visibility and staff permissions. Account state is checked server-side. Refresh rotation consumes the prior credential atomically in Redis; password/account changes invalidate relevant credentials.
+`AccessTokenFilter` validates the access credential and supplies the current principal. Resource services enforce ownership, membership, visibility and staff permissions. Account state is checked server-side. Refresh rotation consumes the prior credential atomically in Redis; password/account changes invalidate relevant credentials.
 
 ## Threat notes
 

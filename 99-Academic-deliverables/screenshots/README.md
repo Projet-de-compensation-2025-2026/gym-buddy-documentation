@@ -1,11 +1,5 @@
-# Live screenshots
+# Screenshot evidence
 
-Do **not** paste wiki mockup JPGs here. Files in this folder (except `qa-v1.0.0/`) were captured from the **running Angular UI** on GitHub Pages **v1.1.0** on 2026-08-31, plus wiki Mermaid exports (17–18) and the VPS health probe (19). Prefer `demo.alex` / `demo.blake` when those passwords are available; this set used freshly registered members.
+[Version 1.2.0 captures](release-1.2.0/README.md) document the published applications on 14 September 2026. Current report/deck exports use this evidence.
 
-Checklist and per-shot notes: [../03-Screenshots.md](../03-Screenshots.md).
-
-v1.0.0 admin crawl (2026-08-30): [qa-v1.0.0/admin/](qa-v1.0.0/admin/) — findings in [../qa-v1.0.0-admin.md](../qa-v1.0.0-admin.md).
-
-Public / auth crawl of live UI **v1.0.0** (2026-08-30): [../qa-v1.0.0-public.md](../qa-v1.0.0-public.md) and [qa-v1.0.0/public/](qa-v1.0.0/public/).
-
-Member crawl of live UI **v1.0.0** (2026-08-30): [../qa-v1.0.0-member.md](../qa-v1.0.0-member.md) and [qa-v1.0.0/member/](qa-v1.0.0/member/).
+The older root images document 31 August 2026; `qa-v1.0.0` contains 30 August desktop/mobile evidence. Those historical captures do not establish current behavior.

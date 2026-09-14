@@ -10,7 +10,7 @@ Configure the service's local database/object-store environment and keep the Spr
 mvn compile exec:java -Dexec.mainClass=fr.projetcompensation.gymbuddy.fixtures.FixturesCli -Dexec.args="--users 3000 --posts-per-user 5 --events 800"
 ```
 
-The entry point starts the required Spring context without an HTTP listener. `--reset` explicitly truncates fixture data before generation; omit it to preserve existing rows. The generator uses `FIXTURE_SEED` (default `20260813`) and a fixed January 2026 time origin. An explicit `--seed` overrides that environment setting; omitting it preserves the configured seed. Focused tests verify both argument forms and precedence.
+The entry point starts the required Spring context without an HTTP listener. `--reset` deletes all users and related data in the configured test database, not only rows previously created by fixtures. Use it only with a disposable database; omit it to preserve existing rows. The generator uses `FIXTURE_SEED` (default `20260813`) and a fixed January 2026 time origin. An explicit `--seed` overrides that environment setting; omitting it preserves the configured seed. Focused tests verify both argument forms and precedence.
 
 | Entity | Default requested count | Maximum accepted count |
 | --- | ---: | ---: |

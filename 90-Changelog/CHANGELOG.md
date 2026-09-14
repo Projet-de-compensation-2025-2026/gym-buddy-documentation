@@ -2,11 +2,12 @@
 
 Release history is retained in Git tags and commit history. This page keeps concise documentation milestones; dated observations do not define current deployed behavior.
 
-## [Unreleased]
+## [1.2.0] — 2026-09-14
 
 - Align architecture, storage, authentication, search and algorithms with implementation.
 - Remove superseded notes and version assertions; simplify repository guidance.
 - Record released implementation, verification evidence and remaining limitations.
+- Refresh the report, French defense deck and screenshots from the deployed 1.2.0 applications.
 
 ## [1.1.1] — 2026-08-31
 

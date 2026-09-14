@@ -1,4 +1,4 @@
-"""Assemble Gym-Buddies-report.pdf from the wiki (ticket #71)."""
+"""Assemble the academic report from documented implementation and dated evidence."""
 
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT
@@ -22,8 +22,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 OUT = str(HERE / "Gym-Buddies-report.pdf")
 SHOTS = HERE / "screenshots"
-# Parent develop SHA plus this #71 live-screenshot PR (not a mockup gallery).
-DOC_SHA = "ab679f9+#71"
+# Versions verified on the deployed website.
+DOC_SHA = "1.2.0, 2026-09-14"
 TEAL = colors.HexColor("#00535B")
 INK = colors.HexColor("#141B2B")
 HAIR = colors.HexColor("#BEC8CA")
@@ -115,24 +115,14 @@ def styles():
 S = styles()
 
 FIGURES = [
-    ("01-register-login.png", "Figure 1. After register on Pages v1.1.0 the SPA lands on login with “Account created. Sign in to continue.”"),
-    ("02-public-profile.png", "Figure 2. A public profile shows display name, bio, sports, city, and experience (FS-PROF)."),
-    ("03-private-profile-stranger.png", "Figure 3. A stranger on a private profile sees only a stub and Request Friend (FS-PROF-04)."),
-    ("04-friend-request-pending.png", "Figure 4a. Outbound friend request stays pending until the addressee accepts (FS-FRND)."),
-    ("04-friend-request.png", "Figure 4b. After accept, Blake appears under My Friends."),
-    ("05-friends-feed-post-repost.png", "Figure 5. Friends feed shows Blake’s post and “Alex Live reposted” (FS-FEED)."),
-    ("07-comment-thread.png", "Figure 6–7. The same post has a like plus a three-level comment thread (FS-POST, FS-CMT)."),
-    ("08-friends-only-event.png", "Figure 8. Friends-only evening lift: place, 90 minutes, capacity 1 (FS-EVT)."),
-    ("09-event-applications-pending.png", "Figure 9a. Organizer queue with Blake pending (matching score 0.30)."),
-    ("09-event-applications.png", "Figure 9b. After the last seat is accepted, a later friend sees Full / 1 (FS-EVT-07)."),
-    ("10-recurring-event-occurrences.png", "Figure 10. WEEKLY run club materialises the next 90 days of occurrences (FS-EVT-03)."),
-    ("11-advanced-search.png", "Figure 11. People search with query, city, sport, and experience filters (FS-SRCH)."),
-    ("12-suggestions-why.png", "Figure 12. Suggestions empty on prod: no 3 000-user fixtures and recompute is async (FS-SUGG-03)."),
-    ("13-chat-text-image-audio.png", "Figure 13. DM text delivered; image/audio fail because live object storage is not configured (FS-MSG)."),
-    ("14-denied-media.png", "Figure 14. A stranger opening a friends-only post sees “post not found” — no existence leak (FS-MED-06)."),
-    ("17-architecture.png", "Figure 17. Modular monolith from the wiki Mermaid in 20-Architecture/01-Software-architecture.md."),
-    ("18-data-model.png", "Figure 18. Core ER from the wiki Mermaid in 20-Architecture/06-Data-model.md."),
-    ("19-https-health.png", "Figure 19. Operator-network probe: GET /api/v1/healthz and /readyz return HTTP 200."),
+    ('release-1.2.0/release-profile-avatar.png', 'Figure 1. Saved profile avatar, rendered on the released member application.'),
+    ('release-1.2.0/release-image-post.png', 'Figure 2. A synthetic member created an image post; its detail renders the processed image.'),
+    ('release-1.2.0/release-event-cover.png', 'Figure 3. Public event with uploaded cover, title, location and capacity.'),
+    ('release-1.2.0/release-weekly-occurrence-isolation.png', 'Figure 4. Applications and cancellation are isolated by weekly occurrence.'),
+    ('release-1.2.0/released-chat-media-desktop.png', 'Figure 5. Image delivery without reload and audio playback between two synthetic friends.'),
+    ('release-1.2.0/released-admin-users.png', 'Figure 6. Released staff user list filtered to the synthetic member accounts.'),
+    ('release-1.2.0/released-admin-audit.png', 'Figure 7. Audit records for synthetic moderation actions.'),
+    ('release-1.2.0/released-admin-fixtures-disabled.png', 'Figure 8. Fixture operations are explicitly disabled in production.'),
 ]
 
 
@@ -210,7 +200,7 @@ def story():
         P("Joaquim Kéloglanian", "meta"),
         P(
             "This report <b>summarizes</b> the wiki in "
-            "gym-buddy-documentation (commit <b>%s</b>). It is not a second specification. "
+            "gym-buddy-documentation (<b>%s</b>). It is not a second specification. "
             "Functional and technical rules live in that repository." % DOC_SHA,
             "body",
         ),
@@ -224,8 +214,7 @@ def story():
         ),
         P(
             "There was no instructor cadrage meeting (instructor on holiday, recorded 2026-08-19). "
-            "The brief does not require wiki pages to stay Draft until that meeting. Implementation "
-            "followed wiki, then the OpenAPI tag, then generate, then implement.",
+            "The supplied assignment therefore remained the basis for required features and deliverables.",
             "body",
         ),
         P("Repositories", "h2"),
@@ -235,45 +224,45 @@ def story():
                 [
                     "gym-buddy-documentation",
                     "Wiki, tickets, Gym Buddy Project",
-                    "github.com/.../gym-buddy-documentation",
+                    '<link href="https://github.com/Projet-de-compensation-2025-2026/gym-buddy-documentation">Open repository</link>',
                 ],
                 [
                     "gym-buddy-openapi",
                     "OpenAPI 3.1 $ref tree (HTTP source of truth)",
-                    "github.com/.../gym-buddy-openapi",
+                    '<link href="https://github.com/Projet-de-compensation-2025-2026/gym-buddy-openapi">Open repository</link>',
                 ],
                 [
                     "gym-buddy-service",
                     "Java 25 LTS / Spring Boot API",
-                    "github.com/.../gym-buddy-service",
+                    '<link href="https://github.com/Projet-de-compensation-2025-2026/gym-buddy-service">Open repository</link>',
                 ],
                 [
                     "gym-buddy-ui",
                     "Angular 22 member app + /admin",
-                    "github.com/.../gym-buddy-ui",
+                    '<link href="https://github.com/Projet-de-compensation-2025-2026/gym-buddy-ui">Open repository</link>',
                 ],
             ],
             [38 * mm, 52 * mm, w - 90 * mm],
         ),
         P("2. Problem and users", "h1"),
         P(
-            "Athletes who want a training partner have no product that combines a friends graph, "
+            "Gym Buddies helps athletes find a training partner by combining a friends graph, "
             "public/private profiles, capacity-limited sessions, and explainable “why this person” "
-            "suggestions. Gym Buddies is that product for members; staff get a separate back-office "
+            "suggestions. Members use the social application; staff get a separate back-office "
             "bundle. Native mobile, payments, and wearables are out of scope.",
             "body",
         ),
         P("3. Functional overview", "h1"),
         grid(
             [
-                ["Area", "FS prefix", "On develop"],
+                ["Area", "FS prefix", "Required behavior"],
                 ["Accounts / JWT", "FS-ACCT", "Register, login, refresh, logout, password, close"],
                 ["Profiles", "FS-PROF", "Public / private, stub for strangers"],
                 ["Friends", "FS-FRND", "Request, accept, block"],
                 ["Feed / posts / comments", "FS-FEED / POST / CMT", "Friends feed, likes, depth 4"],
                 ["Events", "FS-EVT", "Instant / WEEKLY, apply, transactional capacity"],
                 ["Search / suggestions", "FS-SRCH / SUGG", "People+events; FoF generate-and-score"],
-                ["Messaging / media", "FS-MSG / MED", "Text, image, audio; MinIO signed URLs"],
+                ["Messaging / media", "FS-MSG / MED", "Text, image, audio; SeaweedFS signed URLs"],
                 ["Admin / fixtures", "FS-ADM", "Roles, hide, audit; Datafaker seed 20260813"],
             ],
             [42 * mm, 32 * mm, w - 74 * mm],
@@ -293,8 +282,8 @@ def story():
             "body",
         ),
         P(
-            "Runtime: PostgreSQL 18 (system of record), Redis (refresh denylist, suggestion cache), "
-            "MinIO (images and audio — never an API /uploads directory). The UI is static on GitHub "
+            "Runtime: PostgreSQL 18 (system of record), Redis (refresh credential state and messaging pub/sub), "
+            "SeaweedFS (private images and audio, with bounded temporary processing space). The UI is static on GitHub "
             "Pages; the API is a Docker image on an OVH VPS behind Caddy, bound to 127.0.0.1:8080.",
             "body",
         ),
@@ -302,7 +291,7 @@ def story():
             "Core entities: User, Profile, Friendship, Post, Comment, Event (plus occurrences and "
             "applications), Media, Conversation/Message, AuditEvent. Identifiers are UUIDs. "
             "Timestamps are UTC. Soft-delete keeps nested threads and moderation consistent. "
-            "The wiki ER diagram is the authoritative picture (20-Architecture/06-Data-model.md).",
+            "The wiki ER diagram explains the logical model; service Flyway migrations define the physical schema.",
             "body",
         ),
         P("5. Algorithms", "h1"),
@@ -313,7 +302,8 @@ def story():
             "dismissed, locked. Score S(u,v) = 0.35 m + 0.25 J + 0.15 G + 0.15 T + 0.10 E, with "
             "m = Adamic-Adar on mutual friends, J = Jaccard of sports, G = geo (D = 25 km), T = window "
             "overlap, E = experience closeness. The card primary reason is argmax of weight times feature. "
-            "FoF is O(d^2) per user; nightly all-users is fine at 3 000 users. Collaborative filtering "
+            "Scores are stored in PostgreSQL and refreshed nightly or on demand. The scorer sorts "
+            "at most 200 candidates in O(C log C); graph queries add cost that must be measured. Collaborative filtering "
             "was rejected: no implicit-feedback volume, and it cannot explain why.",
             "body",
         ),
@@ -321,28 +311,29 @@ def story():
         P(
             "People and events are two indexes with cursor pagination. Filters include sports, city, "
             "radius, remaining capacity, and friend-state. Private strangers never appear. "
-            "Default sort is relevance then recency. PostgreSQL is enough at this scale; "
-            "Elasticsearch was rejected for MVP.",
+            "The service loads catalog candidates from PostgreSQL, filters and ranks them in Java, "
+            "then returns a stable page. This requires an O(N) scan and O(M log M) sort. "
+            "PostgreSQL full-text indexes are a future improvement, not the current implementation.",
             "body",
         ),
         P("5.3 User matching", "h2"),
         P(
             "Weekly opt-in greedy assignment with a unique pair, no block edges, and a draft instant "
-            "event of capacity 1 (visibility friends). Greedy is a 1/2-approximation; the wiki records "
+            "event of capacity 1 (private, with the peer invited) at the start of the overlapping window. Greedy is a 1/2-approximation; the wiki records "
             "that we do not show an empirical gap versus exact. Event accept order (FS-EVT-13) reuses "
             "the same matching score as a suggested queue, not as a capacity override.",
             "body",
         ),
         P("6. Security", "h1"),
         P(
-            "Access JWT is HS256 in JSON. Refresh is a cookie (HttpOnly, Secure, SameSite=None, "
-            "Partitioned, path /api/v1/auth) rotated on use and denylisted in Redis on logout. "
-            "SameSite=Lax was the v1.0.0 session-drop from github.io; live 1.1.0 uses None+Partitioned "
-            "so Chromium stores the cookie in the Pages partition. Passwords are Argon2id, never logged. "
-            "Missing ACL returns NOT_FOUND (no existence leak) unless a spec names FORBIDDEN. "
-            "File downloads are 60-second signed GETs minted only after canRead — on this VPS "
-            "POST /media currently returns “media is not configured”, so that path is honest, not claimed. "
-            "Member calls to /admin/* return NOT_FOUND. Staff JavaScript is a separate Angular bundle.",
+            "Access JWT is HS256 with a 15-minute lifetime. Refresh credentials last 14 days in an "
+            "HttpOnly, Secure, SameSite=None, Partitioned cookie at /api/v1/auth. Redis atomically "
+            "consumes rotated credentials. Passwords use Argon2id. Services enforce ownership, "
+            "membership, visibility and staff permissions. Media reads receive 60-second signed URLs "
+            "only after authorization. SeaweedFS is deployed behind an HTTPS object gateway. Real browser "
+            "checks passed image upload, avatar update, event cover and audio playback on both accounts. "
+            "The first registration on an empty database becomes admin; an operator CLI can provision "
+            "staff on an existing database. Initial access therefore needs operator control.",
             "body",
         ),
         P("7. Implementation notes", "h1"),
@@ -355,12 +346,12 @@ def story():
             "body",
         ),
         P(
-            "Gitflow: feature branches from develop, PRs to develop, Conventional Commits with the "
-            "documentation ticket in the scope (feat(#59): …) and Refs: …/gym-buddy-documentation#N. "
-            "GitHub Actions: format, tests, HTTP smoke on every PR. Release squash-merges develop "
-            "onto main, tags vX.Y.Z, and deploys. Live GitHub Pages is <b>v1.1.0</b> "
-            "(known member and admin routes HTTP 200). The SPA talks to "
-            "https://vps-c39cdf03.vps.ovh.net/api/v1. Operator-network healthz/readyz are 200.",
+            "Focused branches and reviewed pull requests use one-line Conventional Commits. "
+            "A verified issue may appear in the scope, for example feat(#59): add profile editing. "
+            "Release tags use vMAJOR.MINOR.PATCH. Deployment must build the exact tagged source "
+            "and record the image revision. The browser uses the HTTPS API at "
+            "https://vps-c39cdf03.vps.ovh.net/api/v1. A tag or passing build alone does not establish "
+            "that a repair is deployed.",
             "body",
         ),
         P("8. Tests and fixtures", "h1"),
@@ -368,8 +359,8 @@ def story():
             "Backend unit tests name FS IDs (fsEvt07_concurrentLastSeatAcceptsExactlyOne, "
             "fsProf04_strangerOnPrivateProfileSeesStub, …). Integration tests use Testcontainers. "
             "CI smoke hits GET /api/v1/healthz. Fixtures: Datafaker, seed 20260813, default 3 000 "
-            "users / 12 000 accepted friendships / 15 000 posts. CI uses tens of rows "
-            "(FixtureMagnitude.tiny()). Spring profile prod cannot reset. About ten stock MinIO "
+            "users / 12 000 requested friendships / 15 000 posts. CI verifies both small and 1 000-user "
+            "datasets. The final backend CI passed 294 tests with no skipped integrations. Spring profile prod cannot reset. Ten stock object-storage "
             "objects are reused so the 5 000 media metadata rows do not fill the disk.",
             "body",
         ),
@@ -381,13 +372,14 @@ def story():
             "body",
         ),
         P(
-            "After v1.1.0, the main gaps are honest: suggestion matching is greedy, not exact; "
-            "DMs are not E2E encrypted; search on messy city strings has no geocoder; GitHub Pages "
-            "cannot host Java. Live Pages login from this operator PC <b>does</b> work "
-            "(SameSite=None; Partitioned). Prod has no demo.admin (#78 not SSH-run) and no object "
-            "storage, so admin shots 15–16 and signed media URLs are not claimed. Suggestions for "
-            "three live users were empty (no 3 000-user fixtures). With two weeks less I would drop "
-            "weekly matching, audio DMs, and recurrence beyond WEEKLY+UNTIL.",
+            "The September release was checked in separate member and staff browser sessions. Image/audio delivery, "
+            "moderation, event acceptance and occurrence isolation passed. The database migration preserved "
+            "23 tables with content, schema and sequence comparisons. Scanned API, PostgreSQL, Redis and "
+            "SeaweedFS images had zero CRITICAL findings; Caddy retains lower-severity advisories. Search scans "
+            "candidates in Java; recommendation latency and relevance need fixture-scale measurement. "
+            "Weekly matching uses a greedy approximation, and recurrence supports a weekly subset. "
+            "Audio messaging and recurring events are required by the brief and cannot be dropped "
+            "while claiming full compliance. See the dated release verification page for remaining gaps.",
             "body",
         ),
         P("10. Conclusion", "h1"),
@@ -399,11 +391,11 @@ def story():
             "body",
         ),
         P("11. Appendix", "h1"),
-        P("Live screenshots (Pages v1.1.0, 2026-08-31)", "h2"),
+        P("Released website evidence (version 1.2.0, 14 September 2026)", "h2"),
         P(
-            "Figures below are captures from the running Angular UI, not wiki mockup JPGs. "
-            "demo.alex passwords are not in git; three fresh members were registered and friended. "
-            "Admin 15–16 are omitted: demo.admin is missing on prod (ticket #78).",
+            "Figures below show the published member and staff applications using synthetic test accounts. "
+            "Passwords and production configuration are not included. Historical August captures remain "
+            "separately dated in the screenshot archive.",
             "body",
         ),
     ]
@@ -413,25 +405,21 @@ def story():
         grid(
             [
                 ["#", "Shot", "FS"],
-                ["1", "Register / login", "FS-ACCT"],
-                ["2–3", "Public profile; private stub", "FS-PROF"],
-                ["4", "Friend request", "FS-FRND"],
-                ["5–7", "Feed, likes, nested comments", "FS-FEED / POST / CMT"],
-                ["8–10", "Event create, accept, recurrence", "FS-EVT"],
-                ["11–12", "Search; suggestion why (empty on prod)", "FS-SRCH / SUGG"],
-                ["13–14", "Chat text; stranger NOT_FOUND", "FS-MSG / MED"],
-                ["15–16", "Admin — blocked, no staff login", "FS-ADM"],
+                ["1–2", "Avatar and image publication", "FS-PROF / POST"],
+                ["3–4", "Event cover and occurrence isolation", "FS-EVT"],
+                ["5", "Image and audio conversation", "FS-MSG / MED"],
+                ["6–8", "Staff users, audit and fixture guard", "FS-ADM"],
             ],
             [18 * mm, w - 42 * mm, 24 * mm],
         ),
         P(
             "UML (use case, activity, sequence, class) is in 60-UML-diagrams. Selected HTTP surface "
-            "is 40-Technical-specifications/09-Target-HTTP-surface.md. No cadrage minutes were invented.",
+            "is 40-Technical-specifications/09-Target-HTTP-surface.md.",
             "body",
         ),
         P(
-            "Formalities: email maurras.togbe@isep.fr by 31 August 2026. Working language of the wiki "
-            "is English; translate if the instructor requires French. Cite wiki commit %s." % DOC_SHA,
+            "The brief specified delivery to maurras.togbe@isep.fr by 31 August 2026. Working language of the wiki "
+            "is English; the defense deck and rehearsal guide are in French. Source review: %s." % DOC_SHA,
             "caption",
         ),
     ]
